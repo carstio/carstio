@@ -1,0 +1,38 @@
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Local environment overrides — must never end up baked in an image
+.env.local
+.env.*.local
+.env.local.php
+
+# Build / runtime artefacts
+var/
+vendor/
+public/assets/
+public/bundles/
+public/uploads/
+node_modules/
+
+# Test artefacts
+.phpunit.cache/
+coverage/
+phpunit.xml
+
+# IDE / editor / OS
+.idea/
+.vscode/
+.DS_Store
+
+# Project documentation that should not bloat the image
+README.md
+LICENSE
+CLAUDE.md
+
+# Docker files themselves do not need to be inside the image
+docker/
+compose.yaml
+compose.override.yaml
+.dockerignore

@@ -1,0 +1,77 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ user.fullName }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% set is_admin = 'ROLE_ADMIN' in user.roles %}
+    {% set is_self = app.user and app.user.id == user.id %}
+
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_user_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'user.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+
+            {% if not is_self %}
+                {% if user.active %}
+                    <form method="post" action="{{ path('app_user_deactivate', {id: user.id}) }}"
+                          onsubmit="return confirm('{{ 'user.confirm.deactivate'|trans }}');">
+                        <input type="hidden" name="_token" value="{{ csrf_token('user-deactivate-' ~ user.id) }}">
+                        <button type="submit" class="btn btn-outline-secondary">
+                            {{ icon.render('x') }}<span>{{ 'user.action.deactivate'|trans }}</span>
+                        </button>
+                    </form>
+                {% else %}
+                    <form method="post" action="{{ path('app_user_activate', {id: user.id}) }}">
+                        <input type="hidden" name="_token" value="{{ csrf_token('user-activate-' ~ user.id) }}">
+                        <button type="submit" class="btn btn-outline-secondary">
+                            {{ icon.render('check') }}<span>{{ 'user.action.activate'|trans }}</span>
+                        </button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'clients',
+        title: user.fullName,
+        subtitle: user.email
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'user.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'user.field.email'|trans }}</dt><dd>{{ user.email }}</dd></div>
+                        <div class="kv-row">
+                            <dt>{{ 'user.field.role'|trans }}</dt>
+                            <dd>
+                                <span class="status-badge {{ is_admin ? 'status-badge--success' : 'status-badge--neutral' }}">
+                                    {{ (is_admin ? 'user.role.admin' : 'user.role.mechanic')|trans }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="kv-row">
+                            <dt>{{ 'user.field.status'|trans }}</dt>
+                            <dd>
+                                <span class="status-badge {{ user.active ? 'status-badge--success' : 'status-badge--danger' }}">
+                                    {{ (user.active ? 'user.status.active' : 'user.status.inactive')|trans }}
+                                </span>
+                            </dd>
+                        </div>
+                        <div class="kv-row"><dt>{{ 'user.field.created_at'|trans }}</dt><dd class="font-monospace">{{ user.createdAt|app_datetime }}</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

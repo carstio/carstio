@@ -1,0 +1,75 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'part.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'part',
+        title: 'part.index.heading'|trans,
+        primary: { label: 'part.action.new'|trans, href: path('app_part_new'), icon: 'plus' }
+    } only %}
+
+    {% include '_partials/toolbar.html.twig' with {
+        search_value: search,
+        search_placeholder: ('action.search'|trans) ~ ' ' ~ ('nav.parts'|trans|lower) ~ '…'
+    } only %}
+
+    <div class="card">
+        {% if parts is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'part',
+                    title: 'part.index.empty_title'|trans,
+                    text: 'part.index.empty'|trans,
+                    primary: { label: 'part.action.new'|trans, href: path('app_part_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'part.field.name'|trans }}</th>
+                            <th>{{ 'part.field.brand'|trans }}</th>
+                            <th>{{ 'part.field.sku'|trans }}</th>
+                            <th class="col-numeric">{{ 'part.field.cost_price'|trans }}</th>
+                            <th class="col-numeric">{{ 'part.field.sell_price'|trans }}</th>
+                            <th class="col-numeric">{{ 'part.field.unit_profit'|trans }}</th>
+                            <th class="text-center">{{ 'label.status'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for part in parts %}
+                            {% set unit_profit = (part.sellPrice is not null and part.costPrice is not null)
+                                ? (part.sellPrice - part.costPrice) : null %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_part_show', {id: part.id}) }}">{{ part.name }}</a>
+                                </td>
+                                <td>{{ part.brand ?? '-' }}</td>
+                                <td class="col-mono">{{ part.sku ?? '-' }}</td>
+                                <td class="col-numeric">{{ part.costPrice is not null ? part.costPrice : '-' }}</td>
+                                <td class="col-numeric fw-medium">{{ part.sellPrice is not null ? part.sellPrice : '-' }}</td>
+                                <td class="col-numeric">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</td>
+                                <td class="text-center">
+                                    {% if part.active %}
+                                        <span class="status-badge status-badge--success">{{ 'part.status.active'|trans }}</span>
+                                    {% else %}
+                                        <span class="status-badge status-badge--neutral">{{ 'part.status.inactive'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_part_edit', {id: part.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                        {{ icon.render('pencil') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

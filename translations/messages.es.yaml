@@ -1,0 +1,851 @@
+# Application
+app:
+    name: Carstio
+
+# Navigation
+nav:
+    toggle_menu: Alternar menú
+    dashboard: Panel
+    clients: Clientes
+    cars: Vehículos
+    companies: Empresas
+    offers: Presupuestos
+    work_orders: Órdenes de trabajo
+    parts: Repuestos
+    payments: Pagos
+    statistics: Estadísticas
+    settings: Ajustes
+    users: Usuarios
+    logout: Cerrar sesión
+    section:
+        main: Principal
+        workshop: Taller
+        system: Sistema
+
+# Login
+login:
+    title: Iniciar sesión
+    heading: Bienvenido de nuevo
+    subtitle: Inicie sesión para acceder a su taller.
+    email: Correo electrónico
+    email_placeholder: usted@ejemplo.es
+    password: Contraseña
+    password_placeholder: Su contraseña
+    submit: Iniciar sesión
+
+# Locale / language switcher
+locale:
+    switcher:
+        label: Idioma
+    code:
+        en: EN
+        bg: BG
+        de: DE
+        es: ES
+        fr: FR
+
+# Global header search
+search:
+    placeholder: Buscar clientes, coches, empresas…
+    loading: Buscando…
+    empty: No se encontraron resultados
+    error: La búsqueda falló. Inténtelo de nuevo.
+    group:
+        clients: Clientes
+        cars: Coches
+        companies: Empresas
+
+# Dashboard
+dashboard:
+    title: Panel
+    heading: Panel
+    subtitle: Resumen de la actividad de su taller.
+    stat:
+        open_work_orders: Órdenes abiertas
+        completed_today: Completadas hoy
+        total_clients: Total de clientes
+        total_cars: Total de vehículos
+    calendar:
+        title: Órdenes programadas
+        no_scheduled: Aún no hay órdenes programadas.
+
+# Common labels
+label:
+    actions: Acciones
+    status: Estado
+    yes: "Sí"
+    no: "No"
+
+# Common actions
+action:
+    close: Cerrar
+    save: Guardar
+    cancel: Cancelar
+    delete: Eliminar
+    edit: Editar
+    search: Buscar
+    apply: Aplicar
+    view: Ver
+    add: Añadir
+    more: Más
+    new: Nuevo
+
+# UI strings consumed by JavaScript / Stimulus controllers.
+js:
+    button:
+        now: Ahora
+        today: Hoy
+    action:
+        remove: Quitar
+
+# Confirmation
+confirm:
+    delete: ¿Está seguro de que desea eliminar este registro?
+
+# Flash messages
+flash:
+    delete:
+        restricted: Este registro no se puede eliminar porque otros registros aún lo utilizan.
+    client:
+        created: Cliente creado correctamente.
+        updated: Cliente actualizado correctamente.
+        deleted: Cliente eliminado.
+    car:
+        created: Vehículo añadido correctamente.
+        updated: Vehículo actualizado correctamente.
+        deleted: Vehículo eliminado.
+    company:
+        created: Empresa creada correctamente.
+        updated: Empresa actualizada correctamente.
+        deleted: Empresa eliminada.
+    part:
+        created: Repuesto creado correctamente.
+        updated: Repuesto actualizado correctamente.
+        deleted: Repuesto eliminado.
+    work_order:
+        created: Orden de trabajo creada correctamente.
+        updated: Orden de trabajo actualizada correctamente.
+        deleted: Orden de trabajo eliminada.
+        status_updated: Estado de la orden actualizado.
+        email_sent: Orden de trabajo enviada por correo.
+    offer:
+        created: Presupuesto creado correctamente.
+        updated: Presupuesto actualizado correctamente.
+        deleted: Presupuesto eliminado.
+        status_updated: Estado del presupuesto actualizado.
+        converted: Presupuesto convertido en orden de trabajo.
+        convert_not_allowed: Solo se pueden convertir los presupuestos aprobados.
+        locked: Los presupuestos convertidos no se pueden modificar.
+        email_sent: Presupuesto enviado por correo.
+    email:
+        client_missing_address: Este cliente no tiene una dirección de correo electrónico.
+        smtp_incomplete: La configuración de correo está incompleta. Configure primero los ajustes SMTP.
+        send_failed: No se pudo enviar el correo. Compruebe los ajustes SMTP e inténtelo de nuevo.
+    payment:
+        created: Pago registrado correctamente.
+        deleted: Pago eliminado.
+    user:
+        created: Usuario creado correctamente.
+        updated: Usuario actualizado correctamente.
+        deactivated: Usuario desactivado.
+        activated: Usuario activado.
+    attachment:
+        uploaded: Adjunto subido correctamente.
+        deleted: Adjunto eliminado correctamente.
+        upload_failed: No se pudo subir el adjunto.
+        not_found: No se encontró el adjunto.
+    settings:
+        company:
+            saved: Ajustes de la empresa guardados.
+            logo_removed: Logotipo de la empresa eliminado.
+        regional:
+            saved: Ajustes regionales guardados.
+        currency_tax:
+            saved: Ajustes de moneda e impuestos guardados.
+        documents:
+            saved: Ajustes de documentos guardados.
+        email:
+            saved: Ajustes de correo guardados.
+
+# Clients
+client:
+    index:
+        title: Clientes
+        heading: Clientes
+        empty: Aún no hay clientes. Añada su primer cliente para empezar.
+        empty_title: Aún no hay clientes
+    new:
+        title: Nuevo cliente
+    edit:
+        title: Editar cliente
+    show:
+        details: Datos del cliente
+        cars: Vehículos
+        no_cars: Este cliente aún no tiene vehículos.
+        companies: Empresas
+        no_companies: Este cliente aún no tiene empresas.
+        work_orders: Órdenes de trabajo relacionadas
+        work_orders_recent_note: Las más recientes primero, hasta 10.
+        no_work_orders: Aún no hay órdenes de trabajo para este cliente.
+        offers: Presupuestos relacionados
+        offers_recent_note: Los más recientes primero, hasta 10.
+        no_offers: Aún no hay presupuestos para este cliente.
+        action:
+            view_work_order: Ver orden de trabajo
+            view_offer: Ver presupuesto
+    action:
+        new: Nuevo cliente
+    field:
+        name: Nombre
+        phone: Teléfono
+        email: Correo
+        notes: Notas
+        cars: Vehículos
+
+# Cars
+car:
+    index:
+        title: Vehículos
+        heading: Vehículos
+        empty: Aún no hay vehículos. Añada su primer vehículo para empezar.
+        empty_title: Aún no hay vehículos
+    new:
+        title: Nuevo vehículo
+    edit:
+        title: Editar vehículo
+    show:
+        details: Datos del vehículo
+        service_history: Historial de servicio
+        no_service_history: Aún no hay órdenes de trabajo para este vehículo.
+        latest_mileage: Último kilometraje registrado
+        mileage_not_recorded: Kilometraje no registrado
+    action:
+        new: Nuevo vehículo
+    field:
+        model: Modelo
+        client: Cliente
+        client_placeholder: Seleccionar cliente...
+        model_placeholder: Seleccionar modelo...
+        vin: VIN
+        license_plate: Matrícula
+
+# Companies
+company:
+    index:
+        title: Empresas
+        heading: Empresas
+        empty: Aún no hay empresas.
+        empty_title: Aún no hay empresas
+    new:
+        title: Nueva empresa
+    edit:
+        title: Editar empresa
+    show:
+        details: Datos de la empresa
+    action:
+        new: Nueva empresa
+    field:
+        name: Nombre
+        client: Cliente
+        client_placeholder: Seleccionar cliente...
+        city: Ciudad
+        address: Dirección
+        identifier: NIF/CIF
+        vat_identifier: Número de IVA
+        vat_registered: Registrada a efectos de IVA
+
+# Parts
+part:
+    index:
+        title: Repuestos
+        heading: Repuestos
+        empty: Aún no hay repuestos. Añada su primer repuesto para empezar.
+        empty_title: Aún no hay repuestos
+    new:
+        title: Nuevo repuesto
+    edit:
+        title: Editar repuesto
+    show:
+        details: Datos del repuesto
+        pricing: Precios
+    action:
+        new: Nuevo repuesto
+    status:
+        active: Activo
+        inactive: Inactivo
+    field:
+        name: Nombre
+        sku: SKU
+        part_number: Número de pieza
+        brand: Marca
+        cost_price: Precio de coste
+        sell_price: Precio de venta
+        unit_profit: Beneficio unitario
+        unit_margin: Margen unitario
+        notes: Notas
+        is_active: Activo
+    help:
+        sku_optional: Opcional. Déjalo vacío si el taller no usa SKU.
+        part_number_optional: Opcional. Referencia del fabricante o catálogo, si la hay.
+
+# Work Orders
+work_order:
+    index:
+        title: Órdenes de trabajo
+        heading: Órdenes de trabajo
+        empty: Aún no hay órdenes de trabajo. Cree la primera para empezar.
+        empty_title: Aún no hay órdenes de trabajo
+    new:
+        title: Nueva orden de trabajo
+    edit:
+        title: Editar orden de trabajo
+        tab:
+            details: Datos
+            labor: Mano de obra
+            parts: Repuestos y otros
+            payments: Pagos
+        add_labor: Añadir mano de obra
+        add_part: Añadir repuesto
+    show:
+        details: Datos
+        items: Líneas
+        no_items: Aún no se han añadido líneas a esta orden.
+        totals: Totales
+        payments: Pagos
+        no_payments: Aún no hay pagos registrados.
+        change_status: Cambiar estado
+    payments:
+        add: Añadir pago
+        paid_amount: Importe pagado
+        remaining: Saldo pendiente
+        status: Estado del pago
+        empty: Aún no hay pagos registrados.
+        view: Ver pago
+    filter:
+        all_statuses: Todos los estados
+    action:
+        new: Nueva orden de trabajo
+    status:
+        draft: Borrador
+        open: Abierta
+        in_progress: En curso
+        waiting_parts: Esperando repuestos
+        waiting_approval: Esperando aprobación
+        completed: Completada
+        cancelled: Cancelada
+        closed: Cerrada
+    field:
+        number: Número
+        client: Cliente
+        client_placeholder: Seleccionar cliente...
+        car: Vehículo
+        car_placeholder: Seleccionar vehículo...
+        status: Estado
+        source: Origen
+        complaint: Reclamación
+        diagnosis: Diagnóstico
+        notes: Notas
+        opened_at: Abierta
+        scheduled_at: Programada
+        started_at: Iniciada
+        completed_at: Completada
+        created_by: Creada por
+        total: Total
+        paid: Pagado
+        subtotal_labor: Mano de obra
+        subtotal_parts: Repuestos
+        discount: Descuento
+        tax: Impuesto
+        payment_status: Estado del pago
+        odometer_reading: Lectura del odómetro
+        mileage: Kilometraje
+    help:
+        odometer_reading: Lectura del odómetro del vehículo en el momento del servicio.
+
+# Work Order Items
+work_order_item:
+    field:
+        type: Tipo
+        name: Concepto
+        quantity: Cant.
+        unit_price: Precio unitario
+        cost_price: Precio de coste
+        discount: Descuento
+        tax_rate: Imp. %
+        line_total: Total
+        part: Repuesto
+        part_placeholder: Seleccionar repuesto...
+    help:
+        cost_price: Solo interno. Lo que pagó el taller por la pieza. No aparece en el documento del cliente.
+    type:
+        labor: Mano de obra
+        part: Repuesto
+        misc: Otros
+
+# Offers
+offer:
+    index:
+        title: Presupuestos
+        heading: Presupuestos
+        empty: Aún no hay presupuestos. Cree el primero para empezar.
+        empty_title: Aún no hay presupuestos
+    new:
+        title: Nuevo presupuesto
+    edit:
+        title: Editar presupuesto
+        tab:
+            details: Datos
+            labor: Mano de obra
+            parts: Repuestos y otros
+        add_labor: Añadir mano de obra
+        add_part: Añadir repuesto
+    show:
+        details: Datos
+        items: Líneas
+        no_items: Aún no se han añadido líneas a este presupuesto.
+        totals: Totales
+        change_status: Cambiar estado
+    filter:
+        all_statuses: Todos los estados
+    action:
+        new: Nuevo presupuesto
+        convert: Convertir en orden de trabajo
+    confirm:
+        convert: ¿Convertir este presupuesto en una orden de trabajo?
+    status:
+        draft: Borrador
+        sent: Enviado
+        approved: Aprobado
+        rejected: Rechazado
+        expired: Caducado
+        converted: Convertido
+    field:
+        number: Número
+        client: Cliente
+        client_placeholder: Seleccionar cliente...
+        car: Vehículo
+        car_placeholder: Seleccionar vehículo...
+        status: Estado
+        title: Título
+        notes: Notas
+        valid_until: Válido hasta
+        created_at: Creado
+        created_by: Creado por
+        converted_at: Convertido el
+        work_order: Orden de trabajo
+        total: Total
+        subtotal_labor: Mano de obra
+        subtotal_parts: Repuestos
+        discount: Descuento
+        tax: Impuesto
+
+# Offer Items
+offer_item:
+    field:
+        type: Tipo
+        name: Concepto
+        quantity: Cant.
+        unit_price: Precio unitario
+        cost_price: Precio de coste
+        discount: Descuento
+        tax_rate: Imp. %
+        line_total: Total
+        part: Repuesto
+        part_placeholder: Seleccionar repuesto...
+    help:
+        cost_price: Solo interno. Coste estimado del taller. No aparece en el presupuesto del cliente.
+    type:
+        labor: Mano de obra
+        part: Repuesto
+        misc: Otros
+
+# Internal "Parts margin" card shared by offer + work order admin views
+parts_margin:
+    title: Margen de repuestos
+    internal_only: Solo uso interno
+    field:
+        revenue: Ingresos por repuestos
+        cost: Coste de repuestos
+        profit: Beneficio
+        margin: Margen
+
+# Payments
+payment:
+    index:
+        title: Pagos
+        heading: Pagos
+        empty: Aún no hay pagos registrados.
+        empty_title: Aún no hay pagos
+    new:
+        title: Registrar pago
+    show:
+        title: Datos del pago
+        details: Datos del pago
+    action:
+        new: Registrar pago
+    field:
+        work_order: Orden de trabajo
+        work_order_placeholder: Seleccionar orden...
+        amount: Importe
+        method: Método
+        method_placeholder: Seleccionar método...
+        status: Estado
+        paid_at: Pagado el
+        reference: Referencia
+        note: Nota
+    method:
+        cash: Efectivo
+        card: Tarjeta
+        bank_transfer: Transferencia
+    status:
+        pending: Pendiente
+        paid: Pagado
+        partially_paid: Parcialmente pagado
+        refunded: Reembolsado
+        void: Anulado
+
+# Settings
+settings:
+    heading: Ajustes
+    section:
+        company:
+            title: Empresa
+            description: Razón social, datos fiscales, contacto y logotipo.
+        regional:
+            title: Regional
+            description: Idioma, zona horaria y formatos de fecha de la aplicación.
+        currency_tax:
+            title: Moneda e impuestos
+            description: Moneda y tipo impositivo predeterminados para nuevos documentos.
+        documents:
+            title: Documentos
+            description: Prefijos de numeración, validez de presupuestos y pie de documento.
+        email:
+            title: Correo / SMTP
+            description: Credenciales del servidor de correo saliente. El envío se añadirá más adelante.
+    company:
+        group:
+            identity: Identidad
+            contact: Contacto
+            branding: Marca
+        field:
+            name: Nombre de la empresa
+            company_id: ID de empresa
+            vat_number: Número de IVA
+            address: Dirección
+            city: Ciudad
+            country: País
+            phone: Teléfono
+            email: Correo
+            website: Sitio web
+            logo: Logotipo
+        help:
+            identity: Se utiliza como nombre del taller en presupuestos, órdenes de trabajo y PDFs.
+            logo: PNG, JPG, WebP o SVG, hasta 2 MB.
+        action:
+            remove_logo: Quitar logotipo
+        confirm:
+            remove_logo: ¿Quitar el logotipo actual?
+        error:
+            email_invalid: Introduzca un correo electrónico válido.
+            website_invalid: Introduzca una URL válida.
+            logo_too_large: El logotipo es demasiado grande. El tamaño máximo es 2 MB.
+            logo_mime_type: Solo se admiten archivos PNG, JPG, WebP y SVG.
+    regional:
+        group:
+            locale: Idioma y hora
+        field:
+            locale: Idioma predeterminado
+            timezone: Zona horaria
+            date_format: Formato de fecha
+            time_format: Formato de hora
+            mileage_unit: Unidad de kilometraje
+        help:
+            intro: Valores prácticos para el día a día. Ajústelos al lugar donde opera el taller.
+            locale: Idioma predeterminado de la interfaz. Se añaden traducciones progresivamente.
+            timezone: Se utiliza al mostrar fechas y horas en la aplicación.
+            mileage_unit: Unidad predeterminada para registrar lecturas del odómetro en las nuevas órdenes de trabajo.
+            date_format: Formato de fecha PHP utilizado en listas y cabeceras, p. ej. Y-m-d o d.m.Y.
+            time_format: Formato de hora PHP junto a las fechas, p. ej. H:i.
+        timezone_group:
+            generic: UTC y genérico
+        error:
+            timezone_invalid: Introduzca una zona horaria IANA válida.
+            mileage_unit_invalid: Elija una unidad de kilometraje admitida.
+    currency:
+        field:
+            code: Moneda predeterminada
+        help: Se utiliza para nuevos presupuestos y órdenes. Los documentos existentes mantienen su moneda original.
+    currency_tax:
+        group:
+            defaults: Predeterminados de moneda e impuestos
+        help:
+            intro: Valores aplicados a los nuevos presupuestos y órdenes. Los documentos existentes no se ven afectados.
+    tax:
+        field:
+            default_rate: Tipo impositivo predeterminado (%)
+        help: Opcional. Déjelo vacío si su taller no está registrado a efectos de IVA.
+        error:
+            must_be_positive: El tipo impositivo predeterminado no puede ser negativo.
+            max: El tipo impositivo predeterminado no puede superar el 100 %.
+    documents:
+        group:
+            numbering: Prefijos de numeración
+            defaults: Valores predeterminados de documento
+        field:
+            offer_prefix: Prefijo de presupuesto
+            work_order_prefix: Prefijo de orden de trabajo
+            invoice_prefix: Prefijo de factura
+            offer_validity: Validez predeterminada del presupuesto (días)
+            footer: Pie de documento
+        help:
+            numbering: Los prefijos preceden a los números generados, p. ej. OF-2026-0001.
+            offer_prefix: Se usa para nuevos presupuestos, p. ej. OF.
+            work_order_prefix: Se usa para nuevas órdenes, p. ej. WO.
+            invoice_prefix: Se usa para facturas cuando se active la facturación.
+            offer_validity: Establece la fecha "válido hasta" predeterminada para nuevos presupuestos. Opcional.
+            footer: Texto opcional impreso al final de presupuestos, órdenes y facturas.
+        error:
+            prefix_invalid: Los prefijos solo pueden contener letras, números, guiones y guiones bajos.
+            validity_positive: La validez del presupuesto debe ser un número positivo de días.
+            validity_too_large: La validez del presupuesto es demasiado grande.
+            footer_too_long: El texto del pie es demasiado largo.
+    email:
+        group:
+            smtp: Conexión SMTP
+            sender: Identidad del remitente
+        field:
+            host: Servidor SMTP
+            port: Puerto
+            encryption: Cifrado
+            username: Usuario
+            password: Contraseña
+            from_email: Correo del remitente
+            from_name: Nombre del remitente
+        help:
+            intro: Credenciales SMTP para futuros correos a clientes. El envío aún no está activo.
+            encryption: Elija el modo de cifrado requerido por su proveedor.
+            password: Déjelo vacío para mantener la contraseña actual. Los nuevos valores se almacenan cifrados.
+        encryption:
+            none: Ninguno
+            tls: TLS
+            ssl: SSL
+        password_stored: Contraseña configurada
+        error:
+            port_invalid: El puerto SMTP debe estar entre 1 y 65535.
+            from_email_invalid: Introduzca un correo de remitente válido.
+
+# Statistics
+statistics:
+    title: Estadísticas
+    heading: Estadísticas
+    subtitle: Ingresos, actividad de órdenes y salud del taller de un vistazo.
+    value:
+        not_available: "No disponible"
+    notice:
+        mixed_currencies: "Mostrando sólo %currency%. En el período seleccionado también hay documentos en: %others%."
+    filter:
+        period_label: Período
+        from: Desde
+        to: Hasta
+        preset:
+            today: Hoy
+            this_week: Esta semana
+            this_month: Este mes
+            last_month: Mes pasado
+            this_year: Este año
+            custom: Período personalizado
+    kpi:
+        total_revenue: Ingresos totales
+        paid_amount: Importe cobrado
+        unpaid_amount: Importe pendiente
+        parts_revenue: Ingresos por repuestos
+        parts_profit: Beneficio en repuestos
+        parts_profit.no_cost_hint: No hay coste registrado en repuestos en este período.
+        completed_work_orders: Órdenes completadas
+        open_work_orders: Órdenes abiertas
+        open_work_orders.hint: Total histórico, no sólo del período seleccionado.
+        offer_conversion: Conversión de presupuestos
+        offer_conversion.hint: Presupuestos convertidos sobre todos los que no son borrador.
+    chart:
+        revenue_over_time: Ingresos en el tiempo
+        work_orders_by_status: Órdenes por estado
+        offers_by_status: Presupuestos por estado
+        payments_by_method: Pagos por método
+    table:
+        top_clients: Mejores clientes
+        mechanic_workload: Carga de los mecánicos
+        mechanic_workload.note: Basado en el creador de la orden.
+        top_profitable_parts: Repuestos más rentables
+        top_profitable_parts.note: Solo interno - beneficio de repuestos en órdenes de este período.
+    column:
+        client: Cliente
+        work_orders: Órdenes
+        total_revenue: Ingresos
+        unpaid_amount: Pendiente
+        mechanic: Mecánico
+        active: Activas
+        completed_in_period: Completadas
+        total_in_period: Total
+        part: Repuesto
+        quantity: Cant.
+        parts_revenue: Ingresos
+        parts_cost: Coste
+        parts_profit: Beneficio
+    empty:
+        chart: Sin datos para el período seleccionado.
+        top_clients_title: Aún no hay ingresos por cliente
+        top_clients: Ningún cliente tiene órdenes en el período seleccionado.
+        mechanics_title: Sin órdenes en este período
+        mechanics: La carga aparece cuando los mecánicos abren o completan órdenes.
+        top_parts_title: Aún no hay repuestos vendidos
+        top_parts: El beneficio de repuestos aparece cuando se añaden líneas de tipo "Repuesto" a las órdenes.
+
+# PDF documents
+pdf:
+    document: Documento
+    action:
+        download: Descargar PDF
+    company:
+        unnamed: Empresa
+        phone: Teléfono
+        email: Correo
+        company_id: ID empresa
+        vat_number: IVA
+    offer:
+        title: Presupuesto
+        client: Cliente
+        vehicle: Vehículo
+        details: Datos
+    work_order:
+        title: Orden de trabajo
+        client: Cliente
+        vehicle: Vehículo
+        details: Datos
+    items:
+        empty: Sin líneas.
+    footer:
+        generated_by: Generado por Carstio - software libre y de código abierto para talleres de automoción modernos.
+
+# Outgoing client emails
+email:
+    action:
+        send: Enviar por correo
+    confirm:
+        send_offer: '¿Enviar este presupuesto por correo a %email%?'
+        send_work_order: '¿Enviar esta orden de trabajo por correo a %email%?'
+    error:
+        client_missing_address: Este cliente no tiene dirección de correo registrada.
+    greeting: 'Hola %name%:'
+    signoff: "Un cordial saludo,\nel equipo de %company%"
+    label:
+        offer_number: Número de presupuesto
+        work_order_number: Número de orden
+        client: Cliente
+        vehicle: Vehículo
+        scheduled_at: Programado
+        valid_until: Válido hasta
+        total: Total
+        mileage: Kilometraje
+    offer:
+        subject: 'Presupuesto %number% de %company%'
+        heading: 'Presupuesto %number%'
+        intro: 'Adjuntamos el presupuesto preparado por %company%.'
+        attachment_note: El presupuesto se adjunta como documento PDF.
+    work_order:
+        subject: 'Orden de trabajo %number% de %company%'
+        heading: 'Orden de trabajo %number%'
+        intro: 'Adjuntamos el resumen de la orden de trabajo de %company%.'
+        attachment_note: La orden de trabajo se adjunta como documento PDF.
+    footer:
+        generated_by: Generado por Carstio - software libre y de código abierto para talleres de automoción modernos.
+
+# Attachments
+attachment:
+    section:
+        title: Adjuntos
+    action:
+        upload: Subir adjunto
+        download: Descargar
+        view: Ver
+    field:
+        file: Archivo
+        category: Categoría
+        description: Descripción
+        size: Tamaño
+        uploaded_by: Subido por
+        uploaded_at: Subido el
+    category:
+        photo: Foto
+        document: Documento
+        diagnostic: Diagnóstico
+        before_repair: Antes de la reparación
+        after_repair: Después de la reparación
+        receipt: Recibo
+        other: Otro
+    empty: Aún no se han subido adjuntos.
+    error:
+        file_required: Seleccione un archivo para subir.
+        too_large: El archivo es demasiado grande. El tamaño máximo es 10 MB.
+        mime_type: Este tipo de archivo no está permitido. Se permiten PDF, JPEG, PNG, WebP y MP4.
+        description_too_long: La descripción es demasiado larga.
+
+
+# User Management
+user:
+    index:
+        title: Usuarios
+        heading: Usuarios
+        empty: Aún no hay usuarios.
+        empty_title: Aún no hay usuarios
+    new:
+        title: Añadir usuario
+    edit:
+        title: Editar usuario
+    show:
+        details: Datos del usuario
+    action:
+        new: Añadir usuario
+        deactivate: Desactivar
+        activate: Activar
+    confirm:
+        deactivate: ¿Desactivar este usuario? Ya no podrá iniciar sesión.
+    field:
+        email: Correo electrónico
+        full_name: Nombre completo
+        password: Contraseña
+        new_password: Nueva contraseña
+        role: Rol
+        status: Estado
+        active: Activo
+        created_at: Creado
+    help:
+        password_keep: Dejar vacío para mantener la contraseña actual.
+    role:
+        admin: Administrador
+        mechanic: Mecánico
+    status:
+        active: Activo
+        inactive: Inactivo
+    error:
+        email_required: Por favor introduce un correo electrónico.
+        email_invalid: Por favor introduce un correo electrónico válido.
+        email_taken: Este correo ya está en uso por otro usuario.
+        full_name_required: Por favor introduce un nombre.
+        password_required: Por favor elige una contraseña.
+        password_too_short: La contraseña debe tener al menos {{ limit }} caracteres.
+        last_admin: No se puede eliminar el último administrador activo.
+        cannot_deactivate_self: No puedes desactivar tu propia cuenta.
+        account_inactive: Tu cuenta está inactiva. Contacta con un administrador.
+
+# Mileage / odometer
+mileage:
+    label: Kilometraje
+    odometer_reading: Lectura del odómetro
+    not_recorded: Kilometraje no registrado
+    unit:
+        km: Kilómetros
+        mi: Millas
+    error:
+        invalid: Kilometraje no válido.
+        negative: El kilometraje no puede ser negativo.

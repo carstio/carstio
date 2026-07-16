@@ -1,0 +1,73 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  tests:
+    name: Lint & test (PHP 8.4, MariaDB 11.4)
+    runs-on: ubuntu-latest
+
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: root
+          MARIADB_DATABASE: carstio
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+
+    env:
+      DATABASE_URL: "mysql://root:root@127.0.0.1:3306/carstio?serverVersion=mariadb-11.4.0&charset=utf8mb4"
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP 8.4
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          extensions: ctype, iconv, intl, mbstring, zip, pdo_mysql, gd
+          coverage: none
+
+      - name: Validate composer files
+        run: composer validate --strict
+
+      - name: Install dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
+
+      - name: Audit dependencies
+        run: composer audit
+
+      - name: Lint container
+        run: php bin/console lint:container
+
+      - name: Lint Twig templates
+        run: php bin/console lint:twig templates
+
+      - name: Lint YAML
+        run: php bin/console lint:yaml config translations
+
+      - name: Install importmap assets
+        run: php bin/console importmap:install
+
+      - name: Create test database and run migrations
+        run: |
+          php bin/console --env=test doctrine:database:create --if-not-exists
+          php bin/console --env=test doctrine:migrations:migrate --no-interaction
+
+      - name: Validate Doctrine schema
+        run: php bin/console --env=test doctrine:schema:validate
+
+      - name: Load fixtures
+        run: php bin/console --env=test doctrine:fixtures:load --no-interaction
+
+      - name: Run test suite
+        run: ./bin/phpunit

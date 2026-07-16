@@ -1,0 +1,83 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'work_order.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'work-order',
+        title: 'work_order.index.heading'|trans,
+        primary: { label: 'work_order.action.new'|trans, href: path('app_work_order_new'), icon: 'plus' }
+    } only %}
+
+    {% set status_options = [] %}
+    {% for s in statuses %}
+        {% set status_options = status_options|merge([{
+            value: s.value,
+            label: ('work_order.status.' ~ s.value)|trans,
+            selected: status_filter == s.value
+        }]) %}
+    {% endfor %}
+
+    {% include '_partials/toolbar.html.twig' with {
+        search_value: search,
+        search_placeholder: ('action.search'|trans) ~ ' ' ~ ('nav.work_orders'|trans|lower) ~ '…',
+        filters: [{
+            name: 'status',
+            value: status_filter,
+            placeholder: 'work_order.filter.all_statuses'|trans,
+            options: status_options
+        }]
+    } only %}
+
+    <div class="card">
+        {% if work_orders is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'work-order',
+                    title: 'work_order.index.empty_title'|trans,
+                    text: 'work_order.index.empty'|trans,
+                    primary: { label: 'work_order.action.new'|trans, href: path('app_work_order_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'work_order.field.number'|trans }}</th>
+                            <th>{{ 'work_order.field.client'|trans }}</th>
+                            <th>{{ 'work_order.field.car'|trans }}</th>
+                            <th>{{ 'work_order.field.status'|trans }}</th>
+                            <th class="col-numeric">{{ 'work_order.field.total'|trans }}</th>
+                            <th>{{ 'work_order.field.opened_at'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for wo in work_orders %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_work_order_show', {id: wo.id}) }}" class="font-monospace">{{ wo.number }}</a>
+                                </td>
+                                <td>{{ wo.client.name }}</td>
+                                <td>{{ wo.car.displayName }}{% if wo.car.licensePlate %} <span class="text-muted small">· {{ wo.car.licensePlate }}</span>{% endif %}</td>
+                                <td>{% include 'work_order/_status_badge.html.twig' with {status: wo.status} %}</td>
+                                <td class="col-numeric fw-medium">{{ wo.totalAmount|money(wo.currencyCode) }}</td>
+                                <td class="col-mono">{{ wo.openedAt|app_date }}</td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_work_order_show', {id: wo.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                        {{ icon.render('eye') }}
+                                    </a>
+                                    <a href="{{ path('app_work_order_edit', {id: wo.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                        {{ icon.render('pencil') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'payment.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'payment',
+        title: 'payment.index.heading'|trans,
+        primary: { label: 'payment.action.new'|trans, href: path('app_payment_new'), icon: 'plus' }
+    } only %}
+
+    <div class="card">
+        {% if payments is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'payment',
+                    title: 'payment.index.empty_title'|trans,
+                    text: 'payment.index.empty'|trans,
+                    primary: { label: 'payment.action.new'|trans, href: path('app_payment_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'payment.field.work_order'|trans }}</th>
+                            <th class="col-numeric">{{ 'payment.field.amount'|trans }}</th>
+                            <th>{{ 'payment.field.method'|trans }}</th>
+                            <th>{{ 'payment.field.status'|trans }}</th>
+                            <th>{{ 'payment.field.paid_at'|trans }}</th>
+                            <th>{{ 'payment.field.reference'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for payment in payments %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_work_order_show', {id: payment.workOrder.id}) }}" class="font-monospace">{{ payment.workOrder.number }}</a>
+                                </td>
+                                <td class="col-numeric fw-medium">{{ payment.amount|money(payment.workOrder.currencyCode) }}</td>
+                                <td>{{ ('payment.method.' ~ payment.method.value)|trans }}</td>
+                                <td>{% include '_partials/payment_status_badge.html.twig' with {status: payment.status} %}</td>
+                                <td class="col-mono">{{ payment.paidAt|app_date }}</td>
+                                <td class="col-mono">{{ payment.reference ?? '-' }}</td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_payment_show', {id: payment.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                        {{ icon.render('eye') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

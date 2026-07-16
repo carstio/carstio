@@ -1,0 +1,67 @@
+{#
+  Shared page head - one clear heading per page.
+  Parameters:
+    title       - required, string
+    subtitle    - optional, string
+    head_icon   - optional, icon name rendered as a leading badge next to the title (default for listing/detail/form pages)
+    eyebrow     - optional, { icon: 'car', label: 'Cars' } (use only when a non-clickable parent label is genuinely needed)
+    primary     - optional, { label, href, icon }
+    secondary   - optional, list of same shape as primary (rendered as outline buttons)
+
+  Pick `head_icon` for the standard one-line "icon + title" header. Avoid combining it with a topbar crumb
+  or an action-bar back-link that just repeats the same section name - that produces the duplication this
+  partial exists to prevent.
+
+  Usage (listing page):
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'work-order',
+        title: 'Work Orders',
+        primary: { label: 'New work order', href: path('app_work_order_new'), icon: 'plus' }
+    } only %}
+
+  Usage (detail/form page):
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'clients',
+        title: client.name
+    } only %}
+#}
+{% import '_macros/icon.html.twig' as icon %}
+
+<div class="page-head{% if head_icon is defined and head_icon %} page-head--with-icon{% endif %}">
+    {% if head_icon is defined and head_icon %}
+        <div class="page-head-icon" aria-hidden="true">
+            {{ icon.render(head_icon, {size: 22}) }}
+        </div>
+    {% endif %}
+    <div class="page-head-text">
+        {% if eyebrow is defined and eyebrow %}
+            <div class="page-head-eyebrow">
+                {% if eyebrow.icon is defined %}{{ icon.render(eyebrow.icon, {size: 14}) }}{% endif %}
+                <span>{{ eyebrow.label }}</span>
+            </div>
+        {% endif %}
+        <h1 class="page-head-title">{{ title }}</h1>
+        {% if subtitle is defined and subtitle %}
+            <p class="page-head-subtitle">{{ subtitle }}</p>
+        {% endif %}
+    </div>
+
+    {% if (primary is defined and primary) or (secondary is defined and secondary) %}
+        <div class="page-head-actions">
+            {% if secondary is defined and secondary %}
+                {% for action in secondary %}
+                    <a href="{{ action.href }}" class="btn btn-outline-secondary">
+                        {% if action.icon is defined %}{{ icon.render(action.icon) }}{% endif %}
+                        <span>{{ action.label }}</span>
+                    </a>
+                {% endfor %}
+            {% endif %}
+            {% if primary is defined and primary %}
+                <a href="{{ primary.href }}" class="btn btn-primary">
+                    {% if primary.icon is defined %}{{ icon.render(primary.icon) }}{% endif %}
+                    <span>{{ primary.label }}</span>
+                </a>
+            {% endif %}
+        </div>
+    {% endif %}
+</div>

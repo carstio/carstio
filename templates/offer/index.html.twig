@@ -1,0 +1,85 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'offer.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'tag',
+        title: 'offer.index.heading'|trans,
+        primary: { label: 'offer.action.new'|trans, href: path('app_offer_new'), icon: 'plus' }
+    } only %}
+
+    {% set status_options = [] %}
+    {% for s in statuses %}
+        {% set status_options = status_options|merge([{
+            value: s.value,
+            label: ('offer.status.' ~ s.value)|trans,
+            selected: status_filter == s.value
+        }]) %}
+    {% endfor %}
+
+    {% include '_partials/toolbar.html.twig' with {
+        search_value: search,
+        search_placeholder: ('action.search'|trans) ~ ' ' ~ ('nav.offers'|trans|lower) ~ '…',
+        filters: [{
+            name: 'status',
+            value: status_filter,
+            placeholder: 'offer.filter.all_statuses'|trans,
+            options: status_options
+        }]
+    } only %}
+
+    <div class="card">
+        {% if offers is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'tag',
+                    title: 'offer.index.empty_title'|trans,
+                    text: 'offer.index.empty'|trans,
+                    primary: { label: 'offer.action.new'|trans, href: path('app_offer_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'offer.field.number'|trans }}</th>
+                            <th>{{ 'offer.field.client'|trans }}</th>
+                            <th>{{ 'offer.field.car'|trans }}</th>
+                            <th>{{ 'offer.field.status'|trans }}</th>
+                            <th class="col-numeric">{{ 'offer.field.total'|trans }}</th>
+                            <th>{{ 'offer.field.valid_until'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for offer in offers %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_offer_show', {id: offer.id}) }}" class="font-monospace">{{ offer.number }}</a>
+                                </td>
+                                <td>{{ offer.client.name }}</td>
+                                <td>{{ offer.car.displayName }}{% if offer.car.licensePlate %} <span class="text-muted small">· {{ offer.car.licensePlate }}</span>{% endif %}</td>
+                                <td>{% include 'offer/_status_badge.html.twig' with {status: offer.status} %}</td>
+                                <td class="col-numeric fw-medium">{{ offer.totalAmount|money(offer.currencyCode) }}</td>
+                                <td class="col-mono">{{ offer.validUntil ? offer.validUntil|app_date : '-' }}</td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_offer_show', {id: offer.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                        {{ icon.render('eye') }}
+                                    </a>
+                                    {% if offer.status.value != 'converted' %}
+                                        <a href="{{ path('app_offer_edit', {id: offer.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                            {{ icon.render('pencil') }}
+                                        </a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

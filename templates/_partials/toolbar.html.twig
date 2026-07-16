@@ -1,0 +1,60 @@
+{#
+  Search / filter / action toolbar for list pages.
+  Parameters:
+    search_name        - string, form field name (default 'q')
+    search_value       - string, current value
+    search_placeholder - string, placeholder
+    filters            - optional list of { name, value, options: [{value, label, selected}], placeholder }
+    primary            - optional { label, href, icon }
+
+  Usage:
+    {% include '_partials/toolbar.html.twig' with {
+        search_value: search,
+        search_placeholder: 'Search work orders…',
+        filters: [{ name: 'status', value: status_filter, options: [...], placeholder: 'All statuses' }],
+        primary: { label: 'New work order', href: path('app_work_order_new'), icon: 'plus' }
+    } only %}
+#}
+{% import '_macros/icon.html.twig' as icon %}
+
+<form method="get" class="toolbar" role="search">
+    <div class="toolbar-search">
+        <span class="toolbar-search-icon">{{ icon.render('search') }}</span>
+        <input
+            type="search"
+            name="{{ search_name|default('q') }}"
+            value="{{ search_value|default('') }}"
+            class="form-control"
+            placeholder="{{ search_placeholder|default(('action.search'|trans) ~ '…') }}"
+            autocomplete="off"
+        >
+    </div>
+
+    {% if filters is defined and filters %}
+        <div class="toolbar-filters">
+            {% for filter in filters %}
+                <select name="{{ filter.name }}" class="form-select" onchange="this.form.submit()">
+                    {% if filter.placeholder is defined %}
+                        <option value="">{{ filter.placeholder }}</option>
+                    {% endif %}
+                    {% for opt in filter.options %}
+                        <option value="{{ opt.value }}" {{ opt.selected ? 'selected' }}>{{ opt.label }}</option>
+                    {% endfor %}
+                </select>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="toolbar-actions">
+        <button type="submit" class="btn btn-outline-secondary">
+            {{ icon.render('filter') }}
+            <span>{{ 'action.apply'|trans({}, 'messages') }}</span>
+        </button>
+        {% if primary is defined and primary %}
+            <a href="{{ primary.href }}" class="btn btn-primary">
+                {% if primary.icon is defined %}{{ icon.render(primary.icon) }}{% endif %}
+                <span>{{ primary.label }}</span>
+            </a>
+        {% endif %}
+    </div>
+</form>

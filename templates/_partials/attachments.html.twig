@@ -1,0 +1,94 @@
+{% import '_macros/icon.html.twig' as icon %}
+
+{#
+    Reusable attachments section.
+
+    Required variables:
+        attachments         iterable of App\Entity\Attachment\Attachment
+        attachment_form     Symfony FormView for AttachmentUploadType
+#}
+
+<div class="section-card">
+    <div class="section-card-header">
+        <h2 class="section-card-title">{{ 'attachment.section.title'|trans }}</h2>
+    </div>
+    <div class="section-card-body">
+        {{ form_start(attachment_form, {attr: {enctype: 'multipart/form-data', class: 'row g-3 align-items-start mb-3'}}) }}
+            <div class="col-md-5">{{ form_row(attachment_form.file) }}</div>
+            <div class="col-md-3">{{ form_row(attachment_form.category) }}</div>
+            <div class="col-md-4">{{ form_row(attachment_form.description) }}</div>
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">
+                    {{ icon.render('plus') }}<span>{{ 'attachment.action.upload'|trans }}</span>
+                </button>
+            </div>
+        {{ form_end(attachment_form) }}
+
+        {% if attachments is empty %}
+            <p class="text-muted mb-0">{{ 'attachment.empty'|trans }}</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'attachment.field.file'|trans }}</th>
+                            <th>{{ 'attachment.field.category'|trans }}</th>
+                            <th class="col-numeric">{{ 'attachment.field.size'|trans }}</th>
+                            <th>{{ 'attachment.field.uploaded_by'|trans }}</th>
+                            <th>{{ 'attachment.field.uploaded_at'|trans }}</th>
+                            <th class="col-actions"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for attachment in attachments %}
+                            <tr>
+                                <td>
+                                    <div class="fw-medium">{{ attachment.originalFilename }}</div>
+                                    {% if attachment.description %}
+                                        <div class="text-muted small">{{ attachment.description }}</div>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <span class="status-badge status-badge--neutral">
+                                        {{ ('attachment.category.' ~ attachment.category.value)|trans }}
+                                    </span>
+                                </td>
+                                <td class="col-numeric">{{ (attachment.size / 1024)|number_format(0) }} KB</td>
+                                <td>{{ attachment.uploadedBy ? attachment.uploadedBy.fullName : '-' }}</td>
+                                <td class="col-mono">{{ attachment.createdAt|app_datetime }}</td>
+                                <td class="col-actions">
+                                    {% if attachment.inlineSafe %}
+                                        <a href="{{ path('app_attachment_view', {id: attachment.id}) }}"
+                                           target="_blank" rel="noopener"
+                                           class="btn btn-sm btn-outline-secondary btn-icon"
+                                           aria-label="{{ 'attachment.action.view'|trans }}"
+                                           title="{{ 'attachment.action.view'|trans }}">
+                                            {{ icon.render('eye') }}
+                                        </a>
+                                    {% endif %}
+                                    <a href="{{ path('app_attachment_download', {id: attachment.id}) }}"
+                                       class="btn btn-sm btn-outline-secondary btn-icon"
+                                       aria-label="{{ 'attachment.action.download'|trans }}"
+                                       title="{{ 'attachment.action.download'|trans }}">
+                                        {{ icon.render('download') }}
+                                    </a>
+                                    <form method="post" action="{{ path('app_attachment_delete', {id: attachment.id}) }}"
+                                          class="d-inline"
+                                          onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('delete-attachment-' ~ attachment.id) }}">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-outline-danger btn-icon"
+                                                aria-label="{{ 'action.delete'|trans }}"
+                                                title="{{ 'action.delete'|trans }}">
+                                            {{ icon.render('trash') }}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+</div>

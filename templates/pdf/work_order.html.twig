@@ -1,0 +1,135 @@
+{% extends 'pdf/_base.html.twig' %}
+{% import 'pdf/_items_table.html.twig' as items_table %}
+
+{% block title %}{{ 'pdf.work_order.title'|trans }} {{ work_order.number }}{% endblock %}
+{% block document_title %}{{ 'pdf.work_order.title'|trans }}{% endblock %}
+{% block document_number %}{{ 'work_order.field.number'|trans }}: <span class="strong">{{ work_order.number }}</span>{% endblock %}
+{% block document_status %}
+    <div class="document-status">{{ ('work_order.status.' ~ work_order.status.value)|trans }}</div>
+{% endblock %}
+
+{% block content %}
+
+    {# ── Parties ── #}
+    <table class="parties">
+        <tr>
+            <td>
+                <div class="party-label">{{ 'pdf.work_order.client'|trans }}</div>
+                <div class="party-name">{{ work_order.client.name }}</div>
+                {% if work_order.client.phone %}<div>{{ work_order.client.phone }}</div>{% endif %}
+                {% if work_order.client.email %}<div class="small muted">{{ work_order.client.email }}</div>{% endif %}
+            </td>
+            <td>
+                <div class="party-label">{{ 'pdf.work_order.vehicle'|trans }}</div>
+                <div class="party-name">{{ work_order.car.displayName ?: '-' }}</div>
+                {% if work_order.car.licensePlate %}<div>{{ 'car.field.license_plate'|trans }}: {{ work_order.car.licensePlate }}</div>{% endif %}
+                {% if work_order.car.vin %}<div class="small muted">VIN: {{ work_order.car.vin }}</div>{% endif %}
+                {% if work_order.odometerReading is not null %}<div>{{ 'work_order.field.mileage'|trans }}: {{ work_order|app_mileage }}</div>{% endif %}
+            </td>
+            <td>
+                <div class="party-label">{{ 'pdf.work_order.details'|trans }}</div>
+                <div><span class="muted">{{ 'work_order.field.opened_at'|trans }}:</span> {{ work_order.openedAt|app_date }}</div>
+                {% if work_order.scheduledAt %}
+                    <div><span class="muted">{{ 'work_order.field.scheduled_at'|trans }}:</span> {{ work_order.scheduledAt|app_datetime }}</div>
+                {% endif %}
+                {% if work_order.createdBy %}
+                    <div><span class="muted">{{ 'work_order.field.created_by'|trans }}:</span> {{ work_order.createdBy.fullName }}</div>
+                {% endif %}
+                {% if work_order.source %}
+                    <div class="small"><span class="muted">{{ 'work_order.field.source'|trans }}:</span> {{ work_order.source }}</div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    {% if work_order.complaint %}
+        <div class="block" style="margin-top: 0;">
+            <div class="block-label">{{ 'work_order.field.complaint'|trans }}</div>
+            <div class="block-body">{{ work_order.complaint }}</div>
+        </div>
+    {% endif %}
+
+    {% if work_order.diagnosis %}
+        <div class="block">
+            <div class="block-label">{{ 'work_order.field.diagnosis'|trans }}</div>
+            <div class="block-body">{{ work_order.diagnosis }}</div>
+        </div>
+    {% endif %}
+
+    {# ── Items ── #}
+    {{ items_table.render(work_order.items, 'work_order_item', work_order.currencyCode) }}
+
+    {# ── Totals ── #}
+    <table class="totals-wrap">
+        <tr>
+            <td class="totals-spacer"></td>
+            <td>
+                <table class="totals">
+                    <tr>
+                        <td class="muted">{{ 'work_order.field.subtotal_labor'|trans }}</td>
+                        <td class="num">{{ work_order.subtotalLabor|money(work_order.currencyCode) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="muted">{{ 'work_order.field.subtotal_parts'|trans }}</td>
+                        <td class="num">{{ work_order.subtotalParts|money(work_order.currencyCode) }}</td>
+                    </tr>
+                    {% if work_order.discountAmount is discounted %}
+                        <tr>
+                            <td class="muted">{{ 'work_order.field.discount'|trans }}</td>
+                            <td class="num">-{{ work_order.discountAmount|money(work_order.currencyCode) }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="muted">{{ 'work_order.field.tax'|trans }}</td>
+                        <td class="num">{{ work_order.taxAmount|money(work_order.currencyCode) }}</td>
+                    </tr>
+                    <tr class="total">
+                        <td>{{ 'work_order.field.total'|trans }}</td>
+                        <td class="num">{{ work_order.totalAmount|money(work_order.currencyCode) }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    {# ── Payments summary ── #}
+    {% if work_order.payments|length > 0 %}
+        <div class="block">
+            <div class="block-label">{{ 'work_order.show.payments'|trans }}</div>
+            <table class="items" style="margin-bottom: 0;">
+                <thead>
+                    <tr>
+                        <th>{{ 'payment.field.paid_at'|trans }}</th>
+                        <th>{{ 'payment.field.method'|trans }}</th>
+                        <th>{{ 'payment.field.status'|trans }}</th>
+                        <th>{{ 'payment.field.reference'|trans }}</th>
+                        <th class="num">{{ 'payment.field.amount'|trans }}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for payment in work_order.payments %}
+                        <tr>
+                            <td>{{ payment.paidAt|app_date }}</td>
+                            <td>{{ ('payment.method.' ~ payment.method.value)|trans }}</td>
+                            <td>{{ ('payment.status.' ~ payment.status.value)|trans }}</td>
+                            <td>{{ payment.reference ?? '-' }}</td>
+                            <td class="num strong">{{ payment.amount|money(work_order.currencyCode) }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td colspan="4" class="right muted">{{ 'work_order.field.paid'|trans }}</td>
+                        <td class="num strong">{{ work_order.paidAmount|money(work_order.currencyCode) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+    {% if work_order.notes %}
+        <div class="block">
+            <div class="block-label">{{ 'work_order.field.notes'|trans }}</div>
+            <div class="block-body">{{ work_order.notes }}</div>
+        </div>
+    {% endif %}
+
+{% endblock %}

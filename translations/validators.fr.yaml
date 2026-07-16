@@ -1,0 +1,48 @@
+# Validation messages (validators domain).
+#
+# Symfony's Validator translates constraint messages through the
+# "validators" domain, NOT "messages". Every custom `message:` key
+# used in a constraint must therefore live in this catalogue.
+# Keep the wording in sync with any matching keys in messages.*.yaml.
+attachment:
+    error:
+        description_too_long: La description est trop longue.
+        file_required: Veuillez sélectionner un fichier à téléverser.
+        mime_type: 'Ce type de fichier n''est pas autorisé. Types autorisés : PDF, JPEG, PNG, WebP et MP4.'
+        too_large: Le fichier est trop volumineux. La taille maximale est de 10 Mo.
+mileage:
+    error:
+        negative: Le kilométrage ne peut pas être négatif.
+settings:
+    company:
+        error:
+            email_invalid: Veuillez saisir une adresse e-mail valide.
+            logo_mime_type: Seuls les fichiers PNG, JPG, WebP et SVG sont autorisés.
+            logo_too_large: Le logo est trop volumineux. La taille maximale est de 2 Mo.
+            website_invalid: Veuillez saisir une URL valide.
+    documents:
+        error:
+            footer_too_long: Le texte du pied de page est trop long.
+            prefix_invalid: Les préfixes ne peuvent contenir que des lettres, chiffres, tirets et tirets bas.
+            validity_positive: La validité du devis doit être un nombre positif de jours.
+            validity_too_large: La validité du devis est trop grande.
+    email:
+        error:
+            from_email_invalid: Veuillez saisir une adresse e-mail d'expéditeur valide.
+            port_invalid: Le port SMTP doit être compris entre 1 et 65535.
+    regional:
+        error:
+            mileage_unit_invalid: Veuillez choisir une unité de kilométrage prise en charge.
+            timezone_invalid: Veuillez saisir un fuseau horaire IANA valide.
+    tax:
+        error:
+            max: Le taux de taxe par défaut ne peut pas dépasser 100 %.
+            must_be_positive: Le taux de taxe par défaut ne peut pas être négatif.
+user:
+    error:
+        email_invalid: Veuillez saisir une adresse e-mail valide.
+        email_required: Veuillez saisir une adresse e-mail.
+        email_taken: Cette adresse e-mail est déjà utilisée par un autre utilisateur.
+        full_name_required: Veuillez saisir un nom.
+        password_required: Veuillez choisir un mot de passe.
+        password_too_short: Le mot de passe doit contenir au moins {{ limit }} caractères.

@@ -1,0 +1,91 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ part.name }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_part_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'part.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_part_edit', {id: part.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_part_delete', {id: part.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-part-' ~ part.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'part',
+        title: part.name,
+        subtitle: part.sku ? ('SKU: ' ~ part.sku) : null
+    } only %}
+
+    {% set unit_profit = (part.sellPrice is not null and part.costPrice is not null)
+        ? (part.sellPrice - part.costPrice) : null %}
+    {% set unit_margin = (unit_profit is not null and part.sellPrice > 0)
+        ? (unit_profit / part.sellPrice * 100) : null %}
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'part.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'part.field.name'|trans }}</dt><dd>{{ part.name }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.brand'|trans }}</dt><dd>{{ part.brand ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.sku'|trans }}</dt><dd class="font-monospace">{{ part.sku ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.part_number'|trans }}</dt><dd class="font-monospace">{{ part.partNumber ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'label.status'|trans }}</dt><dd>
+                            {% if part.active %}
+                                <span class="status-badge status-badge--success">{{ 'part.status.active'|trans }}</span>
+                            {% else %}
+                                <span class="status-badge status-badge--neutral">{{ 'part.status.inactive'|trans }}</span>
+                            {% endif %}
+                        </dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'part.show.pricing'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'part.field.cost_price'|trans }}</dt><dd class="tabular-nums">{{ part.costPrice is not null ? part.costPrice : '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.sell_price'|trans }}</dt><dd class="tabular-nums fw-semibold">{{ part.sellPrice is not null ? part.sellPrice : '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.unit_profit'|trans }}</dt><dd class="tabular-nums">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'part.field.unit_margin'|trans }}</dt><dd class="tabular-nums">{{ unit_margin is not null ? unit_margin|number_format(1, '.', '') ~ '%' : '-' }}</dd></div>
+                    </dl>
+                </div>
+            </div>
+            {% if part.notes %}
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'part.field.notes'|trans }}</h2>
+                    </div>
+                    <div class="section-card-body">{{ part.notes|nl2br }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,851 @@
+# Application
+app:
+    name: Carstio
+
+# Navigation
+nav:
+    toggle_menu: Toggle menu
+    dashboard: Dashboard
+    clients: Clients
+    cars: Cars
+    companies: Companies
+    offers: Offers
+    work_orders: Work Orders
+    parts: Parts
+    payments: Payments
+    statistics: Statistics
+    settings: Settings
+    users: Users
+    logout: Log out
+    section:
+        main: Main
+        workshop: Workshop
+        system: System
+
+# Login
+login:
+    title: Log in
+    heading: Welcome back
+    subtitle: Sign in to access your workshop.
+    email: Email address
+    email_placeholder: you@example.com
+    password: Password
+    password_placeholder: Your password
+    submit: Log in
+
+# Locale / language switcher
+locale:
+    switcher:
+        label: Language
+    code:
+        en: EN
+        bg: BG
+        de: DE
+        es: ES
+        fr: FR
+
+# Global header search
+search:
+    placeholder: Search clients, cars, companies…
+    loading: Searching…
+    empty: No results found
+    error: Search failed. Please try again.
+    group:
+        clients: Clients
+        cars: Cars
+        companies: Companies
+
+# Dashboard
+dashboard:
+    title: Dashboard
+    heading: Dashboard
+    subtitle: Overview of your workshop activity.
+    stat:
+        open_work_orders: Open Work Orders
+        completed_today: Completed Today
+        total_clients: Total Clients
+        total_cars: Total Cars
+    calendar:
+        title: Scheduled Work Orders
+        no_scheduled: No scheduled work orders yet.
+
+# Common labels
+label:
+    actions: Actions
+    status: Status
+    yes: "Yes"
+    no: "No"
+
+# Common actions
+action:
+    close: Close
+    save: Save
+    cancel: Cancel
+    delete: Delete
+    edit: Edit
+    search: Search
+    apply: Apply
+    view: View
+    add: Add
+    more: More
+    new: New
+
+# UI strings consumed by JavaScript / Stimulus controllers.
+# Surfaced through data-* attributes on <body> in templates/base.html.twig.
+js:
+    button:
+        now: Now
+        today: Today
+    action:
+        remove: Remove
+
+# Confirmation
+confirm:
+    delete: Are you sure you want to delete this record?
+
+# Flash messages
+flash:
+    delete:
+        restricted: This record cannot be deleted because it is still used by other records.
+    client:
+        created: Client created successfully.
+        updated: Client updated successfully.
+        deleted: Client deleted.
+    car:
+        created: Car added successfully.
+        updated: Car updated successfully.
+        deleted: Car deleted.
+    company:
+        created: Company created successfully.
+        updated: Company updated successfully.
+        deleted: Company deleted.
+    part:
+        created: Part created successfully.
+        updated: Part updated successfully.
+        deleted: Part deleted.
+    work_order:
+        created: Work order created successfully.
+        updated: Work order updated successfully.
+        deleted: Work order deleted.
+        status_updated: Work order status updated.
+        email_sent: Work order sent by email.
+    offer:
+        created: Offer created successfully.
+        updated: Offer updated successfully.
+        deleted: Offer deleted.
+        status_updated: Offer status updated.
+        converted: Offer converted to work order.
+        convert_not_allowed: Only approved offers can be converted.
+        locked: Converted offers cannot be modified.
+        email_sent: Offer sent by email.
+    email:
+        client_missing_address: This client does not have an email address.
+        smtp_incomplete: Email settings are incomplete. Please configure SMTP settings first.
+        send_failed: The email could not be sent. Please verify the SMTP settings and try again.
+    payment:
+        created: Payment recorded successfully.
+        deleted: Payment deleted.
+    user:
+        created: User created successfully.
+        updated: User updated successfully.
+        deactivated: User deactivated.
+        activated: User activated.
+    attachment:
+        uploaded: Attachment uploaded successfully.
+        deleted: Attachment deleted successfully.
+        upload_failed: The attachment could not be uploaded.
+        not_found: The attachment could not be found.
+    settings:
+        company:
+            saved: Company settings saved.
+            logo_removed: Company logo removed.
+        regional:
+            saved: Regional settings saved.
+        currency_tax:
+            saved: Currency and tax settings saved.
+        documents:
+            saved: Document settings saved.
+        email:
+            saved: Email settings saved.
+
+# Clients
+client:
+    index:
+        title: Clients
+        heading: Clients
+        empty: No clients yet. Add your first client to get started.
+        empty_title: No clients yet
+    new:
+        title: New Client
+    edit:
+        title: Edit Client
+    show:
+        details: Client Details
+        cars: Cars
+        no_cars: This client has no cars yet.
+        companies: Companies
+        no_companies: This client has no companies yet.
+        work_orders: Related work orders
+        work_orders_recent_note: Most recent first, up to 10.
+        no_work_orders: No work orders for this client yet.
+        offers: Related offers
+        offers_recent_note: Most recent first, up to 10.
+        no_offers: No offers for this client yet.
+        action:
+            view_work_order: View work order
+            view_offer: View offer
+    action:
+        new: New Client
+    field:
+        name: Name
+        phone: Phone
+        email: Email
+        notes: Notes
+        cars: Cars
+
+# Cars
+car:
+    index:
+        title: Cars
+        heading: Cars
+        empty: No cars yet. Add your first car to get started.
+        empty_title: No cars yet
+    new:
+        title: New Car
+    edit:
+        title: Edit Car
+    show:
+        details: Car Details
+        service_history: Service history
+        no_service_history: No work orders recorded for this car yet.
+        latest_mileage: Latest recorded mileage
+        mileage_not_recorded: Mileage not recorded
+    action:
+        new: New Car
+    field:
+        model: Model
+        client: Client
+        client_placeholder: Select client...
+        model_placeholder: Select model...
+        vin: VIN
+        license_plate: License Plate
+
+# Companies
+company:
+    index:
+        title: Companies
+        heading: Companies
+        empty: No companies yet.
+        empty_title: No companies yet
+    new:
+        title: New Company
+    edit:
+        title: Edit Company
+    show:
+        details: Company Details
+    action:
+        new: New Company
+    field:
+        name: Name
+        client: Client
+        client_placeholder: Select client...
+        city: City
+        address: Address
+        identifier: ID Number
+        vat_identifier: VAT Number
+        vat_registered: VAT Registered
+
+# Parts
+part:
+    index:
+        title: Parts
+        heading: Parts
+        empty: No parts yet. Add your first part to get started.
+        empty_title: No parts yet
+    new:
+        title: New Part
+    edit:
+        title: Edit Part
+    show:
+        details: Part Details
+        pricing: Pricing
+    action:
+        new: New Part
+    status:
+        active: Active
+        inactive: Inactive
+    field:
+        name: Name
+        sku: SKU
+        part_number: Part Number
+        brand: Brand
+        cost_price: Cost Price
+        sell_price: Sell Price
+        unit_profit: Unit Profit
+        unit_margin: Unit Margin
+        notes: Notes
+        is_active: Active
+    help:
+        sku_optional: Optional. Leave empty if your shop does not track SKUs.
+        part_number_optional: Optional. The manufacturer or catalog reference, if any.
+
+# Work Orders
+work_order:
+    index:
+        title: Work Orders
+        heading: Work Orders
+        empty: No work orders yet. Create your first one to get started.
+        empty_title: No work orders yet
+    new:
+        title: New Work Order
+    edit:
+        title: Edit Work Order
+        tab:
+            details: Details
+            labor: Labor
+            parts: Parts & Misc
+            payments: Payments
+        add_labor: Add labor item
+        add_part: Add part item
+    show:
+        details: Details
+        items: Items
+        no_items: No items added to this work order yet.
+        totals: Totals
+        payments: Payments
+        no_payments: No payments recorded yet.
+        change_status: Change Status
+    payments:
+        add: Add payment
+        paid_amount: Paid amount
+        remaining: Remaining balance
+        status: Payment status
+        empty: No payments recorded yet.
+        view: View payment
+    filter:
+        all_statuses: All statuses
+    action:
+        new: New Work Order
+    status:
+        draft: Draft
+        open: Open
+        in_progress: In Progress
+        waiting_parts: Waiting Parts
+        waiting_approval: Waiting Approval
+        completed: Completed
+        cancelled: Cancelled
+        closed: Closed
+    field:
+        number: Number
+        client: Client
+        client_placeholder: Select client...
+        car: Car
+        car_placeholder: Select car...
+        status: Status
+        source: Source
+        complaint: Complaint
+        diagnosis: Diagnosis
+        notes: Notes
+        opened_at: Opened
+        scheduled_at: Scheduled
+        started_at: Started
+        completed_at: Completed
+        created_by: Created by
+        total: Total
+        paid: Paid
+        subtotal_labor: Labor
+        subtotal_parts: Parts
+        discount: Discount
+        tax: Tax
+        payment_status: Payment status
+        odometer_reading: Odometer reading
+        mileage: Mileage
+    help:
+        odometer_reading: Vehicle odometer reading at the time of service.
+
+# Work Order Items
+work_order_item:
+    field:
+        type: Type
+        name: Name
+        quantity: Qty
+        unit_price: Unit Price
+        cost_price: Cost Price
+        discount: Discount
+        tax_rate: Tax %
+        line_total: Total
+        part: Part
+        part_placeholder: Select part...
+    help:
+        cost_price: Internal only. What the shop paid for this part. Not shown on the client document.
+    type:
+        labor: Labor
+        part: Part
+        misc: Misc
+
+# Offers
+offer:
+    index:
+        title: Offers
+        heading: Offers
+        empty: No offers yet. Create your first one to get started.
+        empty_title: No offers yet
+    new:
+        title: New Offer
+    edit:
+        title: Edit Offer
+        tab:
+            details: Details
+            labor: Labor
+            parts: Parts & Misc
+        add_labor: Add labor item
+        add_part: Add part item
+    show:
+        details: Details
+        items: Items
+        no_items: No items added to this offer yet.
+        totals: Totals
+        change_status: Change Status
+    filter:
+        all_statuses: All statuses
+    action:
+        new: New Offer
+        convert: Convert to Work Order
+    confirm:
+        convert: Convert this offer into a work order?
+    status:
+        draft: Draft
+        sent: Sent
+        approved: Approved
+        rejected: Rejected
+        expired: Expired
+        converted: Converted
+    field:
+        number: Number
+        client: Client
+        client_placeholder: Select client...
+        car: Car
+        car_placeholder: Select car...
+        status: Status
+        title: Title
+        notes: Notes
+        valid_until: Valid Until
+        created_at: Created
+        created_by: Created by
+        converted_at: Converted at
+        work_order: Work Order
+        total: Total
+        subtotal_labor: Labor
+        subtotal_parts: Parts
+        discount: Discount
+        tax: Tax
+
+# Offer Items
+offer_item:
+    field:
+        type: Type
+        name: Name
+        quantity: Qty
+        unit_price: Unit Price
+        cost_price: Cost Price
+        discount: Discount
+        tax_rate: Tax %
+        line_total: Total
+        part: Part
+        part_placeholder: Select part...
+    help:
+        cost_price: Internal only. What the shop expects to pay for this part. Not shown on the client offer.
+    type:
+        labor: Labor
+        part: Part
+        misc: Misc
+
+# Internal "Parts margin" card shared by offer + work order admin views
+parts_margin:
+    title: Parts margin
+    internal_only: Internal use only
+    field:
+        revenue: Parts revenue
+        cost: Parts cost
+        profit: Parts profit
+        margin: Margin
+
+# Payments
+payment:
+    index:
+        title: Payments
+        heading: Payments
+        empty: No payments recorded yet.
+        empty_title: No payments yet
+    new:
+        title: Record Payment
+    show:
+        title: Payment Details
+        details: Payment Details
+    action:
+        new: Record Payment
+    field:
+        work_order: Work Order
+        work_order_placeholder: Select work order...
+        amount: Amount
+        method: Method
+        method_placeholder: Select method...
+        status: Status
+        paid_at: Paid At
+        reference: Reference
+        note: Note
+    method:
+        cash: Cash
+        card: Card
+        bank_transfer: Bank Transfer
+    status:
+        pending: Pending
+        paid: Paid
+        partially_paid: Partially Paid
+        refunded: Refunded
+        void: Void
+
+# Settings
+settings:
+    heading: Settings
+    section:
+        company:
+            title: Company
+            description: Legal name, tax IDs, contact details, and logo.
+        regional:
+            title: Regional
+            description: Locale, timezone, and date formats used across the app.
+        currency_tax:
+            title: Currency & Tax
+            description: Default currency and tax rate for new documents.
+        documents:
+            title: Documents
+            description: Number prefixes, offer validity, and footer text.
+        email:
+            title: Email / SMTP
+            description: Outgoing mail server credentials. Sending is added later.
+    company:
+        group:
+            identity: Identity
+            contact: Contact
+            branding: Branding
+        field:
+            name: Company name
+            company_id: Company ID
+            vat_number: VAT number
+            address: Address
+            city: City
+            country: Country
+            phone: Phone
+            email: Email
+            website: Website
+            logo: Logo
+        help:
+            identity: Used as the workshop name on offers, work orders, and PDF documents.
+            logo: PNG, JPG, WebP or SVG, up to 2 MB.
+        action:
+            remove_logo: Remove logo
+        confirm:
+            remove_logo: Remove the current logo?
+        error:
+            email_invalid: Please enter a valid email address.
+            website_invalid: Please enter a valid URL.
+            logo_too_large: The logo is too large. Maximum size is 2 MB.
+            logo_mime_type: Only PNG, JPG, WebP and SVG files are allowed.
+    regional:
+        group:
+            locale: Locale & Time
+        field:
+            locale: Default language
+            timezone: Timezone
+            date_format: Date format
+            time_format: Time format
+            mileage_unit: Mileage unit
+        help:
+            intro: Practical defaults for everyday use. Change these to match where the workshop operates.
+            locale: Default user interface language. New translations are added gradually.
+            timezone: Used when displaying dates and times in the application.
+            mileage_unit: Default unit used when recording vehicle odometer readings on new work orders.
+            date_format: PHP date format used in lists and document headers, e.g. Y-m-d or d.m.Y.
+            time_format: PHP time format used alongside dates, e.g. H:i.
+        timezone_group:
+            generic: UTC & generic
+        error:
+            timezone_invalid: Please enter a valid IANA timezone.
+            mileage_unit_invalid: Please choose a supported mileage unit.
+    currency:
+        field:
+            code: Default currency
+        help: Used for new offers and work orders. Existing documents keep the currency they were created with.
+    currency_tax:
+        group:
+            defaults: Currency & Tax defaults
+        help:
+            intro: Defaults applied to newly created offers and work orders. Existing documents are not affected.
+    tax:
+        field:
+            default_rate: Default tax rate (%)
+        help: Optional. Leave empty if your workshop is not VAT-registered.
+        error:
+            must_be_positive: The default tax rate cannot be negative.
+            max: The default tax rate cannot exceed 100%.
+    documents:
+        group:
+            numbering: Numbering prefixes
+            defaults: Document defaults
+        field:
+            offer_prefix: Offer prefix
+            work_order_prefix: Work order prefix
+            invoice_prefix: Invoice prefix
+            offer_validity: Default offer validity (days)
+            footer: Document footer
+        help:
+            numbering: Prefixes appear in front of generated document numbers, e.g. OF-2026-0001.
+            offer_prefix: Used for new offers, e.g. OF.
+            work_order_prefix: Used for new work orders, e.g. WO.
+            invoice_prefix: Used for invoices once invoicing is enabled.
+            offer_validity: Sets the default "valid until" date for new offers. Optional.
+            footer: Optional text printed at the bottom of offers, work orders, and invoices.
+        error:
+            prefix_invalid: Prefixes can only contain letters, digits, hyphens, and underscores.
+            validity_positive: Offer validity must be a positive number of days.
+            validity_too_large: Offer validity is too large.
+            footer_too_long: The footer text is too long.
+    email:
+        group:
+            smtp: SMTP connection
+            sender: Sender identity
+        field:
+            host: SMTP host
+            port: Port
+            encryption: Encryption
+            username: Username
+            password: Password
+            from_email: From email
+            from_name: From name
+        help:
+            intro: SMTP credentials used by future client emails. Email sending is not active yet.
+            encryption: Choose the encryption mode required by your provider.
+            password: Leave empty to keep the existing password. New values are stored encrypted.
+        encryption:
+            none: None
+            tls: TLS
+            ssl: SSL
+        password_stored: Password set
+        error:
+            port_invalid: The SMTP port must be between 1 and 65535.
+            from_email_invalid: Please enter a valid sender email address.
+
+# Statistics
+statistics:
+    title: Statistics
+    heading: Statistics
+    subtitle: Revenue, work order activity, and workshop health at a glance.
+    value:
+        not_available: "N/A"
+    notice:
+        mixed_currencies: "Showing %currency% only. Documents in the selected period also use: %others%."
+    filter:
+        period_label: Period
+        from: From
+        to: To
+        preset:
+            today: Today
+            this_week: This week
+            this_month: This month
+            last_month: Last month
+            this_year: This year
+            custom: Custom range
+    kpi:
+        total_revenue: Total revenue
+        paid_amount: Paid amount
+        unpaid_amount: Unpaid amount
+        parts_revenue: Parts revenue
+        parts_profit: Parts profit
+        parts_profit.no_cost_hint: No cost recorded on parts in this period.
+        completed_work_orders: Completed work orders
+        open_work_orders: Open work orders
+        open_work_orders.hint: Across all time, not only the selected period.
+        offer_conversion: Offer conversion
+        offer_conversion.hint: Converted offers divided by all non-draft offers.
+    chart:
+        revenue_over_time: Revenue over time
+        work_orders_by_status: Work orders by status
+        offers_by_status: Offers by status
+        payments_by_method: Payments by method
+    table:
+        top_clients: Top clients
+        mechanic_workload: Mechanic workload
+        mechanic_workload.note: Based on the work order creator.
+        top_profitable_parts: Top profitable parts
+        top_profitable_parts.note: Internal only - parts profit on work orders in this period.
+    column:
+        client: Client
+        work_orders: Work orders
+        total_revenue: Revenue
+        unpaid_amount: Unpaid
+        mechanic: Mechanic
+        active: Active
+        completed_in_period: Completed
+        total_in_period: Total
+        part: Part
+        quantity: Qty
+        parts_revenue: Revenue
+        parts_cost: Cost
+        parts_profit: Profit
+    empty:
+        chart: No data for the selected period.
+        top_clients_title: No client revenue yet
+        top_clients: No client has invoiced work orders in the selected period.
+        mechanics_title: No work orders in this period
+        mechanics: Workload appears once mechanics open or complete work orders.
+        top_parts_title: No parts sold yet
+        top_parts: Parts profit appears once part lines are added to work orders in this period.
+
+# PDF documents
+pdf:
+    document: Document
+    action:
+        download: Download PDF
+    company:
+        unnamed: Company
+        phone: Phone
+        email: Email
+        company_id: Company ID
+        vat_number: VAT
+    offer:
+        title: Offer
+        client: Client
+        vehicle: Vehicle
+        details: Details
+    work_order:
+        title: Work Order
+        client: Client
+        vehicle: Vehicle
+        details: Details
+    items:
+        empty: No items.
+    footer:
+        generated_by: Generated by Carstio - Free, open-source software for modern car services.
+
+# Outgoing client emails
+email:
+    action:
+        send: Send by email
+    confirm:
+        send_offer: 'Send this offer by email to %email%?'
+        send_work_order: 'Send this work order by email to %email%?'
+    error:
+        client_missing_address: This client has no email address on file.
+    greeting: 'Hello %name%,'
+    signoff: "Kind regards,\n%company% team"
+    label:
+        offer_number: Offer number
+        work_order_number: Work order number
+        client: Client
+        vehicle: Vehicle
+        scheduled_at: Scheduled
+        valid_until: Valid until
+        total: Total
+        mileage: Mileage
+    offer:
+        subject: 'Offer %number% from %company%'
+        heading: 'Offer %number%'
+        intro: 'Please find attached the offer prepared by %company%.'
+        attachment_note: The offer is attached as a PDF document.
+    work_order:
+        subject: 'Work Order %number% from %company%'
+        heading: 'Work Order %number%'
+        intro: 'Please find attached the work order summary from %company%.'
+        attachment_note: The work order is attached as a PDF document.
+    footer:
+        generated_by: Generated by Carstio - Free, open-source software for modern car services.
+
+# Attachments
+attachment:
+    section:
+        title: Attachments
+    action:
+        upload: Upload attachment
+        download: Download
+        view: View
+    field:
+        file: File
+        category: Category
+        description: Description
+        size: Size
+        uploaded_by: Uploaded by
+        uploaded_at: Uploaded at
+    category:
+        photo: Photo
+        document: Document
+        diagnostic: Diagnostic
+        before_repair: Before repair
+        after_repair: After repair
+        receipt: Receipt
+        other: Other
+    empty: No attachments uploaded yet.
+    error:
+        file_required: Please select a file to upload.
+        too_large: The file is too large. Maximum size is 10 MB.
+        mime_type: This file type is not allowed. Allowed types are PDF, JPEG, PNG, WebP and MP4.
+        description_too_long: The description is too long.
+
+# User Management
+user:
+    index:
+        title: Users
+        heading: Users
+        empty: No users yet.
+        empty_title: No users yet
+    new:
+        title: Add user
+    edit:
+        title: Edit user
+    show:
+        details: User details
+    action:
+        new: Add user
+        deactivate: Deactivate
+        activate: Activate
+    confirm:
+        deactivate: Deactivate this user? They will no longer be able to log in.
+    field:
+        email: Email
+        full_name: Full name
+        password: Password
+        new_password: New password
+        role: Role
+        status: Status
+        active: Active
+        created_at: Created
+    help:
+        password_keep: Leave empty to keep the current password.
+    role:
+        admin: Admin
+        mechanic: Mechanic
+    status:
+        active: Active
+        inactive: Inactive
+    error:
+        email_required: Please enter an email address.
+        email_invalid: Please enter a valid email address.
+        email_taken: This email address is already used by another user.
+        full_name_required: Please enter a name.
+        password_required: Please choose a password.
+        password_too_short: The password must be at least {{ limit }} characters long.
+        last_admin: Cannot remove the last active admin.
+        cannot_deactivate_self: You cannot deactivate your own account.
+        account_inactive: Your account is inactive. Please contact an administrator.
+
+# Mileage / odometer (shared across work orders, cars, PDFs)
+mileage:
+    label: Mileage
+    odometer_reading: Odometer reading
+    not_recorded: Mileage not recorded
+    unit:
+        km: Kilometres
+        mi: Miles
+    error:
+        invalid: Invalid mileage.
+        negative: Mileage cannot be negative.

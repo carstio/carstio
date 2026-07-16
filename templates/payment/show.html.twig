@@ -1,0 +1,55 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'payment.show.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_payment_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'payment.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_payment_delete', {id: payment.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-payment-' ~ payment.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'payment',
+        title: 'payment.show.title'|trans
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-7">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'payment.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'payment.field.work_order'|trans }}</dt><dd><a href="{{ path('app_work_order_show', {id: payment.workOrder.id}) }}" class="font-monospace">{{ payment.workOrder.number }}</a></dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.amount'|trans }}</dt><dd class="tabular-nums fw-semibold">{{ payment.amount|money(payment.workOrder.currencyCode) }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.method'|trans }}</dt><dd>{{ ('payment.method.' ~ payment.method.value)|trans }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.status'|trans }}</dt><dd>{% include '_partials/payment_status_badge.html.twig' with {status: payment.status} %}</dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.paid_at'|trans }}</dt><dd class="font-monospace">{{ payment.paidAt|app_datetime }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.reference'|trans }}</dt><dd class="font-monospace">{{ payment.reference ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'payment.field.note'|trans }}</dt><dd>{{ payment.note ?? '-' }}</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

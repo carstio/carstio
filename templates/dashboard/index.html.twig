@@ -1,0 +1,60 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'dashboard.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'dashboard',
+        title: 'dashboard.heading'|trans,
+        subtitle: 'dashboard.subtitle'|trans
+    } only %}
+
+    <div class="summary-grid">
+        <div class="summary-tile">
+            <div class="summary-tile-icon">{{ icon.render('work-order', {size: 20}) }}</div>
+            <div class="summary-tile-text">
+                <div class="summary-tile-label">{{ 'dashboard.stat.open_work_orders'|trans }}</div>
+                <div class="summary-tile-value">{{ openWorkOrders }}</div>
+            </div>
+        </div>
+        <div class="summary-tile">
+            <div class="summary-tile-icon summary-tile-icon--success">{{ icon.render('check', {size: 20}) }}</div>
+            <div class="summary-tile-text">
+                <div class="summary-tile-label">{{ 'dashboard.stat.completed_today'|trans }}</div>
+                <div class="summary-tile-value">{{ completedToday }}</div>
+            </div>
+        </div>
+        <div class="summary-tile">
+            <div class="summary-tile-icon summary-tile-icon--warning">{{ icon.render('clients', {size: 20}) }}</div>
+            <div class="summary-tile-text">
+                <div class="summary-tile-label">{{ 'dashboard.stat.total_clients'|trans }}</div>
+                <div class="summary-tile-value">{{ totalClients }}</div>
+            </div>
+        </div>
+        <div class="summary-tile">
+            <div class="summary-tile-icon summary-tile-icon--info">{{ icon.render('car', {size: 20}) }}</div>
+            <div class="summary-tile-text">
+                <div class="summary-tile-label">{{ 'dashboard.stat.total_cars'|trans }}</div>
+                <div class="summary-tile-value">{{ totalCars }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'dashboard.calendar.title'|trans }}</h2>
+            {% if scheduledWorkOrders == 0 %}
+                <span class="text-muted small">{{ 'dashboard.calendar.no_scheduled'|trans }}</span>
+            {% endif %}
+        </div>
+        <div class="section-card-body">
+            <div
+                class="dashboard-calendar"
+                data-controller="calendar"
+                data-calendar-events-url-value="{{ path('app_dashboard_calendar_events') }}"
+                data-calendar-bundle-url-value="{{ asset('vendor/fullcalendar/fullcalendar.global.min.js') }}"
+            ></div>
+        </div>
+    </div>
+{% endblock %}

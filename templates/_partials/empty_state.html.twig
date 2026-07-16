@@ -1,0 +1,24 @@
+{#
+  Parameters:
+    icon        - icon name (default 'info')
+    title       - optional, string
+    text        - string (the main empty-state message)
+    primary     - optional { label, href, icon }
+#}
+{% import '_macros/icon.html.twig' as icon %}
+
+<div class="empty-state">
+    <div class="empty-icon">{{ icon.render(icon_name|default('info'), {size: 22}) }}</div>
+    {% if title is defined and title %}
+        <h3 class="empty-state-title">{{ title }}</h3>
+    {% endif %}
+    {% if text is defined and text %}
+        <p class="empty-state-text">{{ text }}</p>
+    {% endif %}
+    {% if primary is defined and primary %}
+        <a href="{{ primary.href }}" class="btn btn-primary">
+            {% if primary.icon is defined %}{{ icon.render(primary.icon) }}{% endif %}
+            <span>{{ primary.label }}</span>
+        </a>
+    {% endif %}
+</div>

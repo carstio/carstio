@@ -1,0 +1,63 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'car.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'car',
+        title: 'car.index.heading'|trans,
+        primary: { label: 'car.action.new'|trans, href: path('app_car_new'), icon: 'plus' }
+    } only %}
+
+    {% include '_partials/toolbar.html.twig' with {
+        search_value: search,
+        search_placeholder: ('action.search'|trans) ~ ' ' ~ ('nav.cars'|trans|lower) ~ '…'
+    } only %}
+
+    <div class="card">
+        {% if cars is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'car',
+                    title: 'car.index.empty_title'|trans,
+                    text: 'car.index.empty'|trans,
+                    primary: { label: 'car.action.new'|trans, href: path('app_car_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'car.field.model'|trans }}</th>
+                            <th>{{ 'car.field.client'|trans }}</th>
+                            <th>{{ 'car.field.license_plate'|trans }}</th>
+                            <th>{{ 'car.field.vin'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for car in cars %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_car_show', {id: car.id}) }}">{{ car.displayName }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_client_show', {id: car.client.id}) }}">{{ car.client.name }}</a>
+                                </td>
+                                <td>{{ car.licensePlate ?? '-' }}</td>
+                                <td class="col-mono">{{ car.vin ?? '-' }}</td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_car_edit', {id: car.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                        {{ icon.render('pencil') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

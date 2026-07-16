@@ -1,0 +1,8 @@
+{% set class_map = {
+    'pending':        'status-badge--draft',
+    'paid':           'status-badge--success',
+    'partially_paid': 'status-badge--waiting',
+    'refunded':       'status-badge--open',
+    'void':           'status-badge--danger',
+} %}
+<span class="status-badge {{ class_map[status.value] ?? 'status-badge--neutral' }}">{{ ('payment.status.' ~ status.value)|trans }}</span>

@@ -1,0 +1,19 @@
+{{ 'email.work_order.heading'|trans({'%number%': work_order.number}) }}
+
+{{ 'email.greeting'|trans({'%name%': work_order.client.name}) }}
+
+{{ 'email.work_order.intro'|trans({'%company%': company.companyName ?? ''}) }}
+
+{{ 'email.label.work_order_number'|trans }}: {{ work_order.number }}
+{{ 'email.label.client'|trans }}: {{ work_order.client.name }}
+{{ 'email.label.vehicle'|trans }}: {{ work_order.car.displayName }}{% if work_order.car.licensePlate %} ({{ work_order.car.licensePlate }}){% endif %}
+{% if work_order.scheduledAt %}{{ 'email.label.scheduled_at'|trans }}: {{ work_order.scheduledAt|app_datetime }}
+{% endif %}{% if work_order.odometerReading is not null %}{{ 'email.label.mileage'|trans }}: {{ work_order|app_mileage }}
+{% endif %}{{ 'email.label.total'|trans }}: {{ work_order.totalAmount|money(work_order.currencyCode) }}
+
+{{ 'email.work_order.attachment_note'|trans }}
+
+{{ 'email.signoff'|trans({'%company%': company.companyName ?? ''}) }}
+
+--
+{{ 'email.footer.generated_by'|trans }}

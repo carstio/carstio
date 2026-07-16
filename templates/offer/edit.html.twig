@@ -1,0 +1,152 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'offer.edit.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'tag',
+        title: 'offer.edit.title'|trans,
+        subtitle: offer.number
+    } only %}
+
+    {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+
+    <div data-controller="collection"
+         data-collection-prototype-value="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}"
+         data-collection-index-value="{{ form.items|length }}">
+
+        <ul class="nav nav-tabs mb-0" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="tab-details" data-bs-toggle="tab" data-bs-target="#pane-details" type="button" role="tab">
+                    {{ 'offer.edit.tab.details'|trans }}
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-labor" data-bs-toggle="tab" data-bs-target="#pane-labor" type="button" role="tab">
+                    {{ 'offer.edit.tab.labor'|trans }}
+                    {% set labor_count = 0 %}
+                    {% for item in form.items %}
+                        {% if item.vars.data and item.vars.data.type and item.vars.data.type.value == 'labor' %}
+                            {% set labor_count = labor_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <span class="status-badge status-badge--open ms-2">{{ labor_count }}</span>
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tab-parts" data-bs-toggle="tab" data-bs-target="#pane-parts" type="button" role="tab">
+                    {{ 'offer.edit.tab.parts'|trans }}
+                    {% set parts_count = 0 %}
+                    {% for item in form.items %}
+                        {% if item.vars.data and item.vars.data.type and item.vars.data.type.value != 'labor' %}
+                            {% set parts_count = parts_count + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    <span class="status-badge status-badge--success ms-2">{{ parts_count }}</span>
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div class="tab-pane fade show active" id="pane-details" role="tabpanel">
+                <div class="section-card section-card--tabbed">
+                    <div class="form-section">
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form_row(form.client) }}</div>
+                            <div class="col-md-6">{{ form_row(form.car) }}</div>
+                            <div class="col-md-6">{{ form_row(form.status) }}</div>
+                            <div class="col-md-6">{{ form_row(form.validUntil) }}</div>
+                            <div class="col-12">{{ form_row(form.title) }}</div>
+                        </div>
+                        <hr class="my-4">
+                        {{ form_row(form.notes) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pane-labor" role="tabpanel">
+                <div class="section-card section-card--tabbed">
+                    <div class="form-section">
+                        <div data-collection-target="laborList">
+                            {% for item in form.items %}
+                                {% if item.vars.data and item.vars.data.type and item.vars.data.type.value == 'labor' %}
+                                    <div class="collection-item">
+                                        {{ _self.render_item_row(item, false) }}
+                                        <button type="button" class="collection-item-remove" data-action="collection#remove" aria-label="{{ 'action.delete'|trans }}">{{ icon.render('x', {size: 14}) }}</button>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary mt-2" data-action="collection#addLabor">
+                            {{ icon.render('plus') }}<span>{{ 'offer.edit.add_labor'|trans }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pane-parts" role="tabpanel">
+                <div class="section-card section-card--tabbed">
+                    <div class="form-section">
+                        <div data-collection-target="partsList">
+                            {% for item in form.items %}
+                                {% if item.vars.data and item.vars.data.type and item.vars.data.type.value != 'labor' %}
+                                    <div class="collection-item">
+                                        {{ _self.render_item_row(item, true) }}
+                                        <button type="button" class="collection-item-remove" data-action="collection#remove" aria-label="{{ 'action.delete'|trans }}">{{ icon.render('x', {size: 14}) }}</button>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        <button type="button" class="btn btn-outline-primary mt-2" data-action="collection#addPart">
+                            {{ icon.render('plus') }}<span>{{ 'offer.edit.add_part'|trans }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-none">{{ form_rest(form) }}</div>
+
+    <div class="form-footer form-footer-sticky">
+        <a href="{{ path('app_offer_show', {id: offer.id}) }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+        <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+    </div>
+
+    {{ form_end(form, {render_rest: false}) }}
+{% endblock %}
+
+{% macro render_item_row(item, show_part) %}
+    <div class="row g-2 align-items-end">
+        <div class="col-12 col-md">
+            {{ form_row(item.name) }}
+        </div>
+        <div class="col-6 col-md-2">
+            {{ form_row(item.quantity) }}
+        </div>
+        <div class="col-6 col-md-2">
+            {{ form_row(item.unitPrice) }}
+        </div>
+        <div class="col-6 col-md-2">
+            {{ form_row(item.discountAmount) }}
+        </div>
+        <div class="col-6 col-md-2">
+            {{ form_row(item.taxRate) }}
+        </div>
+    </div>
+    {% if show_part and item.part is defined %}
+        <div class="row g-2 mt-1">
+            <div class="col-12 col-md-6">
+                {{ form_row(item.part) }}
+            </div>
+            <div class="col-6 col-md-3">
+                {{ form_row(item.costPrice) }}
+            </div>
+        </div>
+    {% endif %}
+    {{ form_widget(item.type) }}
+    {{ form_widget(item.sortOrder) }}
+{% endmacro %}

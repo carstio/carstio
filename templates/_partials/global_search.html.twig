@@ -1,0 +1,26 @@
+{% import '_macros/icon.html.twig' as icon %}
+
+<div class="global-search"
+     data-controller="global-search"
+     data-global-search-url-value="{{ path('app_search_autocomplete') }}"
+     data-global-search-min-length-value="2"
+     data-global-search-debounce-value="250"
+     data-global-search-loading-text-value="{{ 'search.loading'|trans }}"
+     data-global-search-empty-text-value="{{ 'search.empty'|trans }}"
+     data-global-search-error-text-value="{{ 'search.error'|trans }}">
+    <div class="global-search-input-wrap">
+        <span class="global-search-icon">{{ icon.render('search', {size: 16}) }}</span>
+        <input type="search"
+               class="form-control"
+               autocomplete="off"
+               spellcheck="false"
+               placeholder="{{ 'search.placeholder'|trans }}"
+               aria-label="{{ 'search.placeholder'|trans }}"
+               data-global-search-target="input"
+               data-action="input->global-search#onInput focus->global-search#onFocus">
+    </div>
+    <div class="global-search-results"
+         role="listbox"
+         data-global-search-target="results"
+         data-turbo-permanent="false"></div>
+</div>

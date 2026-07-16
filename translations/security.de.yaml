@@ -1,0 +1,8 @@
+# Authentication messages (security domain).
+#
+# The login template translates authentication errors with the
+# "security" domain, so messages thrown via
+# CustomUserMessageAccountStatusException must live here.
+user:
+    error:
+        account_inactive: Ihr Konto ist inaktiv. Bitte wenden Sie sich an einen Administrator.

@@ -1,0 +1,116 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ car.displayName }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_car_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'car.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_car_edit', {id: car.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_car_delete', {id: car.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-car-' ~ car.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'car',
+        title: car.displayName,
+        subtitle: car.licensePlate ? car.licensePlate : null
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'car.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'car.field.model'|trans }}</dt><dd>{{ car.displayName }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'car.field.client'|trans }}</dt><dd><a href="{{ path('app_client_show', {id: car.client.id}) }}">{{ car.client.name }}</a></dd></div>
+                        <div class="kv-row"><dt>{{ 'car.field.license_plate'|trans }}</dt><dd>{{ car.licensePlate ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'car.field.vin'|trans }}</dt><dd class="font-monospace">{{ car.vin ?? '-' }}</dd></div>
+                        <div class="kv-row">
+                            <dt>{{ 'car.show.latest_mileage'|trans }}</dt>
+                            <dd class="font-monospace">
+                                {% if latest_mileage_work_order %}
+                                    {{ latest_mileage_work_order|app_mileage }}
+                                    <span class="text-muted small">· {{ latest_mileage_work_order.openedAt|app_date }}</span>
+                                {% else %}
+                                    <span class="text-muted">{{ 'car.show.mileage_not_recorded'|trans }}</span>
+                                {% endif %}
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'car.show.service_history'|trans }}</h2>
+        </div>
+        {% if work_order_history is empty %}
+            <div class="section-card-body">
+                <p class="text-muted mb-0">{{ 'car.show.no_service_history'|trans }}</p>
+            </div>
+        {% else %}
+            <div class="section-card-body section-card-body--flush">
+                <div class="table-responsive">
+                    <table class="data-table table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ 'work_order.field.number'|trans }}</th>
+                                <th>{{ 'work_order.field.opened_at'|trans }}</th>
+                                <th class="col-numeric">{{ 'work_order.field.mileage'|trans }}</th>
+                                <th>{{ 'work_order.field.status'|trans }}</th>
+                                <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for wo in work_order_history %}
+                                <tr>
+                                    <td class="col-primary">
+                                        <a href="{{ path('app_work_order_show', {id: wo.id}) }}" class="font-monospace">{{ wo.number }}</a>
+                                    </td>
+                                    <td class="col-mono">{{ wo.openedAt|app_date }}</td>
+                                    <td class="col-numeric font-monospace">
+                                        {% if wo.odometerReading is not null %}{{ wo|app_mileage }}{% else %}<span class="text-muted">-</span>{% endif %}
+                                    </td>
+                                    <td>{% include 'work_order/_status_badge.html.twig' with {status: wo.status} only %}</td>
+                                    <td class="col-actions">
+                                        <a href="{{ path('app_work_order_show', {id: wo.id}) }}"
+                                           class="btn btn-sm btn-outline-secondary btn-icon"
+                                           aria-label="{{ 'action.view'|trans }}"
+                                           title="{{ 'action.view'|trans }}">
+                                            {{ icon.render('eye') }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

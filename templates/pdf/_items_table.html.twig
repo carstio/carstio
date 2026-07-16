@@ -1,0 +1,53 @@
+{#
+  PDF line items table, used by Offer and Work Order PDFs.
+
+  Parameters:
+    - items:    iterable of line items (OfferItem / WorkOrderItem)
+    - type_trans_prefix: "offer_item" or "work_order_item"
+    - currency_code: ISO currency code used to render money values
+#}
+{% macro render(items, type_trans_prefix, currency_code) %}
+    {% set show_discount = has_discounts(items) %}
+    {% set column_count = show_discount ? 8 : 7 %}
+    <table class="items">
+        <thead>
+            <tr>
+                <th style="width: 8%;">#</th>
+                <th style="width: 10%;">{{ (type_trans_prefix ~ '.field.type')|trans }}</th>
+                <th>{{ (type_trans_prefix ~ '.field.name')|trans }}</th>
+                <th class="num" style="width: 8%;">{{ (type_trans_prefix ~ '.field.quantity')|trans }}</th>
+                <th class="num" style="width: 12%;">{{ (type_trans_prefix ~ '.field.unit_price')|trans }}</th>
+                {% if show_discount %}
+                    <th class="num" style="width: 10%;">{{ (type_trans_prefix ~ '.field.discount')|trans }}</th>
+                {% endif %}
+                <th class="num" style="width: 8%;">{{ (type_trans_prefix ~ '.field.tax_rate')|trans }}</th>
+                <th class="num" style="width: 14%;">{{ (type_trans_prefix ~ '.field.line_total')|trans }}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+                <tr>
+                    <td class="num">{{ loop.index }}</td>
+                    <td><span class="type-badge">{{ (type_trans_prefix ~ '.type.' ~ item.type.value)|trans }}</span></td>
+                    <td>
+                        <div class="item-name">{{ item.name }}</div>
+                        {% if item.description %}<div class="item-desc">{{ item.description }}</div>{% endif %}
+                    </td>
+                    <td class="num">{{ item.quantity }}</td>
+                    <td class="num">{{ item.unitPrice|money(currency_code) }}</td>
+                    {% if show_discount %}
+                        <td class="num">{{ item.discountAmount is discounted ? item.discountAmount|money(currency_code) : '' }}</td>
+                    {% endif %}
+                    <td class="num">{{ item.taxRate }}%</td>
+                    <td class="num strong">{{ item.lineTotal|money(currency_code) }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="{{ column_count }}" class="muted" style="text-align:center; padding: 12pt;">
+                        {{ 'pdf.items.empty'|trans }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endmacro %}

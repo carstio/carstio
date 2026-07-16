@@ -1,0 +1,48 @@
+# Validation messages (validators domain).
+#
+# Symfony's Validator translates constraint messages through the
+# "validators" domain, NOT "messages". Every custom `message:` key
+# used in a constraint must therefore live in this catalogue.
+# Keep the wording in sync with any matching keys in messages.*.yaml.
+attachment:
+    error:
+        description_too_long: Описанието е твърде дълго.
+        file_required: Моля, изберете файл за качване.
+        mime_type: Този тип файл не е разрешен. Разрешени са PDF, JPEG, PNG, WebP и MP4.
+        too_large: Файлът е твърде голям. Максималният размер е 10 MB.
+mileage:
+    error:
+        negative: Пробегът не може да бъде отрицателен.
+settings:
+    company:
+        error:
+            email_invalid: Моля, въведете валиден имейл адрес.
+            logo_mime_type: Допустими са само PNG, JPG, WebP и SVG файлове.
+            logo_too_large: Логото е твърде голямо. Максималният размер е 2 MB.
+            website_invalid: Моля, въведете валиден URL.
+    documents:
+        error:
+            footer_too_long: Текстът на долния колонтитул е твърде дълъг.
+            prefix_invalid: Префиксите могат да съдържат само букви, цифри, тирета и подчертавания.
+            validity_positive: Валидността на офертата трябва да е положителен брой дни.
+            validity_too_large: Валидността на офертата е твърде голяма.
+    email:
+        error:
+            from_email_invalid: Моля, въведете валиден имейл адрес на подател.
+            port_invalid: SMTP портът трябва да е между 1 и 65535.
+    regional:
+        error:
+            mileage_unit_invalid: Моля, изберете поддържана мерна единица за пробег.
+            timezone_invalid: Моля, въведете валидна IANA часова зона.
+    tax:
+        error:
+            max: Стандартната данъчна ставка не може да надвишава 100%.
+            must_be_positive: Стандартната данъчна ставка не може да е отрицателна.
+user:
+    error:
+        email_invalid: Моля, въведете валиден имейл адрес.
+        email_required: Моля, въведете имейл адрес.
+        email_taken: Този имейл вече се използва от друг потребител.
+        full_name_required: Моля, въведете име.
+        password_required: Моля, изберете парола.
+        password_too_short: Паролата трябва да е поне {{ limit }} символа.

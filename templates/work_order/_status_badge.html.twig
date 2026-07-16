@@ -1,0 +1,11 @@
+{% set class_map = {
+    'draft':            'status-badge--draft',
+    'open':             'status-badge--open',
+    'in_progress':      'status-badge--progress',
+    'waiting_parts':    'status-badge--waiting',
+    'waiting_approval': 'status-badge--waiting',
+    'completed':        'status-badge--success',
+    'cancelled':        'status-badge--danger',
+    'closed':           'status-badge--dark',
+} %}
+<span class="status-badge {{ class_map[status.value] ?? 'status-badge--neutral' }}">{{ ('work_order.status.' ~ status.value)|trans }}</span>

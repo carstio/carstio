@@ -1,0 +1,76 @@
+{% extends 'settings/_layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block settings_content %}
+    {{ form_start(form, {attr: {id: 'company-settings-form', enctype: 'multipart/form-data'}}) }}
+        <div class="row g-3">
+            <div class="col-lg-8">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'settings.company.group.identity'|trans }}</h2>
+                    </div>
+                    <div class="form-section">
+                        <p class="form-section-help">{{ 'settings.company.help.identity'|trans }}</p>
+                        {{ form_row(form.company_name) }}
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form_row(form.company_id) }}</div>
+                            <div class="col-md-6">{{ form_row(form.vat_number) }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'settings.company.group.contact'|trans }}</h2>
+                    </div>
+                    <div class="form-section">
+                        {{ form_row(form.address) }}
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form_row(form.city) }}</div>
+                            <div class="col-md-6">{{ form_row(form.country) }}</div>
+                        </div>
+                        <div class="row g-3">
+                            <div class="col-md-6">{{ form_row(form.phone) }}</div>
+                            <div class="col-md-6">{{ form_row(form.email) }}</div>
+                        </div>
+                        {{ form_row(form.website) }}
+                    </div>
+                    <div class="form-footer">
+                        <a href="{{ path('app_settings_company') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                        <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'settings.company.group.branding'|trans }}</h2>
+                    </div>
+                    <div class="form-section">
+                        <div class="logo-preview">
+                            {% if logo_path %}
+                                <img src="{{ asset(logo_path) }}" alt="{{ company_name }}">
+                            {% else %}
+                                <div class="logo-preview-empty">{{ icon.render('company', {size: 32}) }}</div>
+                            {% endif %}
+                        </div>
+                        {{ form_row(form.logoFile) }}
+                        {% if logo_path %}
+                            <button type="submit" form="company-logo-remove-form" class="btn btn-outline-danger btn-sm mt-2"
+                                    onclick="return confirm('{{ 'settings.company.confirm.remove_logo'|trans }}');">
+                                {{ icon.render('trash', {size: 14}) }}<span>{{ 'settings.company.action.remove_logo'|trans }}</span>
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {{ form_end(form) }}
+
+    {% if logo_path %}
+        <form id="company-logo-remove-form" method="post" action="{{ path('app_settings_company_logo_remove') }}" class="d-none">
+            <input type="hidden" name="_token" value="{{ csrf_token('remove-company-logo') }}">
+        </form>
+    {% endif %}
+{% endblock %}

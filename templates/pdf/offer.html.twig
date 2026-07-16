@@ -1,0 +1,94 @@
+{% extends 'pdf/_base.html.twig' %}
+{% import 'pdf/_items_table.html.twig' as items_table %}
+
+{% block title %}{{ 'pdf.offer.title'|trans }} {{ offer.number }}{% endblock %}
+{% block document_title %}{{ 'pdf.offer.title'|trans }}{% endblock %}
+{% block document_number %}{{ 'offer.field.number'|trans }}: <span class="strong">{{ offer.number }}</span>{% endblock %}
+{% block document_status %}
+    <div class="document-status">{{ ('offer.status.' ~ offer.status.value)|trans }}</div>
+{% endblock %}
+
+{% block content %}
+
+    {# ── Parties ── #}
+    <table class="parties">
+        <tr>
+            <td>
+                <div class="party-label">{{ 'pdf.offer.client'|trans }}</div>
+                <div class="party-name">{{ offer.client.name }}</div>
+                {% if offer.client.phone %}<div>{{ offer.client.phone }}</div>{% endif %}
+                {% if offer.client.email %}<div class="small muted">{{ offer.client.email }}</div>{% endif %}
+            </td>
+            <td>
+                <div class="party-label">{{ 'pdf.offer.vehicle'|trans }}</div>
+                <div class="party-name">{{ offer.car.displayName ?: '-' }}</div>
+                {% if offer.car.licensePlate %}<div>{{ 'car.field.license_plate'|trans }}: {{ offer.car.licensePlate }}</div>{% endif %}
+                {% if offer.car.vin %}<div class="small muted">VIN: {{ offer.car.vin }}</div>{% endif %}
+            </td>
+            <td>
+                <div class="party-label">{{ 'pdf.offer.details'|trans }}</div>
+                <div><span class="muted">{{ 'offer.field.created_at'|trans }}:</span> {{ offer.createdAt|app_date }}</div>
+                {% if offer.validUntil %}
+                    <div><span class="muted">{{ 'offer.field.valid_until'|trans }}:</span> {{ offer.validUntil|app_date }}</div>
+                {% endif %}
+                {% if offer.createdBy %}
+                    <div><span class="muted">{{ 'offer.field.created_by'|trans }}:</span> {{ offer.createdBy.fullName }}</div>
+                {% endif %}
+                {% if offer.workOrder %}
+                    <div class="small"><span class="muted">{{ 'offer.field.work_order'|trans }}:</span> {{ offer.workOrder.number }}</div>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+    {% if offer.title %}
+        <div class="block" style="margin-top: 0;">
+            <div class="block-label">{{ 'offer.field.title'|trans }}</div>
+            <div class="block-body strong">{{ offer.title }}</div>
+        </div>
+    {% endif %}
+
+    {# ── Items ── #}
+    {{ items_table.render(offer.items, 'offer_item', offer.currencyCode) }}
+
+    {# ── Totals ── #}
+    <table class="totals-wrap">
+        <tr>
+            <td class="totals-spacer"></td>
+            <td>
+                <table class="totals">
+                    <tr>
+                        <td class="muted">{{ 'offer.field.subtotal_labor'|trans }}</td>
+                        <td class="num">{{ offer.subtotalLabor|money(offer.currencyCode) }}</td>
+                    </tr>
+                    <tr>
+                        <td class="muted">{{ 'offer.field.subtotal_parts'|trans }}</td>
+                        <td class="num">{{ offer.subtotalParts|money(offer.currencyCode) }}</td>
+                    </tr>
+                    {% if offer.discountAmount is discounted %}
+                        <tr>
+                            <td class="muted">{{ 'offer.field.discount'|trans }}</td>
+                            <td class="num">-{{ offer.discountAmount|money(offer.currencyCode) }}</td>
+                        </tr>
+                    {% endif %}
+                    <tr>
+                        <td class="muted">{{ 'offer.field.tax'|trans }}</td>
+                        <td class="num">{{ offer.taxAmount|money(offer.currencyCode) }}</td>
+                    </tr>
+                    <tr class="total">
+                        <td>{{ 'offer.field.total'|trans }}</td>
+                        <td class="num">{{ offer.totalAmount|money(offer.currencyCode) }}</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    {% if offer.notes %}
+        <div class="block">
+            <div class="block-label">{{ 'offer.field.notes'|trans }}</div>
+            <div class="block-body">{{ offer.notes }}</div>
+        </div>
+    {% endif %}
+
+{% endblock %}

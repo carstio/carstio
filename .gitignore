@@ -18,3 +18,28 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+# User-uploaded content. The directory is recreated by the app on first
+# upload (see App\Service\Settings\LogoUploader), so it is fine to leave
+# uncommitted.
+/public/uploads/
+
+# Node tooling, if a contributor ever runs npm/yarn locally.
+/node_modules/
+
+# IDE and editor metadata
+/.idea/
+/.vscode/
+/.fleet/
+/.zed/
+*.swp
+*.swo
+
+# OS noise
+.DS_Store
+Thumbs.db
+
+# Local AI tooling configuration; not part of the published project.
+/.claude/
+/CLAUDE.md
+Add some more AI possible
