@@ -1,0 +1,30 @@
+{% extends 'settings/_layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block settings_content %}
+    {{ form_start(form) }}
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.regional.group.locale'|trans }}</h2>
+            </div>
+            <div class="form-section">
+                <p class="form-section-help">{{ 'settings.regional.help.intro'|trans }}</p>
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.default_locale) }}</div>
+                    <div class="col-md-6">{{ form_row(form.timezone) }}</div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.date_format) }}</div>
+                    <div class="col-md-6">{{ form_row(form.time_format) }}</div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.mileage_unit) }}</div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <a href="{{ path('app_settings_regional') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

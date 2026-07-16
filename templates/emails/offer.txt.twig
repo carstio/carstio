@@ -1,0 +1,17 @@
+{{ 'email.offer.heading'|trans({'%number%': offer.number}) }}
+
+{{ 'email.greeting'|trans({'%name%': offer.client.name}) }}
+
+{{ 'email.offer.intro'|trans({'%company%': company.companyName ?? ''}) }}
+
+{{ 'email.label.offer_number'|trans }}: {{ offer.number }}
+{{ 'email.label.client'|trans }}: {{ offer.client.name }}
+{{ 'email.label.total'|trans }}: {{ offer.totalAmount|money(offer.currencyCode) }}
+{% if offer.validUntil %}{{ 'email.label.valid_until'|trans }}: {{ offer.validUntil|app_date }}
+{% endif %}
+{{ 'email.offer.attachment_note'|trans }}
+
+{{ 'email.signoff'|trans({'%company%': company.companyName ?? ''}) }}
+
+--
+{{ 'email.footer.generated_by'|trans }}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject|e('html') }}</title>
+</head>
+<body style="margin:0;padding:24px;font-family:Arial,Helvetica,sans-serif;color:#222;background:#f6f7f9;">
+<div style="max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e3e6eb;border-radius:8px;padding:24px;">
+    <h1 style="margin:0 0 16px;font-size:20px;color:#111;">{{ 'email.offer.heading'|trans({'%number%': offer.number}) }}</h1>
+
+    <p style="margin:0 0 12px;">{{ 'email.greeting'|trans({'%name%': offer.client.name}) }}</p>
+    <p style="margin:0 0 16px;">{{ 'email.offer.intro'|trans({'%company%': company.companyName ?? ''}) }}</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:0 0 16px;">
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.offer_number'|trans }}</td><td style="padding:6px 0;font-weight:600;">{{ offer.number }}</td></tr>
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.client'|trans }}</td><td style="padding:6px 0;">{{ offer.client.name }}</td></tr>
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.total'|trans }}</td><td style="padding:6px 0;font-weight:600;">{{ offer.totalAmount|money(offer.currencyCode) }}</td></tr>
+        {% if offer.validUntil %}
+            <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.valid_until'|trans }}</td><td style="padding:6px 0;">{{ offer.validUntil|app_date }}</td></tr>
+        {% endif %}
+    </table>
+
+    <p style="margin:0 0 16px;">{{ 'email.offer.attachment_note'|trans }}</p>
+    <p style="margin:0 0 16px;">{{ 'email.signoff'|trans({'%company%': company.companyName ?? ''}) }}</p>
+
+    <hr style="border:none;border-top:1px solid #e3e6eb;margin:24px 0 12px;">
+    <p style="margin:0;color:#888;font-size:12px;">{{ 'email.footer.generated_by'|trans }}</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ ('settings.section.' ~ active_section ~ '.title')|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'settings',
+        title: ('settings.section.' ~ active_section ~ '.title')|trans,
+        subtitle: ('settings.section.' ~ active_section ~ '.description')|trans
+    } only %}
+
+    <div class="settings-layout">
+        <aside class="settings-sidebar">
+            {% include 'settings/_nav.html.twig' with { active_section: active_section } only %}
+        </aside>
+        <div class="settings-content">
+            {% block settings_content %}{% endblock %}
+        </div>
+    </div>
+{% endblock %}

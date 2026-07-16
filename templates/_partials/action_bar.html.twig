@@ -1,0 +1,18 @@
+{#
+  Action bar used on show/edit pages: back link on the left, actions on the right.
+  Parameters:
+    back        - { label, href }
+    actions     - optional rendered HTML block (caller supplies buttons)
+#}
+{% import '_macros/icon.html.twig' as icon %}
+
+<div class="action-bar">
+    <div class="action-bar-back">
+        {% if back is defined and back %}
+            <a href="{{ back.href }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ back.label }}</span></a>
+        {% endif %}
+    </div>
+    {% if actions_html is defined and actions_html %}
+        <div class="action-bar-actions">{{ actions_html|raw }}</div>
+    {% endif %}
+</div>

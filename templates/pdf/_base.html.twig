@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="{{ app.request.locale|default('en') }}">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{{ 'pdf.document'|trans }}{% endblock %}</title>
+    <style>
+        @page { margin: 15mm; }
+
+        body {
+            font-family: "DejaVu Sans", sans-serif;
+            font-size: 10pt;
+            color: #222;
+            margin: 0;
+        }
+
+        h1, h2, h3 { margin: 0; font-weight: 700; color: #111; }
+        p { margin: 0 0 4pt 0; }
+
+        .muted { color: #6b7280; }
+        .right { text-align: right; }
+        .small { font-size: 8.5pt; }
+        .strong { font-weight: 700; color: #111; }
+        .nowrap { white-space: nowrap; }
+
+        /* Header */
+        .header { width: 100%; border-collapse: collapse; margin-bottom: 14pt; }
+        .header td { vertical-align: top; padding: 0; }
+        .header .col-company { width: 60%; }
+        .header .col-document { width: 40%; text-align: right; }
+        .logo { max-height: 55pt; max-width: 180pt; }
+        .company-name { font-size: 13pt; font-weight: 700; margin-bottom: 3pt; }
+        .company-details { font-size: 9pt; color: #4b5563; line-height: 1.45; }
+
+        .document-title {
+            font-size: 18pt;
+            font-weight: 700;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 1pt;
+        }
+        .document-number { font-size: 11pt; margin-top: 4pt; }
+        .document-status {
+            display: inline-block;
+            padding: 2pt 8pt;
+            border: 1pt solid #9ca3af;
+            border-radius: 3pt;
+            font-size: 8.5pt;
+            color: #374151;
+            text-transform: uppercase;
+            letter-spacing: 0.5pt;
+            margin-top: 6pt;
+        }
+
+        .rule { border-top: 0.75pt solid #4b5563; height: 0; margin: 6pt 0 12pt 0; }
+
+        /* Party blocks (client / vehicle / meta) */
+        .parties { width: 100%; border-collapse: collapse; margin-bottom: 14pt; }
+        .parties td {
+            vertical-align: top;
+            width: 33.33%;
+            padding: 8pt 10pt;
+            border: 1pt solid #e5e7eb;
+            background: #f9fafb;
+        }
+        .parties td + td { border-left: 0; }
+        .party-label {
+            font-size: 8pt;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 0.6pt;
+            margin-bottom: 4pt;
+        }
+        .party-name { font-weight: 700; font-size: 10.5pt; margin-bottom: 2pt; }
+
+        /* Meta strip (dates, advisor, etc.) */
+        .meta { width: 100%; border-collapse: collapse; margin-bottom: 14pt; }
+        .meta td { padding: 3pt 10pt 3pt 0; font-size: 9.5pt; }
+        .meta .meta-label { color: #6b7280; width: 20%; }
+        .meta .meta-value { color: #111; }
+
+        /* Items table — print-friendly: no dark fills, light borders. */
+        .items { width: 100%; border-collapse: collapse; margin-bottom: 10pt; }
+        .items thead th {
+            background: #ffffff;
+            color: #111;
+            text-align: left;
+            padding: 5pt 6pt 6pt;
+            font-size: 9pt;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.4pt;
+            border-bottom: 1pt solid #4b5563;
+        }
+        .items thead th.num { text-align: right; }
+        .items tbody td {
+            padding: 6pt 6pt;
+            border-bottom: 0.5pt solid #d1d5db;
+            font-size: 9.5pt;
+            vertical-align: top;
+        }
+        .items tbody td.num { text-align: right; white-space: nowrap; }
+        .items .type-badge {
+            display: inline-block;
+            padding: 1pt 5pt;
+            border: 0.5pt solid #9ca3af;
+            border-radius: 2pt;
+            font-size: 7.5pt;
+            text-transform: uppercase;
+            letter-spacing: 0.4pt;
+            color: #374151;
+        }
+        .items .item-name { font-weight: 600; color: #111; }
+        .items .item-desc { font-size: 8.5pt; color: #6b7280; margin-top: 2pt; }
+
+        /* Totals */
+        .totals-wrap { width: 100%; border-collapse: collapse; }
+        .totals-wrap > tbody > tr > td { vertical-align: top; padding: 0; }
+        .totals-wrap .totals-spacer { width: 55%; }
+
+        .totals { width: 100%; border-collapse: collapse; }
+        .totals td {
+            padding: 4pt 6pt;
+            font-size: 10pt;
+        }
+        .totals td.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+        .totals tr.total td {
+            border-top: 1pt solid #4b5563;
+            padding-top: 7pt;
+            font-size: 12pt;
+            font-weight: 700;
+            color: #111;
+        }
+
+        /* Notes / blocks */
+        .block { margin-top: 14pt; }
+        .block-label {
+            font-size: 8.5pt;
+            text-transform: uppercase;
+            color: #6b7280;
+            letter-spacing: 0.6pt;
+            margin-bottom: 3pt;
+        }
+        .block-body {
+            padding: 8pt 10pt;
+            border: 1pt solid #e5e7eb;
+            background: #f9fafb;
+            font-size: 9.5pt;
+            white-space: pre-line;
+        }
+
+        /* Footer (rendered on every page) */
+        .footer {
+            position: fixed;
+            bottom: -14mm;
+            left: 0;
+            right: 0;
+            font-size: 8pt;
+            color: #6b7280;
+            text-align: center;
+            border-top: 0.5pt solid #e5e7eb;
+            padding-top: 4pt;
+        }
+        .footer .page-info { float: right; }
+    </style>
+</head>
+<body>
+
+{# ── Header ── #}
+<table class="header">
+    <tr>
+        <td class="col-company">
+            {% if logo_path %}
+                <img src="{{ logo_path }}" alt="{{ company.companyName ?? '' }}" class="logo">
+            {% else %}
+                <div class="company-name">{{ company.companyName ?? 'pdf.company.unnamed'|trans }}</div>
+            {% endif %}
+            <div class="company-details">
+                {% if logo_path and company.companyName %}
+                    <div class="strong">{{ company.companyName }}</div>
+                {% endif %}
+                {% if company.address %}{{ company.address }}<br>{% endif %}
+                {% if company.city or company.country %}
+                    {{ company.city }}{% if company.city and company.country %}, {% endif %}{{ company.country }}<br>
+                {% endif %}
+                {% if company.phone %}{{ 'pdf.company.phone'|trans }}: {{ company.phone }}<br>{% endif %}
+                {% if company.email %}{{ 'pdf.company.email'|trans }}: {{ company.email }}<br>{% endif %}
+                {% if company.website %}{{ company.website }}<br>{% endif %}
+                {% if company.companyId %}{{ 'pdf.company.company_id'|trans }}: {{ company.companyId }}{% endif %}
+                {% if company.companyId and company.vatNumber %} &nbsp;·&nbsp; {% endif %}
+                {% if company.vatNumber %}{{ 'pdf.company.vat_number'|trans }}: {{ company.vatNumber }}{% endif %}
+            </div>
+        </td>
+        <td class="col-document">
+            <div class="document-title">{% block document_title %}{% endblock %}</div>
+            <div class="document-number">{% block document_number %}{% endblock %}</div>
+            {% block document_status %}{% endblock %}
+        </td>
+    </tr>
+</table>
+
+<div class="rule"></div>
+
+{% block content %}{% endblock %}
+
+<div class="footer">
+    <span class="page-info">
+        <script type="text/php">
+            if (isset($pdf)) {
+                $pdf->page_text(555, 812, "{PAGE_NUM} / {PAGE_COUNT}", null, 8, array(0.42, 0.45, 0.5));
+            }
+        </script>
+    </span>
+    {% if document_footer_text is defined and document_footer_text %}
+        <div class="footer-custom">{{ document_footer_text|nl2br }}</div>
+    {% endif %}
+    {{ 'pdf.footer.generated_by'|trans }}
+</div>
+
+</body>
+</html>

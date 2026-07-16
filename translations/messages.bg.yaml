@@ -1,0 +1,852 @@
+# Application
+app:
+    name: Carstio
+
+# Navigation
+nav:
+    toggle_menu: Превключи менюто
+    dashboard: Табло
+    clients: Клиенти
+    cars: Автомобили
+    companies: Фирми
+    offers: Оферти
+    work_orders: Поръчки за работа
+    parts: Части
+    payments: Плащания
+    statistics: Статистика
+    settings: Настройки
+    users: Потребители
+    logout: Изход
+    section:
+        main: Основни
+        workshop: Сервиз
+        system: Система
+
+# Login
+login:
+    title: Вход
+    heading: Добре дошли отново
+    subtitle: Влезте, за да достъпите Вашия сервиз.
+    email: Имейл адрес
+    email_placeholder: вие@пример.bg
+    password: Парола
+    password_placeholder: Вашата парола
+    submit: Вход
+
+# Locale / language switcher
+locale:
+    switcher:
+        label: Език
+    code:
+        en: EN
+        bg: BG
+        de: DE
+        es: ES
+        fr: FR
+
+# Global header search
+search:
+    placeholder: Търсене на клиенти, автомобили, фирми…
+    loading: Търсене…
+    empty: Няма намерени резултати
+    error: Търсенето не успя. Моля, опитайте отново.
+    group:
+        clients: Клиенти
+        cars: Автомобили
+        companies: Фирми
+
+# Dashboard
+dashboard:
+    title: Табло
+    heading: Табло
+    subtitle: Преглед на дейността на Вашия сервиз.
+    stat:
+        open_work_orders: Активни поръчки
+        completed_today: Завършени днес
+        total_clients: Всички клиенти
+        total_cars: Всички автомобили
+    calendar:
+        title: Планирани поръчки
+        no_scheduled: Все още няма планирани поръчки.
+
+# Common labels
+label:
+    actions: Действия
+    status: Статус
+    yes: "Да"
+    no: "Не"
+
+# Common actions
+action:
+    close: Затвори
+    save: Запази
+    cancel: Отказ
+    delete: Изтрий
+    edit: Редактирай
+    search: Търсене
+    apply: Приложи
+    view: Преглед
+    add: Добави
+    more: Още
+    new: Нов
+
+# UI strings consumed by JavaScript / Stimulus controllers.
+js:
+    button:
+        now: Сега
+        today: Днес
+    action:
+        remove: Премахни
+
+# Confirmation
+confirm:
+    delete: Сигурни ли сте, че искате да изтриете този запис?
+
+# Flash messages
+flash:
+    delete:
+        restricted: Записът не може да бъде изтрит, защото се използва от други записи.
+    client:
+        created: Клиентът е създаден успешно.
+        updated: Клиентът е обновен успешно.
+        deleted: Клиентът е изтрит.
+    car:
+        created: Автомобилът е добавен успешно.
+        updated: Автомобилът е обновен успешно.
+        deleted: Автомобилът е изтрит.
+    company:
+        created: Фирмата е създадена успешно.
+        updated: Фирмата е обновена успешно.
+        deleted: Фирмата е изтрита.
+    part:
+        created: Частта е създадена успешно.
+        updated: Частта е обновена успешно.
+        deleted: Частта е изтрита.
+    work_order:
+        created: Поръчката за работа е създадена успешно.
+        updated: Поръчката за работа е обновена успешно.
+        deleted: Поръчката за работа е изтрита.
+        status_updated: Статусът на поръчката е обновен.
+        email_sent: Поръчката за работа е изпратена по имейл.
+    offer:
+        created: Офертата е създадена успешно.
+        updated: Офертата е обновена успешно.
+        deleted: Офертата е изтрита.
+        status_updated: Статусът на офертата е обновен.
+        converted: Офертата е преобразувана в поръчка за работа.
+        convert_not_allowed: Само одобрени оферти могат да бъдат преобразувани.
+        locked: Преобразувани оферти не могат да бъдат променяни.
+        email_sent: Офертата е изпратена по имейл.
+    email:
+        client_missing_address: Този клиент няма имейл адрес.
+        smtp_incomplete: Имейл настройките са непълни. Моля, конфигурирайте SMTP настройките.
+        send_failed: Имейлът не може да бъде изпратен. Моля, проверете SMTP настройките и опитайте отново.
+    payment:
+        created: Плащането е записано успешно.
+        deleted: Плащането е изтрито.
+    user:
+        created: Потребителят е създаден успешно.
+        updated: Потребителят е обновен успешно.
+        deactivated: Потребителят е деактивиран.
+        activated: Потребителят е активиран.
+    attachment:
+        uploaded: Файлът е качен успешно.
+        deleted: Файлът е изтрит успешно.
+        upload_failed: Файлът не може да бъде качен.
+        not_found: Файлът не е намерен.
+    settings:
+        company:
+            saved: Настройките за фирмата са запазени.
+            logo_removed: Логото на фирмата е премахнато.
+        regional:
+            saved: Регионалните настройки са запазени.
+        currency_tax:
+            saved: Настройките за валута и данък са запазени.
+        documents:
+            saved: Настройките за документи са запазени.
+        email:
+            saved: Имейл настройките са запазени.
+
+# Clients
+client:
+    index:
+        title: Клиенти
+        heading: Клиенти
+        empty: Все още няма клиенти. Добавете първия си клиент, за да започнете.
+        empty_title: Все още няма клиенти
+    new:
+        title: Нов клиент
+    edit:
+        title: Редакция на клиент
+    show:
+        details: Данни за клиента
+        cars: Автомобили
+        no_cars: Този клиент все още няма автомобили.
+        companies: Фирми
+        no_companies: Този клиент все още няма фирми.
+        work_orders: Свързани поръчки за работа
+        work_orders_recent_note: Първо най-новите, до 10.
+        no_work_orders: Все още няма поръчки за работа за този клиент.
+        offers: Свързани оферти
+        offers_recent_note: Първо най-новите, до 10.
+        no_offers: Все още няма оферти за този клиент.
+        action:
+            view_work_order: Преглед на поръчката
+            view_offer: Преглед на офертата
+    action:
+        new: Нов клиент
+    field:
+        name: Име
+        phone: Телефон
+        email: Имейл
+        notes: Бележки
+        cars: Автомобили
+
+# Cars
+car:
+    index:
+        title: Автомобили
+        heading: Автомобили
+        empty: Все още няма автомобили. Добавете първия си автомобил, за да започнете.
+        empty_title: Все още няма автомобили
+    new:
+        title: Нов автомобил
+    edit:
+        title: Редакция на автомобил
+    show:
+        details: Данни за автомобила
+        service_history: История на обслужванията
+        no_service_history: За този автомобил все още няма поръчки за работа.
+        latest_mileage: Последно отчетен пробег
+        mileage_not_recorded: Пробегът не е записан
+    action:
+        new: Нов автомобил
+    field:
+        model: Модел
+        client: Клиент
+        client_placeholder: Изберете клиент...
+        model_placeholder: Изберете модел...
+        vin: VIN
+        license_plate: Регистрационен номер
+
+# Companies
+company:
+    index:
+        title: Фирми
+        heading: Фирми
+        empty: Все още няма фирми.
+        empty_title: Все още няма фирми
+    new:
+        title: Нова фирма
+    edit:
+        title: Редакция на фирма
+    show:
+        details: Данни за фирмата
+    action:
+        new: Нова фирма
+    field:
+        name: Име
+        client: Клиент
+        client_placeholder: Изберете клиент...
+        city: Град
+        address: Адрес
+        identifier: ЕИК
+        vat_identifier: ДДС номер
+        vat_registered: Регистриран по ДДС
+
+# Parts
+part:
+    index:
+        title: Части
+        heading: Части
+        empty: Все още няма части. Добавете първата си част, за да започнете.
+        empty_title: Все още няма части
+    new:
+        title: Нова част
+    edit:
+        title: Редакция на част
+    show:
+        details: Данни за частта
+        pricing: Цени
+    action:
+        new: Нова част
+    status:
+        active: Активна
+        inactive: Неактивна
+    field:
+        name: Име
+        sku: SKU
+        part_number: Каталожен номер
+        brand: Марка
+        cost_price: Доставна цена
+        sell_price: Продажна цена
+        unit_profit: Печалба за бр.
+        unit_margin: Марж за бр.
+        notes: Бележки
+        is_active: Активна
+    help:
+        sku_optional: По избор. Оставете празно, ако сервизът не използва SKU.
+        part_number_optional: По избор. Каталожен или производствен номер, ако има.
+
+# Work Orders
+work_order:
+    index:
+        title: Поръчки за работа
+        heading: Поръчки за работа
+        empty: Все още няма поръчки за работа. Създайте първата си, за да започнете.
+        empty_title: Все още няма поръчки за работа
+    new:
+        title: Нова поръчка за работа
+    edit:
+        title: Редакция на поръчка за работа
+        tab:
+            details: Детайли
+            labor: Труд
+            parts: Части и други
+            payments: Плащания
+        add_labor: Добави позиция за труд
+        add_part: Добави позиция за част
+    show:
+        details: Детайли
+        items: Позиции
+        no_items: Все още няма добавени позиции в тази поръчка.
+        totals: Общо
+        payments: Плащания
+        no_payments: Все още няма записани плащания.
+        change_status: Смени статус
+    payments:
+        add: Добави плащане
+        paid_amount: Платена сума
+        remaining: Остатък за плащане
+        status: Статус на плащането
+        empty: Все още няма записани плащания.
+        view: Преглед на плащането
+    filter:
+        all_statuses: Всички статуси
+    action:
+        new: Нова поръчка за работа
+    status:
+        draft: Чернова
+        open: Отворена
+        in_progress: В процес
+        waiting_parts: Чакане на части
+        waiting_approval: Чакане одобрение
+        completed: Завършена
+        cancelled: Отказана
+        closed: Затворена
+    field:
+        number: Номер
+        client: Клиент
+        client_placeholder: Изберете клиент...
+        car: Автомобил
+        car_placeholder: Изберете автомобил...
+        status: Статус
+        source: Източник
+        complaint: Оплакване
+        diagnosis: Диагноза
+        notes: Бележки
+        opened_at: Отворена на
+        scheduled_at: Планирана за
+        started_at: Стартирана на
+        completed_at: Завършена на
+        created_by: Създадена от
+        total: Общо
+        paid: Платено
+        subtotal_labor: Труд
+        subtotal_parts: Части
+        discount: Отстъпка
+        tax: Данък
+        payment_status: Статус на плащането
+        odometer_reading: Показание на километража
+        mileage: Пробег
+    help:
+        odometer_reading: Показание на километража на автомобила в момента на сервиза.
+
+# Work Order Items
+work_order_item:
+    field:
+        type: Тип
+        name: Наименование
+        quantity: Кол.
+        unit_price: Ед. цена
+        cost_price: Доставна цена
+        discount: Отстъпка
+        tax_rate: Данък %
+        line_total: Общо
+        part: Част
+        part_placeholder: Изберете част...
+    help:
+        cost_price: Само за вътрешна употреба. Колко е платил сервизът за частта. Не се показва в документа на клиента.
+    type:
+        labor: Труд
+        part: Част
+        misc: Друго
+
+# Offers
+offer:
+    index:
+        title: Оферти
+        heading: Оферти
+        empty: Все още няма оферти. Създайте първата си, за да започнете.
+        empty_title: Все още няма оферти
+    new:
+        title: Нова оферта
+    edit:
+        title: Редакция на оферта
+        tab:
+            details: Детайли
+            labor: Труд
+            parts: Части и други
+        add_labor: Добави позиция за труд
+        add_part: Добави позиция за част
+    show:
+        details: Детайли
+        items: Позиции
+        no_items: Все още няма добавени позиции в тази оферта.
+        totals: Общо
+        change_status: Смени статус
+    filter:
+        all_statuses: Всички статуси
+    action:
+        new: Нова оферта
+        convert: Преобразувай в поръчка
+    confirm:
+        convert: Да преобразувам ли тази оферта в поръчка за работа?
+    status:
+        draft: Чернова
+        sent: Изпратена
+        approved: Одобрена
+        rejected: Отказана
+        expired: Изтекла
+        converted: Преобразувана
+    field:
+        number: Номер
+        client: Клиент
+        client_placeholder: Изберете клиент...
+        car: Автомобил
+        car_placeholder: Изберете автомобил...
+        status: Статус
+        title: Заглавие
+        notes: Бележки
+        valid_until: Валидна до
+        created_at: Създадена
+        created_by: Създадена от
+        converted_at: Преобразувана на
+        work_order: Поръчка за работа
+        total: Общо
+        subtotal_labor: Труд
+        subtotal_parts: Части
+        discount: Отстъпка
+        tax: Данък
+
+# Offer Items
+offer_item:
+    field:
+        type: Тип
+        name: Наименование
+        quantity: Кол.
+        unit_price: Ед. цена
+        cost_price: Доставна цена
+        discount: Отстъпка
+        tax_rate: Данък %
+        line_total: Общо
+        part: Част
+        part_placeholder: Изберете част...
+    help:
+        cost_price: Само за вътрешна употреба. Очакваната доставна цена. Не се показва в офертата на клиента.
+    type:
+        labor: Труд
+        part: Част
+        misc: Друго
+
+# Internal "Parts margin" card shared by offer + work order admin views
+parts_margin:
+    title: Печалба от части
+    internal_only: Само за вътрешна употреба
+    field:
+        revenue: Приход от части
+        cost: Себестойност
+        profit: Печалба
+        margin: Марж
+
+# Payments
+payment:
+    index:
+        title: Плащания
+        heading: Плащания
+        empty: Все още няма записани плащания.
+        empty_title: Все още няма плащания
+    new:
+        title: Запис на плащане
+    show:
+        title: Данни за плащането
+        details: Данни за плащането
+    action:
+        new: Запис на плащане
+    field:
+        work_order: Поръчка за работа
+        work_order_placeholder: Изберете поръчка...
+        amount: Сума
+        method: Метод
+        method_placeholder: Изберете метод...
+        status: Статус
+        paid_at: Платено на
+        reference: Референция
+        note: Бележка
+    method:
+        cash: В брой
+        card: Карта
+        bank_transfer: Банков превод
+    status:
+        pending: Чака
+        paid: Платено
+        partially_paid: Частично платено
+        refunded: Възстановено
+        void: Анулирано
+
+# Settings
+settings:
+    heading: Настройки
+    section:
+        company:
+            title: Фирма
+            description: Юридическо име, данъчни номера, контакти и лого.
+        regional:
+            title: Регионални
+            description: Локал, часова зона и формати за дата, използвани в приложението.
+        currency_tax:
+            title: Валута и данък
+            description: Стандартни валута и данъчна ставка за нови документи.
+        documents:
+            title: Документи
+            description: Префикси на номера, валидност на офертите и текст в долен колонтитул.
+        email:
+            title: Имейл / SMTP
+            description: Идентификационни данни за изходящ имейл сървър. Изпращането ще бъде добавено по-късно.
+    company:
+        group:
+            identity: Идентичност
+            contact: Контакти
+            branding: Брандиране
+        field:
+            name: Име на фирмата
+            company_id: ЕИК
+            vat_number: ДДС номер
+            address: Адрес
+            city: Град
+            country: Държава
+            phone: Телефон
+            email: Имейл
+            website: Уебсайт
+            logo: Лого
+        help:
+            identity: Използва се като име на сервиза в офертите, поръчките и PDF документите.
+            logo: PNG, JPG, WebP или SVG, до 2 MB.
+        action:
+            remove_logo: Премахни лого
+        confirm:
+            remove_logo: Да премахна ли текущото лого?
+        error:
+            email_invalid: Моля, въведете валиден имейл адрес.
+            website_invalid: Моля, въведете валиден URL.
+            logo_too_large: Логото е твърде голямо. Максималният размер е 2 MB.
+            logo_mime_type: Допустими са само PNG, JPG, WebP и SVG файлове.
+    regional:
+        group:
+            locale: Локал и време
+        field:
+            locale: Език по подразбиране
+            timezone: Часова зона
+            date_format: Формат на датата
+            time_format: Формат на часа
+            mileage_unit: Мерна единица за пробег
+        help:
+            intro: Практични стандартни стойности за ежедневна работа. Променете ги според мястото на сервиза.
+            locale: Език на потребителския интерфейс по подразбиране. Преводите се добавят постепенно.
+            timezone: Използва се при показване на дати и часове в приложението.
+            mileage_unit: Мерна единица по подразбиране при записване на пробег на нови поръчки за работа.
+            date_format: PHP формат за дата, използван в списъци и заглавия на документи, напр. Y-m-d или d.m.Y.
+            time_format: PHP формат за час, използван заедно с датата, напр. H:i.
+        timezone_group:
+            generic: UTC и общи
+        error:
+            timezone_invalid: Моля, въведете валидна IANA часова зона.
+            mileage_unit_invalid: Моля, изберете поддържана мерна единица за пробег.
+    currency:
+        field:
+            code: Валута по подразбиране
+        help: Използва се за нови оферти и поръчки. Съществуващите документи запазват валутата, с която са създадени.
+    currency_tax:
+        group:
+            defaults: Стандартни валута и данък
+        help:
+            intro: Стандартни стойности за нови оферти и поръчки. Съществуващите документи не се променят.
+    tax:
+        field:
+            default_rate: Стандартна данъчна ставка (%)
+        help: По избор. Оставете празно, ако сервизът не е регистриран по ДДС.
+        error:
+            must_be_positive: Стандартната данъчна ставка не може да е отрицателна.
+            max: Стандартната данъчна ставка не може да надвишава 100%.
+    documents:
+        group:
+            numbering: Префикси на номерация
+            defaults: Стандартни за документи
+        field:
+            offer_prefix: Префикс на оферта
+            work_order_prefix: Префикс на поръчка
+            invoice_prefix: Префикс на фактура
+            offer_validity: Стандартна валидност на офертата (дни)
+            footer: Долен колонтитул
+        help:
+            numbering: Префиксите се поставят пред генерираните номера, напр. OF-2026-0001.
+            offer_prefix: Използва се за нови оферти, напр. OF.
+            work_order_prefix: Използва се за нови поръчки, напр. WO.
+            invoice_prefix: Използва се за фактури, когато фактурирането е активирано.
+            offer_validity: Задава стандартния срок „валидна до“ за нови оферти. По избор.
+            footer: По избор текст, отпечатван в долната част на оферти, поръчки и фактури.
+        error:
+            prefix_invalid: Префиксите могат да съдържат само букви, цифри, тирета и подчертавания.
+            validity_positive: Валидността на офертата трябва да е положителен брой дни.
+            validity_too_large: Валидността на офертата е твърде голяма.
+            footer_too_long: Текстът на долния колонтитул е твърде дълъг.
+    email:
+        group:
+            smtp: SMTP връзка
+            sender: Идентичност на изпращача
+        field:
+            host: SMTP сървър
+            port: Порт
+            encryption: Криптиране
+            username: Потребител
+            password: Парола
+            from_email: Имейл подател
+            from_name: Име подател
+        help:
+            intro: SMTP идентификационни данни за бъдещи имейли към клиенти. Изпращането все още не е активно.
+            encryption: Изберете режим на криптиране, поддържан от Вашия доставчик.
+            password: Оставете празно, за да запазите текущата парола. Новите стойности се съхраняват криптирани.
+        encryption:
+            none: Без
+            tls: TLS
+            ssl: SSL
+        password_stored: Паролата е зададена
+        error:
+            port_invalid: SMTP портът трябва да е между 1 и 65535.
+            from_email_invalid: Моля, въведете валиден имейл адрес на подател.
+
+# Statistics
+statistics:
+    title: Статистика
+    heading: Статистика
+    subtitle: Приходи, активност на поръчките и здраве на сервиза с един поглед.
+    value:
+        not_available: "Няма данни"
+    notice:
+        mixed_currencies: "Показва се само %currency%. В избрания период има и документи в: %others%."
+    filter:
+        period_label: Период
+        from: От
+        to: До
+        preset:
+            today: Днес
+            this_week: Тази седмица
+            this_month: Този месец
+            last_month: Миналия месец
+            this_year: Тази година
+            custom: Друг период
+    kpi:
+        total_revenue: Общи приходи
+        paid_amount: Платена сума
+        unpaid_amount: Неплатена сума
+        parts_revenue: Приход от части
+        parts_profit: Печалба от части
+        parts_profit.no_cost_hint: Няма въведена доставна цена за части в този период.
+        completed_work_orders: Завършени поръчки
+        open_work_orders: Отворени поръчки
+        open_work_orders.hint: Общо за всички периоди, не само избрания.
+        offer_conversion: Конверсия на оферти
+        offer_conversion.hint: Конвертирани оферти, делени на всички, различни от чернова.
+    chart:
+        revenue_over_time: Приходи по време
+        work_orders_by_status: Поръчки по статус
+        offers_by_status: Оферти по статус
+        payments_by_method: Плащания по метод
+    table:
+        top_clients: Топ клиенти
+        mechanic_workload: Натовареност на механиците
+        mechanic_workload.note: Въз основа на създателя на поръчката.
+        top_profitable_parts: Най-печеливши части
+        top_profitable_parts.note: Само за вътрешна употреба - печалба от части по поръчки в този период.
+    column:
+        client: Клиент
+        work_orders: Поръчки
+        total_revenue: Приход
+        unpaid_amount: Неплатено
+        mechanic: Механик
+        active: Активни
+        completed_in_period: Завършени
+        total_in_period: Общо
+        part: Част
+        quantity: Кол.
+        parts_revenue: Приход
+        parts_cost: Себест.
+        parts_profit: Печалба
+    empty:
+        chart: Няма данни за избрания период.
+        top_clients_title: Все още няма приходи от клиенти
+        top_clients: Никой клиент няма поръчки в избрания период.
+        mechanics_title: Няма поръчки в този период
+        mechanics: Натовареността се появява, когато механиците отворят или завършат поръчки.
+        top_parts_title: Все още няма продадени части
+        top_parts: Печалбата от части се появява, когато бъдат добавени позиции от тип „Част“.
+
+# PDF documents
+pdf:
+    document: Документ
+    action:
+        download: Изтегли PDF
+    company:
+        unnamed: Фирма
+        phone: Телефон
+        email: Имейл
+        company_id: ЕИК
+        vat_number: ДДС
+    offer:
+        title: Оферта
+        client: Клиент
+        vehicle: Автомобил
+        details: Детайли
+    work_order:
+        title: Поръчка за работа
+        client: Клиент
+        vehicle: Автомобил
+        details: Детайли
+    items:
+        empty: Няма позиции.
+    footer:
+        generated_by: Генерирано от Carstio - безплатен софтуер с отворен код за модерни автосервизи.
+
+# Outgoing client emails
+email:
+    action:
+        send: Изпрати по имейл
+    confirm:
+        send_offer: 'Да изпратим ли тази оферта по имейл до %email%?'
+        send_work_order: 'Да изпратим ли тази поръчка за работа по имейл до %email%?'
+    error:
+        client_missing_address: Този клиент няма имейл адрес.
+    greeting: 'Здравейте, %name%,'
+    signoff: "С уважение,\nекипът на %company%"
+    label:
+        offer_number: Номер на офертата
+        work_order_number: Номер на поръчката
+        client: Клиент
+        vehicle: Автомобил
+        scheduled_at: Планирано за
+        valid_until: Валидно до
+        total: Общо
+        mileage: Пробег
+    offer:
+        subject: 'Оферта %number% от %company%'
+        heading: 'Оферта %number%'
+        intro: 'Прикачена е офертата, изготвена от %company%.'
+        attachment_note: Офертата е прикачена като PDF документ.
+    work_order:
+        subject: 'Поръчка за работа %number% от %company%'
+        heading: 'Поръчка за работа %number%'
+        intro: 'Прикачено е резюмето на поръчката за работа от %company%.'
+        attachment_note: Поръчката за работа е прикачена като PDF документ.
+    footer:
+        generated_by: Генерирано от Carstio - безплатен софтуер с отворен код за модерни автосервизи.
+
+# Attachments
+attachment:
+    section:
+        title: Прикачени файлове
+    action:
+        upload: Качване на файл
+        download: Изтегляне
+        view: Преглед
+    field:
+        file: Файл
+        category: Категория
+        description: Описание
+        size: Размер
+        uploaded_by: Качил
+        uploaded_at: Качен на
+    category:
+        photo: Снимка
+        document: Документ
+        diagnostic: Диагностика
+        before_repair: Преди ремонт
+        after_repair: След ремонт
+        receipt: Касова бележка
+        other: Друго
+    empty: Все още няма качени файлове.
+    error:
+        file_required: Моля, изберете файл за качване.
+        too_large: Файлът е твърде голям. Максималният размер е 10 MB.
+        mime_type: Този тип файл не е разрешен. Разрешени са PDF, JPEG, PNG, WebP и MP4.
+        description_too_long: Описанието е твърде дълго.
+
+
+
+# User Management
+user:
+    index:
+        title: Потребители
+        heading: Потребители
+        empty: Все още няма потребители.
+        empty_title: Все още няма потребители
+    new:
+        title: Добавяне на потребител
+    edit:
+        title: Редакция на потребител
+    show:
+        details: Данни за потребителя
+    action:
+        new: Добавяне на потребител
+        deactivate: Деактивирай
+        activate: Активирай
+    confirm:
+        deactivate: Деактивиране на този потребител? Той повече няма да може да влиза.
+    field:
+        email: Имейл
+        full_name: Пълно име
+        password: Парола
+        new_password: Нова парола
+        role: Роля
+        status: Статус
+        active: Активен
+        created_at: Създаден на
+    help:
+        password_keep: Оставете празно, за да запазите текущата парола.
+    role:
+        admin: Администратор
+        mechanic: Механик
+    status:
+        active: Активен
+        inactive: Неактивен
+    error:
+        email_required: Моля, въведете имейл адрес.
+        email_invalid: Моля, въведете валиден имейл адрес.
+        email_taken: Този имейл вече се използва от друг потребител.
+        full_name_required: Моля, въведете име.
+        password_required: Моля, изберете парола.
+        password_too_short: Паролата трябва да е поне {{ limit }} символа.
+        last_admin: Не може да се премахне последният активен администратор.
+        cannot_deactivate_self: Не можете да деактивирате собствения си акаунт.
+        account_inactive: Вашият акаунт е неактивен. Моля, свържете се с администратор.
+
+# Mileage / odometer
+mileage:
+    label: Пробег
+    odometer_reading: Показание на километража
+    not_recorded: Пробегът не е записан
+    unit:
+        km: Километри
+        mi: Мили
+    error:
+        invalid: Невалиден пробег.
+        negative: Пробегът не може да бъде отрицателен.

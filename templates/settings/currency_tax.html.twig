@@ -1,0 +1,23 @@
+{% extends 'settings/_layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block settings_content %}
+    {{ form_start(form) }}
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.currency_tax.group.defaults'|trans }}</h2>
+            </div>
+            <div class="form-section">
+                <p class="form-section-help">{{ 'settings.currency_tax.help.intro'|trans }}</p>
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.default_currency_code) }}</div>
+                    <div class="col-md-6">{{ form_row(form.default_tax_rate) }}</div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <a href="{{ path('app_settings_currency_tax') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

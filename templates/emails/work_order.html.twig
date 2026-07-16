@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ subject|e('html') }}</title>
+</head>
+<body style="margin:0;padding:24px;font-family:Arial,Helvetica,sans-serif;color:#222;background:#f6f7f9;">
+<div style="max-width:600px;margin:0 auto;background:#ffffff;border:1px solid #e3e6eb;border-radius:8px;padding:24px;">
+    <h1 style="margin:0 0 16px;font-size:20px;color:#111;">{{ 'email.work_order.heading'|trans({'%number%': work_order.number}) }}</h1>
+
+    <p style="margin:0 0 12px;">{{ 'email.greeting'|trans({'%name%': work_order.client.name}) }}</p>
+    <p style="margin:0 0 16px;">{{ 'email.work_order.intro'|trans({'%company%': company.companyName ?? ''}) }}</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:0 0 16px;">
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.work_order_number'|trans }}</td><td style="padding:6px 0;font-weight:600;">{{ work_order.number }}</td></tr>
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.client'|trans }}</td><td style="padding:6px 0;">{{ work_order.client.name }}</td></tr>
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.vehicle'|trans }}</td><td style="padding:6px 0;">{{ work_order.car.displayName }}{% if work_order.car.licensePlate %} ({{ work_order.car.licensePlate }}){% endif %}</td></tr>
+        {% if work_order.scheduledAt %}
+            <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.scheduled_at'|trans }}</td><td style="padding:6px 0;">{{ work_order.scheduledAt|app_datetime }}</td></tr>
+        {% endif %}
+        {% if work_order.odometerReading is not null %}
+            <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.mileage'|trans }}</td><td style="padding:6px 0;">{{ work_order|app_mileage }}</td></tr>
+        {% endif %}
+        <tr><td style="padding:6px 0;color:#555;">{{ 'email.label.total'|trans }}</td><td style="padding:6px 0;font-weight:600;">{{ work_order.totalAmount|money(work_order.currencyCode) }}</td></tr>
+    </table>
+
+    <p style="margin:0 0 16px;">{{ 'email.work_order.attachment_note'|trans }}</p>
+    <p style="margin:0 0 16px;">{{ 'email.signoff'|trans({'%company%': company.companyName ?? ''}) }}</p>
+
+    <hr style="border:none;border-top:1px solid #e3e6eb;margin:24px 0 12px;">
+    <p style="margin:0;color:#888;font-size:12px;">{{ 'email.footer.generated_by'|trans }}</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+# Validation messages (validators domain).
+#
+# Symfony's Validator translates constraint messages through the
+# "validators" domain, NOT "messages". Every custom `message:` key
+# used in a constraint must therefore live in this catalogue.
+# Keep the wording in sync with any matching keys in messages.*.yaml.
+attachment:
+    error:
+        description_too_long: La descripción es demasiado larga.
+        file_required: Seleccione un archivo para subir.
+        mime_type: Este tipo de archivo no está permitido. Se permiten PDF, JPEG, PNG, WebP y MP4.
+        too_large: El archivo es demasiado grande. El tamaño máximo es 10 MB.
+mileage:
+    error:
+        negative: El kilometraje no puede ser negativo.
+settings:
+    company:
+        error:
+            email_invalid: Introduzca un correo electrónico válido.
+            logo_mime_type: Solo se admiten archivos PNG, JPG, WebP y SVG.
+            logo_too_large: El logotipo es demasiado grande. El tamaño máximo es 2 MB.
+            website_invalid: Introduzca una URL válida.
+    documents:
+        error:
+            footer_too_long: El texto del pie es demasiado largo.
+            prefix_invalid: Los prefijos solo pueden contener letras, números, guiones y guiones bajos.
+            validity_positive: La validez del presupuesto debe ser un número positivo de días.
+            validity_too_large: La validez del presupuesto es demasiado grande.
+    email:
+        error:
+            from_email_invalid: Introduzca un correo de remitente válido.
+            port_invalid: El puerto SMTP debe estar entre 1 y 65535.
+    regional:
+        error:
+            mileage_unit_invalid: Elija una unidad de kilometraje admitida.
+            timezone_invalid: Introduzca una zona horaria IANA válida.
+    tax:
+        error:
+            max: El tipo impositivo predeterminado no puede superar el 100 %.
+            must_be_positive: El tipo impositivo predeterminado no puede ser negativo.
+user:
+    error:
+        email_invalid: Por favor introduce un correo electrónico válido.
+        email_required: Por favor introduce un correo electrónico.
+        email_taken: Este correo ya está en uso por otro usuario.
+        full_name_required: Por favor introduce un nombre.
+        password_required: Por favor elige una contraseña.
+        password_too_short: La contraseña debe tener al menos {{ limit }} caracteres.

@@ -1,0 +1,43 @@
+{% extends 'settings/_layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block settings_content %}
+    {{ form_start(form, {attr: {autocomplete: 'off'}}) }}
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.email.group.smtp'|trans }}</h2>
+                {% if has_password %}
+                    <span class="status-badge status-badge--neutral">{{ 'settings.email.password_stored'|trans }}</span>
+                {% endif %}
+            </div>
+            <div class="form-section">
+                <p class="form-section-help">{{ 'settings.email.help.intro'|trans }}</p>
+                <div class="row g-3">
+                    <div class="col-md-8">{{ form_row(form.smtp_host) }}</div>
+                    <div class="col-md-4">{{ form_row(form.smtp_port) }}</div>
+                </div>
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.smtp_encryption) }}</div>
+                    <div class="col-md-6">{{ form_row(form.smtp_username) }}</div>
+                </div>
+                {{ form_row(form.newPassword) }}
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.email.group.sender'|trans }}</h2>
+            </div>
+            <div class="form-section">
+                <div class="row g-3">
+                    <div class="col-md-6">{{ form_row(form.smtp_from_email) }}</div>
+                    <div class="col-md-6">{{ form_row(form.smtp_from_name) }}</div>
+                </div>
+            </div>
+            <div class="form-footer">
+                <a href="{{ path('app_settings_email') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

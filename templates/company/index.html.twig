@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'company.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'company',
+        title: 'company.index.heading'|trans,
+        primary: { label: 'company.action.new'|trans, href: path('app_company_new'), icon: 'plus' }
+    } only %}
+
+    <div class="card">
+        {% if companies is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'company',
+                    title: 'company.index.empty_title'|trans,
+                    text: 'company.index.empty'|trans,
+                    primary: { label: 'company.action.new'|trans, href: path('app_company_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'company.field.name'|trans }}</th>
+                            <th>{{ 'company.field.client'|trans }}</th>
+                            <th>{{ 'company.field.city'|trans }}</th>
+                            <th>{{ 'company.field.identifier'|trans }}</th>
+                            <th class="text-center">{{ 'company.field.vat_registered'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for company in companies %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_company_show', {id: company.id}) }}">{{ company.name }}</a>
+                                </td>
+                                <td>
+                                    <a href="{{ path('app_client_show', {id: company.client.id}) }}">{{ company.client.name }}</a>
+                                </td>
+                                <td>{{ company.city }}</td>
+                                <td class="col-mono">{{ company.identifier }}</td>
+                                <td class="text-center">
+                                    {% if company.vat %}
+                                        <span class="status-badge status-badge--success">{{ 'label.yes'|trans }}</span>
+                                    {% else %}
+                                        <span class="status-badge status-badge--neutral">{{ 'label.no'|trans }}</span>
+                                    {% endif %}
+                                </td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_company_edit', {id: company.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                        {{ icon.render('pencil') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

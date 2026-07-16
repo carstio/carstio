@@ -1,0 +1,242 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ offer.number }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_offer_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'offer.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_offer_pdf', {id: offer.id}) }}" class="btn btn-outline-secondary">
+                {{ icon.render('download') }}<span>{{ 'pdf.action.download'|trans }}</span>
+            </a>
+
+            {% set client_email = offer.client.email %}
+            <form method="post" action="{{ path('app_offer_send_email', {id: offer.id}) }}"
+                  onsubmit="return confirm('{{ ('email.confirm.send_offer'|trans({'%email%': client_email ?? ''})) }}');">
+                <input type="hidden" name="_token" value="{{ csrf_token('offer-email-' ~ offer.id) }}">
+                <button type="submit" class="btn btn-outline-secondary"
+                        {% if not client_email %}disabled title="{{ 'email.error.client_missing_address'|trans }}"{% endif %}>
+                    {{ icon.render('mail') }}<span>{{ 'email.action.send'|trans }}</span>
+                </button>
+            </form>
+
+            {% if offer.convertible %}
+                <form method="post" action="{{ path('app_offer_convert', {id: offer.id}) }}" onsubmit="return confirm('{{ 'offer.confirm.convert'|trans }}');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('offer-convert-' ~ offer.id) }}">
+                    <button type="submit" class="btn btn-primary">
+                        {{ icon.render('work-order') }}<span>{{ 'offer.action.convert'|trans }}</span>
+                    </button>
+                </form>
+            {% endif %}
+
+            {% if offer.status.value != 'converted' %}
+                <div class="dropdown">
+                    <button class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ icon.render('refresh') }}<span>{{ 'offer.show.change_status'|trans }}</span>
+                        {{ icon.render('chevron-down', {size: 12}) }}
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        {% for status in statuses %}
+                            {% if status != offer.status and status.value != 'converted' %}
+                                <li>
+                                    <form method="post" action="{{ path('app_offer_status', {id: offer.id}) }}">
+                                        <input type="hidden" name="_token" value="{{ csrf_token('offer-status-' ~ offer.id) }}">
+                                        <button type="submit" name="status" value="{{ status.value }}" class="dropdown-item">
+                                            {{ ('offer.status.' ~ status.value)|trans }}
+                                        </button>
+                                    </form>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <a href="{{ path('app_offer_edit', {id: offer.id}) }}" class="btn btn-primary">
+                    {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+                </a>
+            {% endif %}
+
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_offer_delete', {id: offer.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-offer-' ~ offer.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {# ── Hero summary ── #}
+    <div class="hero-summary">
+        <div class="hero-summary-top">
+            <div class="hero-summary-eyebrow">{{ 'offer.field.number'|trans }}</div>
+            <h1 class="hero-summary-title">{{ offer.number }}</h1>
+            {% include 'offer/_status_badge.html.twig' with {status: offer.status} %}
+        </div>
+        <div class="hero-summary-grid">
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'offer.field.client'|trans }}</div>
+                <div class="hero-summary-field-value">
+                    <a href="{{ path('app_client_show', {id: offer.client.id}) }}">{{ offer.client.name }}</a>
+                </div>
+            </div>
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'offer.field.car'|trans }}</div>
+                <div class="hero-summary-field-value">
+                    <a href="{{ path('app_car_show', {id: offer.car.id}) }}">{{ offer.car.displayName }}</a>
+                    {% if offer.car.licensePlate %}<span class="text-muted d-block small">{{ offer.car.licensePlate }}</span>{% endif %}
+                </div>
+            </div>
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'offer.field.created_at'|trans }}</div>
+                <div class="hero-summary-field-value font-monospace">{{ offer.createdAt|app_datetime }}</div>
+            </div>
+            {% if offer.validUntil %}
+                <div class="hero-summary-field">
+                    <div class="hero-summary-field-label">{{ 'offer.field.valid_until'|trans }}</div>
+                    <div class="hero-summary-field-value font-monospace">{{ offer.validUntil|app_date }}</div>
+                </div>
+            {% endif %}
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'offer.field.total'|trans }}</div>
+                <div class="hero-summary-field-value hero-summary-field-value--strong">{{ offer.totalAmount|money(offer.currencyCode) }}</div>
+            </div>
+            {% if offer.workOrder %}
+                <div class="hero-summary-field">
+                    <div class="hero-summary-field-label">{{ 'offer.field.work_order'|trans }}</div>
+                    <div class="hero-summary-field-value">
+                        <a href="{{ path('app_work_order_show', {id: offer.workOrder.id}) }}" class="font-monospace">{{ offer.workOrder.number }}</a>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="row g-3">
+        {# ── Details ── #}
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'offer.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'offer.field.title'|trans }}</dt><dd>{{ offer.title ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'offer.field.created_by'|trans }}</dt><dd>{{ offer.createdBy ? offer.createdBy.fullName : '-' }}</dd></div>
+                        {% if offer.convertedAt %}
+                            <div class="kv-row"><dt>{{ 'offer.field.converted_at'|trans }}</dt><dd class="font-monospace">{{ offer.convertedAt|app_datetime }}</dd></div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        {# ── Notes ── #}
+        <div class="col-lg-6">
+            {% if offer.notes %}
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'offer.field.notes'|trans }}</h2>
+                    </div>
+                    <div class="section-card-body">{{ offer.notes|nl2br }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# ── Items ── #}
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'offer.show.items'|trans }}</h2>
+            {% if offer.status.value != 'converted' %}
+                <a href="{{ path('app_offer_edit', {id: offer.id}) }}" class="btn btn-sm btn-outline-primary">
+                    {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+                </a>
+            {% endif %}
+        </div>
+        {% if offer.items is empty %}
+            <div class="section-card-body">
+                <p class="text-muted mb-0">{{ 'offer.show.no_items'|trans }}</p>
+            </div>
+        {% else %}
+            {% set show_discount_col = has_discounts(offer.items) %}
+            <div class="section-card-body section-card-body--flush">
+                <div class="table-responsive">
+                    <table class="data-table table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ 'offer_item.field.type'|trans }}</th>
+                                <th>{{ 'offer_item.field.name'|trans }}</th>
+                                <th class="col-numeric">{{ 'offer_item.field.quantity'|trans }}</th>
+                                <th class="col-numeric">{{ 'offer_item.field.unit_price'|trans }}</th>
+                                {% if show_discount_col %}
+                                    <th class="col-numeric">{{ 'offer_item.field.discount'|trans }}</th>
+                                {% endif %}
+                                <th class="col-numeric">{{ 'offer_item.field.line_total'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in offer.items %}
+                                {% set type_class = {
+                                    'labor': 'status-badge--open',
+                                    'part':  'status-badge--success',
+                                    'misc':  'status-badge--neutral'
+                                }[item.type.value] ?? 'status-badge--neutral' %}
+                                <tr>
+                                    <td>
+                                        <span class="status-badge {{ type_class }}">{{ ('offer_item.type.' ~ item.type.value)|trans }}</span>
+                                    </td>
+                                    <td>{{ item.name }}</td>
+                                    <td class="col-numeric">{{ item.quantity }}</td>
+                                    <td class="col-numeric">{{ item.unitPrice|money(offer.currencyCode) }}</td>
+                                    {% if show_discount_col %}
+                                        <td class="col-numeric">{{ item.discountAmount is discounted ? item.discountAmount|money(offer.currencyCode) : '' }}</td>
+                                    {% endif %}
+                                    <td class="col-numeric fw-semibold">{{ item.lineTotal|money(offer.currencyCode) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row g-3">
+        <div class="col-lg-7"></div>
+
+        {# ── Totals ── #}
+        <div class="col-lg-5">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'offer.show.totals'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <div class="totals-row"><span>{{ 'offer.field.subtotal_labor'|trans }}</span><span class="totals-value">{{ offer.subtotalLabor|money(offer.currencyCode) }}</span></div>
+                    <div class="totals-row"><span>{{ 'offer.field.subtotal_parts'|trans }}</span><span class="totals-value">{{ offer.subtotalParts|money(offer.currencyCode) }}</span></div>
+                    {% if offer.discountAmount is discounted %}
+                        <div class="totals-row"><span>{{ 'offer.field.discount'|trans }}</span><span class="totals-value">-{{ offer.discountAmount|money(offer.currencyCode) }}</span></div>
+                    {% endif %}
+                    <div class="totals-row"><span>{{ 'offer.field.tax'|trans }}</span><span class="totals-value">{{ offer.taxAmount|money(offer.currencyCode) }}</span></div>
+                    <div class="totals-row totals-total"><span>{{ 'offer.field.total'|trans }}</span><span class="totals-value">{{ offer.totalAmount|money(offer.currencyCode) }}</span></div>
+                </div>
+            </div>
+
+            {% include '_partials/parts_margin_card.html.twig' with {
+                parts_margin: parts_margin,
+                currency_code: offer.currencyCode
+            } only %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,19 @@
+# Local development Caddyfile.
+#
+# Listens on :80 inside the container; the host port is mapped by
+# compose.override.yaml (default http://localhost:8080).
+#
+# Static files in public/ are served directly by Caddy. Everything else is
+# routed to the `app` PHP-FPM service via FastCGI.
+:80 {
+    root * /var/www/html/public
+    encode zstd gzip
+
+    php_fastcgi app:9000
+
+    file_server
+
+    log {
+        output stdout
+    }
+}

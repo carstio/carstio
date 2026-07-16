@@ -1,0 +1,190 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'statistics.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'chart',
+        title: 'statistics.heading'|trans,
+        subtitle: 'statistics.subtitle'|trans
+    } only %}
+
+    {% include 'statistics/_period_filter.html.twig' with {
+        presets: presets,
+        current: dashboard.period.preset,
+        from: from,
+        to: to
+    } only %}
+
+    {% if dashboard.hasMixedCurrencies %}
+        <div class="alert alert-info">
+            {{ icon.render('info') }}
+            <span>
+                {{ 'statistics.notice.mixed_currencies'|trans({
+                    '%currency%': dashboard.displayCurrencyCode,
+                    '%others%': dashboard.otherCurrencyCodes|join(', ')
+                }) }}
+            </span>
+        </div>
+    {% endif %}
+
+    <div class="summary-grid">
+        {% for kpi in dashboard.kpis %}
+            <div class="summary-tile">
+                <div class="summary-tile-icon summary-tile-icon--{{ kpi.iconVariant }}">
+                    {{ icon.render(kpi.icon, {size: 20}) }}
+                </div>
+                <div class="summary-tile-text">
+                    <div class="summary-tile-label">{{ kpi.labelKey|trans }}</div>
+                    <div class="summary-tile-value">{{ kpi.value }}</div>
+                    {% if kpi.hint %}
+                        <div class="summary-tile-meta">{{ kpi.hint }}</div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <div class="statistics-charts-grid">
+        {% include 'statistics/_chart_card.html.twig' with {
+            title_key: 'statistics.chart.revenue_over_time',
+            chart: dashboard.charts.revenue_over_time
+        } only %}
+
+        {% include 'statistics/_chart_card.html.twig' with {
+            title_key: 'statistics.chart.work_orders_by_status',
+            chart: dashboard.charts.work_orders_by_status
+        } only %}
+
+        {% include 'statistics/_chart_card.html.twig' with {
+            title_key: 'statistics.chart.offers_by_status',
+            chart: dashboard.charts.offers_by_status
+        } only %}
+
+        {% include 'statistics/_chart_card.html.twig' with {
+            title_key: 'statistics.chart.payments_by_method',
+            chart: dashboard.charts.payments_by_method
+        } only %}
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'statistics.table.top_clients'|trans }}</h2>
+        </div>
+        {% if dashboard.topClients is empty %}
+            <div class="section-card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'clients',
+                    title: 'statistics.empty.top_clients_title'|trans,
+                    text: 'statistics.empty.top_clients'|trans
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive section-card-body--flush">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'statistics.column.client'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.work_orders'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.total_revenue'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.unpaid_amount'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in dashboard.topClients %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_client_show', {id: row.clientId}) }}">{{ row.clientName }}</a>
+                                </td>
+                                <td class="col-numeric">{{ row.workOrderCount }}</td>
+                                <td class="col-numeric fw-medium">{{ row.totalRevenue|money(dashboard.displayCurrencyCode) }}</td>
+                                <td class="col-numeric">{{ row.unpaidAmount|money(dashboard.displayCurrencyCode) }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'statistics.table.mechanic_workload'|trans }}</h2>
+            <span class="text-muted small">{{ 'statistics.table.mechanic_workload.note'|trans }}</span>
+        </div>
+        {% if dashboard.mechanicWorkload is empty %}
+            <div class="section-card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'work-order',
+                    title: 'statistics.empty.mechanics_title'|trans,
+                    text: 'statistics.empty.mechanics'|trans
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive section-card-body--flush">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'statistics.column.mechanic'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.active'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.completed_in_period'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.total_in_period'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in dashboard.mechanicWorkload %}
+                            <tr>
+                                <td class="col-primary">{{ row.fullName }}</td>
+                                <td class="col-numeric">{{ row.activeWorkOrders }}</td>
+                                <td class="col-numeric">{{ row.completedInPeriod }}</td>
+                                <td class="col-numeric fw-medium">{{ row.totalAssigned }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'statistics.table.top_profitable_parts'|trans }}</h2>
+            <span class="text-muted small">{{ 'statistics.table.top_profitable_parts.note'|trans }}</span>
+        </div>
+        {% if dashboard.topProfitableParts is empty %}
+            <div class="section-card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'part',
+                    title: 'statistics.empty.top_parts_title'|trans,
+                    text: 'statistics.empty.top_parts'|trans
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive section-card-body--flush">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'statistics.column.part'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.quantity'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.parts_revenue'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.parts_cost'|trans }}</th>
+                            <th class="col-numeric">{{ 'statistics.column.parts_profit'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in dashboard.topProfitableParts %}
+                            <tr>
+                                <td class="col-primary">{{ row.name }}</td>
+                                <td class="col-numeric">{{ row.quantity }}</td>
+                                <td class="col-numeric">{{ row.revenue|money(dashboard.displayCurrencyCode) }}</td>
+                                <td class="col-numeric">{{ row.hasCostData ? row.cost|money(dashboard.displayCurrencyCode) : '-' }}</td>
+                                <td class="col-numeric fw-medium">{{ row.hasCostData ? row.profit|money(dashboard.displayCurrencyCode) : '-' }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'login.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-brand">
+                <img src="{{ asset('logo.svg') }}" alt="{{ 'app.name'|trans }}">
+                <span>{{ 'app.name'|trans }}</span>
+            </div>
+
+            <h1 class="login-title">{{ 'login.heading'|trans }}</h1>
+            <p class="login-subtitle">{{ 'login.subtitle'|trans }}</p>
+
+            {% if error %}
+                <div class="alert alert-danger mb-3">
+                    {{ error.messageKey|trans(error.messageData, 'security') }}
+                </div>
+            {% endif %}
+
+            <form method="post">
+                <div class="mb-3">
+                    <label for="inputEmail" class="form-label fw-medium">{{ 'login.email'|trans }}</label>
+                    <input type="email" id="inputEmail" name="_username" class="form-control form-control-lg"
+                           value="{{ last_username }}" required autofocus
+                           placeholder="{{ 'login.email_placeholder'|trans }}">
+                </div>
+
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label fw-medium">{{ 'login.password'|trans }}</label>
+                    <input type="password" id="inputPassword" name="_password" class="form-control form-control-lg"
+                           required placeholder="{{ 'login.password_placeholder'|trans }}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-medium">{{ 'locale.switcher.label'|trans }}</label>
+                    {% include '_partials/language_switcher.html.twig' with {variant: 'form-field'} only %}
+                </div>
+
+                <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+
+                <button type="submit" class="btn btn-primary btn-lg w-100">
+                    {{ 'login.submit'|trans }}
+                </button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

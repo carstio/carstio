@@ -1,0 +1,36 @@
+{% extends 'settings/_layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block settings_content %}
+    {{ form_start(form) }}
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.documents.group.numbering'|trans }}</h2>
+            </div>
+            <div class="form-section">
+                <p class="form-section-help">{{ 'settings.documents.help.numbering'|trans }}</p>
+                <div class="row g-3">
+                    <div class="col-md-4">{{ form_row(form.offer_number_prefix) }}</div>
+                    <div class="col-md-4">{{ form_row(form.work_order_number_prefix) }}</div>
+                    <div class="col-md-4">{{ form_row(form.invoice_number_prefix) }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-card">
+            <div class="section-card-header">
+                <h2 class="section-card-title">{{ 'settings.documents.group.defaults'|trans }}</h2>
+            </div>
+            <div class="form-section">
+                <div class="row g-3">
+                    <div class="col-md-4">{{ form_row(form.default_offer_validity_days) }}</div>
+                </div>
+                {{ form_row(form.document_footer_text) }}
+            </div>
+            <div class="form-footer">
+                <a href="{{ path('app_settings_documents') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+            </div>
+        </div>
+    {{ form_end(form) }}
+{% endblock %}

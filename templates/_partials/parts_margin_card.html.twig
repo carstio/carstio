@@ -1,0 +1,22 @@
+{#
+  Internal-only summary of parts cost / revenue / profit / margin for one
+  document. Receives:
+    - parts_margin:  App\Service\PartsMargin
+    - currency_code: ISO currency string
+  This partial is rendered on admin pages only - never include it from a
+  client-facing PDF template, since it exposes the workshop's purchase cost.
+#}
+{% if parts_margin.sellTotal|number_format > 0 or parts_margin.hasCostData %}
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'parts_margin.title'|trans }}</h2>
+            <span class="text-muted small">{{ 'parts_margin.internal_only'|trans }}</span>
+        </div>
+        <div class="section-card-body">
+            <div class="totals-row"><span>{{ 'parts_margin.field.revenue'|trans }}</span><span class="totals-value">{{ parts_margin.sellTotal|money(currency_code) }}</span></div>
+            <div class="totals-row"><span>{{ 'parts_margin.field.cost'|trans }}</span><span class="totals-value">{{ parts_margin.hasCostData ? parts_margin.costTotal|money(currency_code) : '-' }}</span></div>
+            <div class="totals-row totals-total"><span>{{ 'parts_margin.field.profit'|trans }}</span><span class="totals-value">{{ parts_margin.hasCostData ? parts_margin.profit|money(currency_code) : '-' }}</span></div>
+            <div class="totals-row"><span>{{ 'parts_margin.field.margin'|trans }}</span><span class="totals-value">{{ parts_margin.marginPercent is not null ? parts_margin.marginPercent ~ '%' : '-' }}</span></div>
+        </div>
+    </div>
+{% endif %}

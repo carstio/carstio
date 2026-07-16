@@ -7,6 +7,12 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.uploads_dir: '%kernel.project_dir%/public/uploads'
+    app.uploads_public_prefix: '/uploads'
+    # Attachments live OUTSIDE the public web root: customer/repair/payment
+    # files may be sensitive and must only be reachable through authenticated
+    # controller routes.
+    app.attachments_storage_dir: '%kernel.project_dir%/var/storage/attachments'
 
 services:
     # default configuration for services in *this* file
@@ -19,5 +25,41 @@ services:
     App\:
         resource: '../src/'
 
+    App\Service\Settings\LogoUploader:
+        arguments:
+            $uploadsDir: '%app.uploads_dir%/settings/company'
+            $publicPrefix: '%app.uploads_public_prefix%/settings/company'
+
+    App\Service\Settings\SmtpPasswordEncrypter:
+        arguments:
+            $appSecret: '%kernel.secret%'
+
+    App\Service\Pdf\PdfRenderer:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Service\Pdf\CompanyProfileProvider:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\Service\Attachment\AttachmentStorage:
+        arguments:
+            $storageRoot: '%app.attachments_storage_dir%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+when@test:
+    parameters:
+        # Keep test uploads away from the dev storage root so a failing
+        # test cannot leave junk in var/storage/attachments.
+        app.attachments_storage_dir: '%kernel.project_dir%/var/storage/attachments_test'
+
+    services:
+        # Swap the real SMTP factory for a recording one so functional tests
+        # can assert on the composed email without touching the network.
+        App\Service\Email\SmtpMailerFactory:
+            class: App\Tests\Support\Email\RecordingSmtpMailerFactory
+            arguments:
+                $settings: '@App\Service\Settings\SettingsProvider'
+            public: true

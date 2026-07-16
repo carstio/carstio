@@ -1,0 +1,68 @@
+{#
+  Period filter for the statistics dashboard.
+  Parameters:
+    presets       - list<string> of preset slugs
+    current       - string, currently selected preset
+    from          - string, ISO date for custom range start
+    to            - string, ISO date for custom range end
+#}
+{% import '_macros/icon.html.twig' as icon %}
+
+<form method="get" class="toolbar statistics-filter" data-controller="statistics-filter">
+    <div class="toolbar-filters">
+        <label for="statistics-period" class="form-label mb-0 me-2 text-muted small">
+            {{ 'statistics.filter.period_label'|trans }}
+        </label>
+        <select
+            id="statistics-period"
+            name="range"
+            class="form-select"
+            data-statistics-filter-target="range"
+            data-action="change->statistics-filter#toggleCustom"
+        >
+            {% for preset in presets %}
+                <option value="{{ preset }}" {{ current == preset ? 'selected' }}>
+                    {{ ('statistics.filter.preset.' ~ preset)|trans }}
+                </option>
+            {% endfor %}
+        </select>
+
+        <div
+            class="d-flex align-items-center gap-2 statistics-filter-custom"
+            data-statistics-filter-target="custom"
+            {% if current != 'custom' %}hidden{% endif %}
+        >
+            <label for="statistics-from" class="form-label mb-0 text-muted small">
+                {{ 'statistics.filter.from'|trans }}
+            </label>
+            <input
+                type="date"
+                id="statistics-from"
+                name="from"
+                value="{{ from }}"
+                class="form-control"
+                data-controller="datetime-field"
+                data-datetime-field-mode-value="date"
+            >
+            <label for="statistics-to" class="form-label mb-0 text-muted small">
+                {{ 'statistics.filter.to'|trans }}
+            </label>
+            <input
+                type="date"
+                id="statistics-to"
+                name="to"
+                value="{{ to }}"
+                class="form-control"
+                data-controller="datetime-field"
+                data-datetime-field-mode-value="date"
+            >
+        </div>
+    </div>
+
+    <div class="toolbar-actions">
+        <button type="submit" class="btn btn-primary">
+            {{ icon.render('filter') }}
+            <span>{{ 'action.apply'|trans }}</span>
+        </button>
+    </div>
+</form>

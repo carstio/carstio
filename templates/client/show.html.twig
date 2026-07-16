@@ -1,0 +1,255 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ client.name }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_client_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'client.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_client_edit', {id: client.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_client_delete', {id: client.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-client-' ~ client.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'clients',
+        title: client.name
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'client.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'client.field.name'|trans }}</dt><dd>{{ client.name }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'client.field.phone'|trans }}</dt><dd>{{ client.phone }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'client.field.email'|trans }}</dt><dd>{{ client.email ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'client.field.notes'|trans }}</dt><dd>{{ client.notes ?? '-' }}</dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'client.show.cars'|trans }}</h2>
+                    <a href="{{ path('app_car_new', {client: client.id}) }}" class="btn btn-sm btn-outline-primary">
+                        {{ icon.render('plus') }}<span>{{ 'action.add'|trans }}</span>
+                    </a>
+                </div>
+                {% if client.cars is empty %}
+                    <div class="section-card-body">
+                        <p class="text-muted mb-0">{{ 'client.show.no_cars'|trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="section-card-body section-card-body--flush">
+                        <div class="table-responsive">
+                            <table class="data-table table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'car.field.model'|trans }}</th>
+                                        <th>{{ 'car.field.license_plate'|trans }}</th>
+                                        <th class="col-actions"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for car in client.cars %}
+                                        <tr>
+                                            <td class="col-primary"><a href="{{ path('app_car_show', {id: car.id}) }}">{{ car.displayName }}</a></td>
+                                            <td>{{ car.licensePlate ?? '-' }}</td>
+                                            <td class="col-actions">
+                                                <a href="{{ path('app_car_show', {id: car.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                                    {{ icon.render('eye') }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'client.show.companies'|trans }}</h2>
+                    <a href="{{ path('app_company_new', {client: client.id}) }}" class="btn btn-sm btn-outline-primary">
+                        {{ icon.render('plus') }}<span>{{ 'action.add'|trans }}</span>
+                    </a>
+                </div>
+                {% if client.companies is empty %}
+                    <div class="section-card-body">
+                        <p class="text-muted mb-0">{{ 'client.show.no_companies'|trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="section-card-body section-card-body--flush">
+                        <div class="table-responsive">
+                            <table class="data-table table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'company.field.name'|trans }}</th>
+                                        <th>{{ 'company.field.identifier'|trans }}</th>
+                                        <th class="col-actions"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for company in client.companies %}
+                                        <tr>
+                                            <td class="col-primary"><a href="{{ path('app_company_show', {id: company.id}) }}">{{ company.name }}</a></td>
+                                            <td class="col-mono">{{ company.identifier }}</td>
+                                            <td class="col-actions">
+                                                <a href="{{ path('app_company_show', {id: company.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                                    {{ icon.render('eye') }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'client.show.work_orders'|trans }}</h2>
+            <span class="text-muted small">{{ 'client.show.work_orders_recent_note'|trans }}</span>
+        </div>
+        {% if recent_work_orders is empty %}
+            <div class="section-card-body">
+                <p class="text-muted mb-0">{{ 'client.show.no_work_orders'|trans }}</p>
+            </div>
+        {% else %}
+            <div class="section-card-body section-card-body--flush">
+                <div class="table-responsive">
+                    <table class="data-table table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ 'work_order.field.number'|trans }}</th>
+                                <th>{{ 'work_order.field.car'|trans }}</th>
+                                <th>{{ 'work_order.field.status'|trans }}</th>
+                                <th>{{ 'work_order.field.opened_at'|trans }}</th>
+                                <th>{{ 'work_order.field.scheduled_at'|trans }}</th>
+                                <th>{{ 'work_order.field.created_by'|trans }}</th>
+                                <th class="col-numeric">{{ 'work_order.field.total'|trans }}</th>
+                                <th>{{ 'work_order.field.payment_status'|trans }}</th>
+                                <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for work_order in recent_work_orders %}
+                                <tr>
+                                    <td class="col-primary">
+                                        <a href="{{ path('app_work_order_show', {id: work_order.id}) }}" class="font-monospace">{{ work_order.number }}</a>
+                                    </td>
+                                    <td>{{ work_order.car ? work_order.car.displayName : '-' }}</td>
+                                    <td>{% include 'work_order/_status_badge.html.twig' with {status: work_order.status} only %}</td>
+                                    <td class="col-mono">{{ work_order.openedAt|app_date }}</td>
+                                    <td class="col-mono">{{ work_order.scheduledAt ? work_order.scheduledAt|app_datetime : '-' }}</td>
+                                    <td>{{ work_order.createdBy ? work_order.createdBy.fullName : '-' }}</td>
+                                    <td class="col-numeric fw-medium">{{ work_order.totalAmount|money(work_order.currencyCode) }}</td>
+                                    <td>{% include '_partials/payment_status_badge.html.twig' with {status: work_order.paymentStatus} only %}</td>
+                                    <td class="col-actions">
+                                        <a href="{{ path('app_work_order_show', {id: work_order.id}) }}"
+                                           class="btn btn-sm btn-outline-secondary btn-icon"
+                                           aria-label="{{ 'client.show.action.view_work_order'|trans }}"
+                                           title="{{ 'client.show.action.view_work_order'|trans }}">
+                                            {{ icon.render('eye') }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'client.show.offers'|trans }}</h2>
+            <span class="text-muted small">{{ 'client.show.offers_recent_note'|trans }}</span>
+        </div>
+        {% if recent_offers is empty %}
+            <div class="section-card-body">
+                <p class="text-muted mb-0">{{ 'client.show.no_offers'|trans }}</p>
+            </div>
+        {% else %}
+            <div class="section-card-body section-card-body--flush">
+                <div class="table-responsive">
+                    <table class="data-table table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ 'offer.field.number'|trans }}</th>
+                                <th>{{ 'offer.field.car'|trans }}</th>
+                                <th>{{ 'offer.field.status'|trans }}</th>
+                                <th>{{ 'offer.field.created_at'|trans }}</th>
+                                <th>{{ 'offer.field.valid_until'|trans }}</th>
+                                <th class="col-numeric">{{ 'offer.field.total'|trans }}</th>
+                                <th>{{ 'offer.field.work_order'|trans }}</th>
+                                <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for offer in recent_offers %}
+                                <tr>
+                                    <td class="col-primary">
+                                        <a href="{{ path('app_offer_show', {id: offer.id}) }}" class="font-monospace">{{ offer.number }}</a>
+                                    </td>
+                                    <td>{{ offer.car ? offer.car.displayName : '-' }}</td>
+                                    <td>{% include 'offer/_status_badge.html.twig' with {status: offer.status} only %}</td>
+                                    <td class="col-mono">{{ offer.createdAt|app_date }}</td>
+                                    <td class="col-mono">{{ offer.validUntil ? offer.validUntil|app_date : '-' }}</td>
+                                    <td class="col-numeric fw-medium">{{ offer.totalAmount|money(offer.currencyCode) }}</td>
+                                    <td>
+                                        {% if offer.workOrder %}
+                                            <a href="{{ path('app_work_order_show', {id: offer.workOrder.id}) }}" class="font-monospace">{{ offer.workOrder.number }}</a>
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                    <td class="col-actions">
+                                        <a href="{{ path('app_offer_show', {id: offer.id}) }}"
+                                           class="btn btn-sm btn-outline-secondary btn-icon"
+                                           aria-label="{{ 'client.show.action.view_offer'|trans }}"
+                                           title="{{ 'client.show.action.view_offer'|trans }}">
+                                            {{ icon.render('eye') }}
+                                        </a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

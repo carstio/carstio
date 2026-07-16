@@ -1,0 +1,48 @@
+# Validation messages (validators domain).
+#
+# Symfony's Validator translates constraint messages through the
+# "validators" domain, NOT "messages". Every custom `message:` key
+# used in a constraint must therefore live in this catalogue.
+# Keep the wording in sync with any matching keys in messages.*.yaml.
+attachment:
+    error:
+        description_too_long: The description is too long.
+        file_required: Please select a file to upload.
+        mime_type: This file type is not allowed. Allowed types are PDF, JPEG, PNG, WebP and MP4.
+        too_large: The file is too large. Maximum size is 10 MB.
+mileage:
+    error:
+        negative: Mileage cannot be negative.
+settings:
+    company:
+        error:
+            email_invalid: Please enter a valid email address.
+            logo_mime_type: Only PNG, JPG, WebP and SVG files are allowed.
+            logo_too_large: The logo is too large. Maximum size is 2 MB.
+            website_invalid: Please enter a valid URL.
+    documents:
+        error:
+            footer_too_long: The footer text is too long.
+            prefix_invalid: Prefixes can only contain letters, digits, hyphens, and underscores.
+            validity_positive: Offer validity must be a positive number of days.
+            validity_too_large: Offer validity is too large.
+    email:
+        error:
+            from_email_invalid: Please enter a valid sender email address.
+            port_invalid: The SMTP port must be between 1 and 65535.
+    regional:
+        error:
+            mileage_unit_invalid: Please choose a supported mileage unit.
+            timezone_invalid: Please enter a valid IANA timezone.
+    tax:
+        error:
+            max: The default tax rate cannot exceed 100%.
+            must_be_positive: The default tax rate cannot be negative.
+user:
+    error:
+        email_invalid: Please enter a valid email address.
+        email_required: Please enter an email address.
+        email_taken: This email address is already used by another user.
+        full_name_required: Please enter a name.
+        password_required: Please choose a password.
+        password_too_short: The password must be at least {{ limit }} characters long.

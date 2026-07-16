@@ -1,0 +1,67 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'user.index.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'clients',
+        title: 'user.index.heading'|trans,
+        primary: { label: 'user.action.new'|trans, href: path('app_user_new'), icon: 'plus' }
+    } only %}
+
+    <div class="card">
+        {% if users is empty %}
+            <div class="card-body">
+                {% include '_partials/empty_state.html.twig' with {
+                    icon_name: 'clients',
+                    title: 'user.index.empty_title'|trans,
+                    text: 'user.index.empty'|trans,
+                    primary: { label: 'user.action.new'|trans, href: path('app_user_new'), icon: 'plus' }
+                } only %}
+            </div>
+        {% else %}
+            <div class="table-responsive">
+                <table class="data-table table mb-0">
+                    <thead>
+                        <tr>
+                            <th>{{ 'user.field.full_name'|trans }}</th>
+                            <th>{{ 'user.field.email'|trans }}</th>
+                            <th>{{ 'user.field.role'|trans }}</th>
+                            <th>{{ 'user.field.status'|trans }}</th>
+                            <th>{{ 'user.field.created_at'|trans }}</th>
+                            <th class="col-actions">{{ 'label.actions'|trans }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            {% set is_admin = 'ROLE_ADMIN' in user.roles %}
+                            <tr>
+                                <td class="col-primary">
+                                    <a href="{{ path('app_user_show', {id: user.id}) }}">{{ user.fullName }}</a>
+                                </td>
+                                <td>{{ user.email }}</td>
+                                <td>
+                                    <span class="status-badge {{ is_admin ? 'status-badge--success' : 'status-badge--neutral' }}">
+                                        {{ (is_admin ? 'user.role.admin' : 'user.role.mechanic')|trans }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="status-badge {{ user.active ? 'status-badge--success' : 'status-badge--danger' }}">
+                                        {{ (user.active ? 'user.status.active' : 'user.status.inactive')|trans }}
+                                    </span>
+                                </td>
+                                <td class="col-mono">{{ user.createdAt|app_date }}</td>
+                                <td class="col-actions">
+                                    <a href="{{ path('app_user_edit', {id: user.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.edit'|trans }}" title="{{ 'action.edit'|trans }}">
+                                        {{ icon.render('pencil') }}
+                                    </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

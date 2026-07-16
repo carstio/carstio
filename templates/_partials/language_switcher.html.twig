@@ -1,0 +1,68 @@
+{#
+  Language switcher.
+
+  Renders only the dropdown UI. The buttons reference a single <form>
+  with id="language-switcher-form" via the HTML5 `form` attribute, so the
+  actual <form> element lives outside the topbar (and outside any other
+  form on the page). It is emitted once at the end of <body> by
+  templates/base.html.twig. Keeping the form there guarantees:
+    - no nested-form HTML (browsers would otherwise drop the inner form)
+    - `$crawler->filter('form')` selectors in tests pick up the business
+      form first because the locale form is the last one in document order
+  Parameters:
+    - variant:
+        "topbar" | "compact" - small Bootstrap dropdown showing only the
+                               current locale code; for tight surfaces.
+        "form-field"        - full-width dropdown shaped like a form input;
+                               for placement near login/profile forms.
+#}
+{% set variant = variant|default('topbar') %}
+{% set current = app.request.locale %}
+
+{% if variant == 'form-field' %}
+    {% set current_label = ('locale.code.' ~ current)|trans %}
+    {% for label, code in supported_locales() %}
+        {% if code == current %}{% set current_label = label %}{% endif %}
+    {% endfor %}
+
+    <div class="dropdown language-switcher language-switcher-form-field">
+        <button type="button"
+                class="form-select form-select-lg text-start language-switcher-trigger"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-label="{{ 'locale.switcher.label'|trans }}">
+            {{ current_label }}
+        </button>
+        <ul class="dropdown-menu w-100">
+            {% for label, code in supported_locales() %}
+                <li>
+                    <button type="submit"
+                            form="language-switcher-form"
+                            formaction="{{ path('app_locale_switch', {locale: code}) }}"
+                            class="dropdown-item {{ code == current ? 'active' : '' }}">
+                        {{ label }}
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% else %}
+    <div class="dropdown language-switcher language-switcher-{{ variant }}">
+        <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-label="{{ 'locale.switcher.label'|trans }}">
+            <span class="language-switcher-current">{{ ('locale.code.' ~ current)|trans }}</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end">
+            {% for label, code in supported_locales() %}
+                <li>
+                    <button type="submit"
+                            form="language-switcher-form"
+                            formaction="{{ path('app_locale_switch', {locale: code}) }}"
+                            class="dropdown-item {{ code == current ? 'active' : '' }}">
+                        {{ label }}
+                    </button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endif %}

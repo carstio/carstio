@@ -1,0 +1,24 @@
+{#
+  Chart card with title and Chart.js canvas.
+  Parameters:
+    title_key  - translation key for the section title
+    chart      - App\Service\Statistics\View\ChartDataView
+#}
+<div class="section-card">
+    <div class="section-card-header">
+        <h2 class="section-card-title">{{ title_key|trans }}</h2>
+    </div>
+    <div class="section-card-body">
+        {% if chart.empty %}
+            <p class="text-muted small mb-0">{{ 'statistics.empty.chart'|trans }}</p>
+        {% else %}
+            <div
+                class="statistics-chart"
+                data-controller="statistics-chart"
+                data-statistics-chart-config-value="{{ chart.toArray|json_encode|e('html_attr') }}"
+            >
+                <canvas data-statistics-chart-target="canvas" height="220"></canvas>
+            </div>
+        {% endif %}
+    </div>
+</div>

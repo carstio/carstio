@@ -1,0 +1,851 @@
+# Application
+app:
+    name: Carstio
+
+# Navigation
+nav:
+    toggle_menu: Menü umschalten
+    dashboard: Übersicht
+    clients: Kunden
+    cars: Fahrzeuge
+    companies: Firmen
+    offers: Angebote
+    work_orders: Aufträge
+    parts: Ersatzteile
+    payments: Zahlungen
+    statistics: Statistiken
+    settings: Einstellungen
+    users: Benutzer
+    logout: Abmelden
+    section:
+        main: Allgemein
+        workshop: Werkstatt
+        system: System
+
+# Login
+login:
+    title: Anmelden
+    heading: Willkommen zurück
+    subtitle: Melden Sie sich an, um auf Ihre Werkstatt zuzugreifen.
+    email: E-Mail-Adresse
+    email_placeholder: sie@beispiel.de
+    password: Passwort
+    password_placeholder: Ihr Passwort
+    submit: Anmelden
+
+# Locale / language switcher
+locale:
+    switcher:
+        label: Sprache
+    code:
+        en: EN
+        bg: BG
+        de: DE
+        es: ES
+        fr: FR
+
+# Global header search
+search:
+    placeholder: Kunden, Fahrzeuge, Firmen suchen…
+    loading: Suche läuft…
+    empty: Keine Ergebnisse gefunden
+    error: Suche fehlgeschlagen. Bitte erneut versuchen.
+    group:
+        clients: Kunden
+        cars: Fahrzeuge
+        companies: Firmen
+
+# Dashboard
+dashboard:
+    title: Übersicht
+    heading: Übersicht
+    subtitle: Überblick über die Aktivität Ihrer Werkstatt.
+    stat:
+        open_work_orders: Offene Aufträge
+        completed_today: Heute abgeschlossen
+        total_clients: Kunden gesamt
+        total_cars: Fahrzeuge gesamt
+    calendar:
+        title: Geplante Aufträge
+        no_scheduled: Bisher keine geplanten Aufträge.
+
+# Common labels
+label:
+    actions: Aktionen
+    status: Status
+    yes: "Ja"
+    no: "Nein"
+
+# Common actions
+action:
+    close: Schließen
+    save: Speichern
+    cancel: Abbrechen
+    delete: Löschen
+    edit: Bearbeiten
+    search: Suchen
+    apply: Anwenden
+    view: Anzeigen
+    add: Hinzufügen
+    more: Mehr
+    new: Neu
+
+# UI strings consumed by JavaScript / Stimulus controllers.
+js:
+    button:
+        now: Jetzt
+        today: Heute
+    action:
+        remove: Entfernen
+
+# Confirmation
+confirm:
+    delete: Möchten Sie diesen Datensatz wirklich löschen?
+
+# Flash messages
+flash:
+    delete:
+        restricted: Dieser Datensatz kann nicht gelöscht werden, da er noch von anderen Datensätzen verwendet wird.
+    client:
+        created: Kunde erfolgreich angelegt.
+        updated: Kunde erfolgreich aktualisiert.
+        deleted: Kunde gelöscht.
+    car:
+        created: Fahrzeug erfolgreich hinzugefügt.
+        updated: Fahrzeug erfolgreich aktualisiert.
+        deleted: Fahrzeug gelöscht.
+    company:
+        created: Firma erfolgreich angelegt.
+        updated: Firma erfolgreich aktualisiert.
+        deleted: Firma gelöscht.
+    part:
+        created: Ersatzteil erfolgreich angelegt.
+        updated: Ersatzteil erfolgreich aktualisiert.
+        deleted: Ersatzteil gelöscht.
+    work_order:
+        created: Auftrag erfolgreich angelegt.
+        updated: Auftrag erfolgreich aktualisiert.
+        deleted: Auftrag gelöscht.
+        status_updated: Auftragsstatus aktualisiert.
+        email_sent: Auftrag per E-Mail versendet.
+    offer:
+        created: Angebot erfolgreich angelegt.
+        updated: Angebot erfolgreich aktualisiert.
+        deleted: Angebot gelöscht.
+        status_updated: Angebotsstatus aktualisiert.
+        converted: Angebot in Auftrag umgewandelt.
+        convert_not_allowed: Nur freigegebene Angebote können umgewandelt werden.
+        locked: Umgewandelte Angebote können nicht mehr geändert werden.
+        email_sent: Angebot per E-Mail versendet.
+    email:
+        client_missing_address: Dieser Kunde hat keine E-Mail-Adresse.
+        smtp_incomplete: E-Mail-Einstellungen sind unvollständig. Bitte zuerst die SMTP-Einstellungen konfigurieren.
+        send_failed: Die E-Mail konnte nicht gesendet werden. Bitte SMTP-Einstellungen prüfen und erneut versuchen.
+    payment:
+        created: Zahlung erfolgreich erfasst.
+        deleted: Zahlung gelöscht.
+    user:
+        created: Benutzer erfolgreich erstellt.
+        updated: Benutzer erfolgreich aktualisiert.
+        deactivated: Benutzer deaktiviert.
+        activated: Benutzer aktiviert.
+    attachment:
+        uploaded: Anhang erfolgreich hochgeladen.
+        deleted: Anhang gelöscht.
+        upload_failed: Der Anhang konnte nicht hochgeladen werden.
+        not_found: Der Anhang wurde nicht gefunden.
+    settings:
+        company:
+            saved: Firmeneinstellungen gespeichert.
+            logo_removed: Firmenlogo entfernt.
+        regional:
+            saved: Regionale Einstellungen gespeichert.
+        currency_tax:
+            saved: Währungs- und Steuereinstellungen gespeichert.
+        documents:
+            saved: Dokumenteinstellungen gespeichert.
+        email:
+            saved: E-Mail-Einstellungen gespeichert.
+
+# Clients
+client:
+    index:
+        title: Kunden
+        heading: Kunden
+        empty: Bisher keine Kunden. Legen Sie Ihren ersten Kunden an, um zu beginnen.
+        empty_title: Bisher keine Kunden
+    new:
+        title: Neuer Kunde
+    edit:
+        title: Kunde bearbeiten
+    show:
+        details: Kundendaten
+        cars: Fahrzeuge
+        no_cars: Dieser Kunde hat bisher keine Fahrzeuge.
+        companies: Firmen
+        no_companies: Dieser Kunde hat bisher keine Firmen.
+        work_orders: Zugehörige Aufträge
+        work_orders_recent_note: Neueste zuerst, max. 10.
+        no_work_orders: Bisher keine Aufträge für diesen Kunden.
+        offers: Zugehörige Angebote
+        offers_recent_note: Neueste zuerst, max. 10.
+        no_offers: Bisher keine Angebote für diesen Kunden.
+        action:
+            view_work_order: Auftrag anzeigen
+            view_offer: Angebot anzeigen
+    action:
+        new: Neuer Kunde
+    field:
+        name: Name
+        phone: Telefon
+        email: E-Mail
+        notes: Notizen
+        cars: Fahrzeuge
+
+# Cars
+car:
+    index:
+        title: Fahrzeuge
+        heading: Fahrzeuge
+        empty: Bisher keine Fahrzeuge. Legen Sie Ihr erstes Fahrzeug an, um zu beginnen.
+        empty_title: Bisher keine Fahrzeuge
+    new:
+        title: Neues Fahrzeug
+    edit:
+        title: Fahrzeug bearbeiten
+    show:
+        details: Fahrzeugdaten
+        service_history: Servicehistorie
+        no_service_history: Für dieses Fahrzeug wurden noch keine Aufträge erfasst.
+        latest_mileage: Zuletzt erfasster Kilometerstand
+        mileage_not_recorded: Kilometerstand nicht erfasst
+    action:
+        new: Neues Fahrzeug
+    field:
+        model: Modell
+        client: Kunde
+        client_placeholder: Kunde auswählen...
+        model_placeholder: Modell auswählen...
+        vin: FIN
+        license_plate: Kennzeichen
+
+# Companies
+company:
+    index:
+        title: Firmen
+        heading: Firmen
+        empty: Bisher keine Firmen.
+        empty_title: Bisher keine Firmen
+    new:
+        title: Neue Firma
+    edit:
+        title: Firma bearbeiten
+    show:
+        details: Firmendaten
+    action:
+        new: Neue Firma
+    field:
+        name: Name
+        client: Kunde
+        client_placeholder: Kunde auswählen...
+        city: Ort
+        address: Adresse
+        identifier: Handelsregister-Nr.
+        vat_identifier: USt-IdNr.
+        vat_registered: Umsatzsteuerpflichtig
+
+# Parts
+part:
+    index:
+        title: Ersatzteile
+        heading: Ersatzteile
+        empty: Bisher keine Ersatzteile. Legen Sie Ihr erstes Ersatzteil an, um zu beginnen.
+        empty_title: Bisher keine Ersatzteile
+    new:
+        title: Neues Ersatzteil
+    edit:
+        title: Ersatzteil bearbeiten
+    show:
+        details: Ersatzteildaten
+        pricing: Preise
+    action:
+        new: Neues Ersatzteil
+    status:
+        active: Aktiv
+        inactive: Inaktiv
+    field:
+        name: Name
+        sku: SKU
+        part_number: Teilenummer
+        brand: Marke
+        cost_price: Einkaufspreis
+        sell_price: Verkaufspreis
+        unit_profit: Gewinn pro Stück
+        unit_margin: Marge pro Stück
+        notes: Notizen
+        is_active: Aktiv
+    help:
+        sku_optional: Optional. Leer lassen, wenn die Werkstatt keine SKUs verwendet.
+        part_number_optional: Optional. Hersteller- oder Katalognummer, falls vorhanden.
+
+# Work Orders
+work_order:
+    index:
+        title: Aufträge
+        heading: Aufträge
+        empty: Bisher keine Aufträge. Legen Sie Ihren ersten Auftrag an, um zu beginnen.
+        empty_title: Bisher keine Aufträge
+    new:
+        title: Neuer Auftrag
+    edit:
+        title: Auftrag bearbeiten
+        tab:
+            details: Details
+            labor: Arbeit
+            parts: Teile & Sonstiges
+            payments: Zahlungen
+        add_labor: Arbeitsposition hinzufügen
+        add_part: Teileposition hinzufügen
+    show:
+        details: Details
+        items: Positionen
+        no_items: Diesem Auftrag wurden noch keine Positionen hinzugefügt.
+        totals: Summen
+        payments: Zahlungen
+        no_payments: Bisher keine Zahlungen erfasst.
+        change_status: Status ändern
+    payments:
+        add: Zahlung hinzufügen
+        paid_amount: Bezahlter Betrag
+        remaining: Offener Restbetrag
+        status: Zahlungsstatus
+        empty: Bisher keine Zahlungen erfasst.
+        view: Zahlung anzeigen
+    filter:
+        all_statuses: Alle Status
+    action:
+        new: Neuer Auftrag
+    status:
+        draft: Entwurf
+        open: Offen
+        in_progress: In Bearbeitung
+        waiting_parts: Wartet auf Teile
+        waiting_approval: Wartet auf Freigabe
+        completed: Abgeschlossen
+        cancelled: Storniert
+        closed: Geschlossen
+    field:
+        number: Nummer
+        client: Kunde
+        client_placeholder: Kunde auswählen...
+        car: Fahrzeug
+        car_placeholder: Fahrzeug auswählen...
+        status: Status
+        source: Quelle
+        complaint: Beanstandung
+        diagnosis: Diagnose
+        notes: Notizen
+        opened_at: Eröffnet
+        scheduled_at: Geplant
+        started_at: Gestartet
+        completed_at: Abgeschlossen
+        created_by: Angelegt von
+        total: Gesamt
+        paid: Bezahlt
+        subtotal_labor: Arbeit
+        subtotal_parts: Teile
+        discount: Rabatt
+        tax: Steuer
+        payment_status: Zahlungsstatus
+        odometer_reading: Kilometerstand
+        mileage: Kilometerstand
+    help:
+        odometer_reading: Kilometerstand des Fahrzeugs zum Zeitpunkt der Servicearbeiten.
+
+# Work Order Items
+work_order_item:
+    field:
+        type: Typ
+        name: Bezeichnung
+        quantity: Menge
+        unit_price: Einzelpreis
+        cost_price: Einkaufspreis
+        discount: Rabatt
+        tax_rate: Steuer %
+        line_total: Gesamt
+        part: Ersatzteil
+        part_placeholder: Ersatzteil auswählen...
+    help:
+        cost_price: Nur intern. Was die Werkstatt für das Teil bezahlt hat. Wird nicht im Kundendokument angezeigt.
+    type:
+        labor: Arbeit
+        part: Ersatzteil
+        misc: Sonstiges
+
+# Offers
+offer:
+    index:
+        title: Angebote
+        heading: Angebote
+        empty: Bisher keine Angebote. Legen Sie Ihr erstes Angebot an, um zu beginnen.
+        empty_title: Bisher keine Angebote
+    new:
+        title: Neues Angebot
+    edit:
+        title: Angebot bearbeiten
+        tab:
+            details: Details
+            labor: Arbeit
+            parts: Teile & Sonstiges
+        add_labor: Arbeitsposition hinzufügen
+        add_part: Teileposition hinzufügen
+    show:
+        details: Details
+        items: Positionen
+        no_items: Diesem Angebot wurden noch keine Positionen hinzugefügt.
+        totals: Summen
+        change_status: Status ändern
+    filter:
+        all_statuses: Alle Status
+    action:
+        new: Neues Angebot
+        convert: In Auftrag umwandeln
+    confirm:
+        convert: Dieses Angebot in einen Auftrag umwandeln?
+    status:
+        draft: Entwurf
+        sent: Versendet
+        approved: Freigegeben
+        rejected: Abgelehnt
+        expired: Abgelaufen
+        converted: Umgewandelt
+    field:
+        number: Nummer
+        client: Kunde
+        client_placeholder: Kunde auswählen...
+        car: Fahrzeug
+        car_placeholder: Fahrzeug auswählen...
+        status: Status
+        title: Titel
+        notes: Notizen
+        valid_until: Gültig bis
+        created_at: Erstellt
+        created_by: Angelegt von
+        converted_at: Umgewandelt am
+        work_order: Auftrag
+        total: Gesamt
+        subtotal_labor: Arbeit
+        subtotal_parts: Teile
+        discount: Rabatt
+        tax: Steuer
+
+# Offer Items
+offer_item:
+    field:
+        type: Typ
+        name: Bezeichnung
+        quantity: Menge
+        unit_price: Einzelpreis
+        cost_price: Einkaufspreis
+        discount: Rabatt
+        tax_rate: Steuer %
+        line_total: Gesamt
+        part: Ersatzteil
+        part_placeholder: Ersatzteil auswählen...
+    help:
+        cost_price: Nur intern. Erwarteter Einkaufspreis. Wird nicht im Kundenangebot angezeigt.
+    type:
+        labor: Arbeit
+        part: Ersatzteil
+        misc: Sonstiges
+
+# Internal "Parts margin" card shared by offer + work order admin views
+parts_margin:
+    title: Teilemarge
+    internal_only: Nur zur internen Verwendung
+    field:
+        revenue: Teileumsatz
+        cost: Einkaufskosten
+        profit: Gewinn
+        margin: Marge
+
+# Payments
+payment:
+    index:
+        title: Zahlungen
+        heading: Zahlungen
+        empty: Bisher keine Zahlungen erfasst.
+        empty_title: Bisher keine Zahlungen
+    new:
+        title: Zahlung erfassen
+    show:
+        title: Zahlungsdetails
+        details: Zahlungsdetails
+    action:
+        new: Zahlung erfassen
+    field:
+        work_order: Auftrag
+        work_order_placeholder: Auftrag auswählen...
+        amount: Betrag
+        method: Methode
+        method_placeholder: Methode auswählen...
+        status: Status
+        paid_at: Bezahlt am
+        reference: Referenz
+        note: Notiz
+    method:
+        cash: Bar
+        card: Karte
+        bank_transfer: Überweisung
+    status:
+        pending: Ausstehend
+        paid: Bezahlt
+        partially_paid: Teilweise bezahlt
+        refunded: Erstattet
+        void: Storniert
+
+# Settings
+settings:
+    heading: Einstellungen
+    section:
+        company:
+            title: Firma
+            description: Firmenname, Steuernummern, Kontaktdaten und Logo.
+        regional:
+            title: Regional
+            description: Sprache, Zeitzone und Datumsformate für die App.
+        currency_tax:
+            title: Währung & Steuer
+            description: Standardwährung und Steuersatz für neue Dokumente.
+        documents:
+            title: Dokumente
+            description: Nummernpräfixe, Angebotsgültigkeit und Fußzeile.
+        email:
+            title: E-Mail / SMTP
+            description: Zugangsdaten für ausgehenden Mailserver. Versand wird später ergänzt.
+    company:
+        group:
+            identity: Identität
+            contact: Kontakt
+            branding: Branding
+        field:
+            name: Firmenname
+            company_id: Firmen-ID
+            vat_number: USt-IdNr.
+            address: Adresse
+            city: Ort
+            country: Land
+            phone: Telefon
+            email: E-Mail
+            website: Webseite
+            logo: Logo
+        help:
+            identity: Wird als Werkstattname auf Angeboten, Aufträgen und PDF-Dokumenten verwendet.
+            logo: PNG, JPG, WebP oder SVG, bis zu 2 MB.
+        action:
+            remove_logo: Logo entfernen
+        confirm:
+            remove_logo: Aktuelles Logo entfernen?
+        error:
+            email_invalid: Bitte eine gültige E-Mail-Adresse eingeben.
+            website_invalid: Bitte eine gültige URL eingeben.
+            logo_too_large: Das Logo ist zu groß. Maximalgröße ist 2 MB.
+            logo_mime_type: Es sind nur PNG-, JPG-, WebP- und SVG-Dateien erlaubt.
+    regional:
+        group:
+            locale: Sprache & Zeit
+        field:
+            locale: Standardsprache
+            timezone: Zeitzone
+            date_format: Datumsformat
+            time_format: Zeitformat
+            mileage_unit: Maßeinheit für den Kilometerstand
+        help:
+            intro: Praktische Standardwerte für den Alltag. Passen Sie sie an den Standort der Werkstatt an.
+            locale: Standardsprache der Benutzeroberfläche. Neue Übersetzungen werden schrittweise ergänzt.
+            timezone: Wird zur Anzeige von Datum und Uhrzeit in der Anwendung verwendet.
+            mileage_unit: Standardeinheit für die Erfassung von Kilometerständen in neuen Aufträgen.
+            date_format: PHP-Datumsformat in Listen und Dokumentenköpfen, z. B. Y-m-d oder d.m.Y.
+            time_format: PHP-Zeitformat zusammen mit Datumsangaben, z. B. H:i.
+        timezone_group:
+            generic: UTC & allgemein
+        error:
+            timezone_invalid: Bitte eine gültige IANA-Zeitzone eingeben.
+            mileage_unit_invalid: Bitte eine unterstützte Maßeinheit auswählen.
+    currency:
+        field:
+            code: Standardwährung
+        help: Wird für neue Angebote und Aufträge verwendet. Bestehende Dokumente behalten ihre Währung.
+    currency_tax:
+        group:
+            defaults: Standardwährung & Steuer
+        help:
+            intro: Standardwerte für neu angelegte Angebote und Aufträge. Bestehende Dokumente sind nicht betroffen.
+    tax:
+        field:
+            default_rate: Standard-Steuersatz (%)
+        help: Optional. Leer lassen, wenn die Werkstatt nicht umsatzsteuerpflichtig ist.
+        error:
+            must_be_positive: Der Standard-Steuersatz darf nicht negativ sein.
+            max: Der Standard-Steuersatz darf 100 % nicht überschreiten.
+    documents:
+        group:
+            numbering: Nummernpräfixe
+            defaults: Dokumentstandards
+        field:
+            offer_prefix: Angebots-Präfix
+            work_order_prefix: Auftrags-Präfix
+            invoice_prefix: Rechnungs-Präfix
+            offer_validity: Standard-Gültigkeit Angebot (Tage)
+            footer: Dokument-Fußzeile
+        help:
+            numbering: Präfixe stehen vor generierten Dokumentnummern, z. B. OF-2026-0001.
+            offer_prefix: Wird für neue Angebote verwendet, z. B. OF.
+            work_order_prefix: Wird für neue Aufträge verwendet, z. B. WO.
+            invoice_prefix: Wird für Rechnungen verwendet, sobald die Rechnungsstellung aktiviert ist.
+            offer_validity: Legt das Standarddatum „gültig bis“ für neue Angebote fest. Optional.
+            footer: Optionaler Text am Ende von Angeboten, Aufträgen und Rechnungen.
+        error:
+            prefix_invalid: Präfixe dürfen nur Buchstaben, Ziffern, Bindestriche und Unterstriche enthalten.
+            validity_positive: Die Angebotsgültigkeit muss eine positive Anzahl an Tagen sein.
+            validity_too_large: Die Angebotsgültigkeit ist zu groß.
+            footer_too_long: Der Fußzeilentext ist zu lang.
+    email:
+        group:
+            smtp: SMTP-Verbindung
+            sender: Absenderidentität
+        field:
+            host: SMTP-Server
+            port: Port
+            encryption: Verschlüsselung
+            username: Benutzername
+            password: Passwort
+            from_email: Absender-E-Mail
+            from_name: Absendername
+        help:
+            intro: SMTP-Zugangsdaten für künftige Kunden-E-Mails. Versand ist noch nicht aktiv.
+            encryption: Wählen Sie den von Ihrem Anbieter erforderlichen Verschlüsselungsmodus.
+            password: Leer lassen, um das bestehende Passwort beizubehalten. Neue Werte werden verschlüsselt gespeichert.
+        encryption:
+            none: Keine
+            tls: TLS
+            ssl: SSL
+        password_stored: Passwort gesetzt
+        error:
+            port_invalid: Der SMTP-Port muss zwischen 1 und 65535 liegen.
+            from_email_invalid: Bitte eine gültige Absender-E-Mail-Adresse eingeben.
+
+# Statistics
+statistics:
+    title: Statistiken
+    heading: Statistiken
+    subtitle: Umsatz, Auftragsaktivität und Werkstattgesundheit auf einen Blick.
+    value:
+        not_available: "Nicht verfügbar"
+    notice:
+        mixed_currencies: "Anzeige nur in %currency%. Im gewählten Zeitraum gibt es auch Dokumente in: %others%."
+    filter:
+        period_label: Zeitraum
+        from: Von
+        to: Bis
+        preset:
+            today: Heute
+            this_week: Diese Woche
+            this_month: Dieser Monat
+            last_month: Letzter Monat
+            this_year: Dieses Jahr
+            custom: Eigener Zeitraum
+    kpi:
+        total_revenue: Gesamtumsatz
+        paid_amount: Bezahlter Betrag
+        unpaid_amount: Offener Betrag
+        parts_revenue: Teileumsatz
+        parts_profit: Teile-Gewinn
+        parts_profit.no_cost_hint: Im Zeitraum sind keine Einkaufskosten für Teile erfasst.
+        completed_work_orders: Abgeschlossene Aufträge
+        open_work_orders: Offene Aufträge
+        open_work_orders.hint: Gesamt, nicht nur im gewählten Zeitraum.
+        offer_conversion: Angebots-Konversion
+        offer_conversion.hint: Konvertierte Angebote geteilt durch alle Nicht-Entwürfe.
+    chart:
+        revenue_over_time: Umsatzverlauf
+        work_orders_by_status: Aufträge nach Status
+        offers_by_status: Angebote nach Status
+        payments_by_method: Zahlungen nach Methode
+    table:
+        top_clients: Top-Kunden
+        mechanic_workload: Auslastung der Mechaniker
+        mechanic_workload.note: Basierend auf dem Ersteller des Auftrags.
+        top_profitable_parts: Gewinnstärkste Teile
+        top_profitable_parts.note: Nur intern - Teile-Gewinn aus Aufträgen im gewählten Zeitraum.
+    column:
+        client: Kunde
+        work_orders: Aufträge
+        total_revenue: Umsatz
+        unpaid_amount: Offen
+        mechanic: Mechaniker
+        active: Aktiv
+        completed_in_period: Abgeschlossen
+        total_in_period: Gesamt
+        part: Teil
+        quantity: Menge
+        parts_revenue: Umsatz
+        parts_cost: Einkauf
+        parts_profit: Gewinn
+    empty:
+        chart: Keine Daten für den gewählten Zeitraum.
+        top_clients_title: Noch keine Kundenumsätze
+        top_clients: Kein Kunde hat im gewählten Zeitraum Aufträge.
+        mechanics_title: Keine Aufträge in diesem Zeitraum
+        mechanics: Auslastung erscheint, sobald Mechaniker Aufträge öffnen oder abschließen.
+        top_parts_title: Noch keine verkauften Teile
+        top_parts: Teile-Gewinn erscheint, sobald Teile-Positionen zu Aufträgen hinzugefügt werden.
+
+# PDF documents
+pdf:
+    document: Dokument
+    action:
+        download: PDF herunterladen
+    company:
+        unnamed: Firma
+        phone: Telefon
+        email: E-Mail
+        company_id: Firmen-ID
+        vat_number: USt
+    offer:
+        title: Angebot
+        client: Kunde
+        vehicle: Fahrzeug
+        details: Details
+    work_order:
+        title: Auftrag
+        client: Kunde
+        vehicle: Fahrzeug
+        details: Details
+    items:
+        empty: Keine Positionen.
+    footer:
+        generated_by: Erstellt mit Carstio - kostenloser, quelloffener Software für moderne Kfz-Werkstätten.
+
+# Outgoing client emails
+email:
+    action:
+        send: Per E-Mail senden
+    confirm:
+        send_offer: 'Dieses Angebot per E-Mail an %email% senden?'
+        send_work_order: 'Diesen Auftrag per E-Mail an %email% senden?'
+    error:
+        client_missing_address: Dieser Kunde hat keine E-Mail-Adresse hinterlegt.
+    greeting: 'Hallo %name%,'
+    signoff: "Mit freundlichen Grüßen,\nIhr %company% Team"
+    label:
+        offer_number: Angebotsnummer
+        work_order_number: Auftragsnummer
+        client: Kunde
+        vehicle: Fahrzeug
+        scheduled_at: Geplant
+        valid_until: Gültig bis
+        total: Gesamt
+        mileage: Kilometerstand
+    offer:
+        subject: 'Angebot %number% von %company%'
+        heading: 'Angebot %number%'
+        intro: 'Im Anhang finden Sie das von %company% erstellte Angebot.'
+        attachment_note: Das Angebot ist als PDF-Datei beigefügt.
+    work_order:
+        subject: 'Auftrag %number% von %company%'
+        heading: 'Auftrag %number%'
+        intro: 'Im Anhang finden Sie die Auftragszusammenfassung von %company%.'
+        attachment_note: Der Auftrag ist als PDF-Datei beigefügt.
+    footer:
+        generated_by: Erstellt mit Carstio - kostenloser, quelloffener Software für moderne Kfz-Werkstätten.
+
+# Attachments
+attachment:
+    section:
+        title: Anhänge
+    action:
+        upload: Anhang hochladen
+        download: Herunterladen
+        view: Ansehen
+    field:
+        file: Datei
+        category: Kategorie
+        description: Beschreibung
+        size: Größe
+        uploaded_by: Hochgeladen von
+        uploaded_at: Hochgeladen am
+    category:
+        photo: Foto
+        document: Dokument
+        diagnostic: Diagnose
+        before_repair: Vor der Reparatur
+        after_repair: Nach der Reparatur
+        receipt: Beleg
+        other: Sonstiges
+    empty: Es wurden noch keine Anhänge hochgeladen.
+    error:
+        file_required: Bitte eine Datei zum Hochladen auswählen.
+        too_large: Die Datei ist zu groß. Maximalgröße ist 10 MB.
+        mime_type: Dieser Dateityp ist nicht erlaubt. Erlaubt sind PDF, JPEG, PNG, WebP und MP4.
+        description_too_long: Die Beschreibung ist zu lang.
+
+
+# User Management
+user:
+    index:
+        title: Benutzer
+        heading: Benutzer
+        empty: Bisher keine Benutzer.
+        empty_title: Bisher keine Benutzer
+    new:
+        title: Benutzer hinzufügen
+    edit:
+        title: Benutzer bearbeiten
+    show:
+        details: Benutzerdetails
+    action:
+        new: Benutzer hinzufügen
+        deactivate: Deaktivieren
+        activate: Aktivieren
+    confirm:
+        deactivate: Diesen Benutzer deaktivieren? Anmeldung wird nicht mehr möglich sein.
+    field:
+        email: E-Mail
+        full_name: Vollständiger Name
+        password: Passwort
+        new_password: Neues Passwort
+        role: Rolle
+        status: Status
+        active: Aktiv
+        created_at: Erstellt
+    help:
+        password_keep: Leer lassen, um das aktuelle Passwort beizubehalten.
+    role:
+        admin: Admin
+        mechanic: Mechaniker
+    status:
+        active: Aktiv
+        inactive: Inaktiv
+    error:
+        email_required: Bitte eine E-Mail-Adresse eingeben.
+        email_invalid: Bitte eine gültige E-Mail-Adresse eingeben.
+        email_taken: Diese E-Mail-Adresse wird bereits von einem anderen Benutzer verwendet.
+        full_name_required: Bitte einen Namen eingeben.
+        password_required: Bitte ein Passwort wählen.
+        password_too_short: Das Passwort muss mindestens {{ limit }} Zeichen lang sein.
+        last_admin: Der letzte aktive Admin kann nicht entfernt werden.
+        cannot_deactivate_self: Sie können Ihr eigenes Konto nicht deaktivieren.
+        account_inactive: Ihr Konto ist inaktiv. Bitte wenden Sie sich an einen Administrator.
+
+# Mileage / odometer
+mileage:
+    label: Kilometerstand
+    odometer_reading: Kilometerstand
+    not_recorded: Kilometerstand nicht erfasst
+    unit:
+        km: Kilometer
+        mi: Meilen
+    error:
+        invalid: Ungültiger Kilometerstand.
+        negative: Kilometerstand darf nicht negativ sein.

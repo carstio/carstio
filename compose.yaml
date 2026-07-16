@@ -1,25 +1,59 @@
-
 services:
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database:
-    image: postgres:${POSTGRES_VERSION:-16}-alpine
+    image: mariadb:${MARIADB_VERSION:-11.4}
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-!ChangeMe!}
-      POSTGRES_USER: ${POSTGRES_USER:-app}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-carstio}
+      MARIADB_USER: ${MARIADB_USER:-carstio}
+      # Local-development password. Override in .env.local for any real deployment.
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:-carstio}
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:-rootcarstio}
     healthcheck:
-      test: ["CMD", "pg_isready", "-d", "${POSTGRES_DB:-app}", "-U", "${POSTGRES_USER:-app}"]
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
       timeout: 5s
-      retries: 5
-      start_period: 60s
+      retries: 10
+      start_period: 30s
     volumes:
-      - database_data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - database_data:/var/lib/mysql:rw
+      # Runs once on first start: gives the application user access to the
+      # carstio_test database so PHPUnit can create / drop it from inside
+      # the container without needing root.
+      - ./docker/mariadb/init-test-db.sql:/docker-entrypoint-initdb.d/10-init-test-db.sql:ro
+  ###< doctrine/doctrine-bundle ###
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    depends_on:
+      database:
+        condition: service_healthy
+    environment:
+      # APP_ENV / APP_SECRET come from .env (and .env.local for overrides).
+      # Setting them here would override phpunit.xml's APP_ENV=test and
+      # break the test suite - Symfony Dotenv treats real env vars as
+      # authoritative.
+      DATABASE_URL: "mysql://${MARIADB_USER:-carstio}:${MARIADB_PASSWORD:-carstio}@database:3306/${MARIADB_DATABASE:-carstio}?serverVersion=mariadb-${MARIADB_VERSION:-11.4}.0&charset=utf8mb4"
+      MAILER_DSN: ${MAILER_DSN:-smtp://mailer:1025}
+    volumes:
+      - ./:/var/www/html:rw
+      # Vendor lives in a named volume so the container's installed
+      # dependencies are not shadowed by an empty host directory on first
+      # `docker compose up`. Run `docker compose exec app composer install`
+      # after the first build to populate it.
+      - app_vendor:/var/www/html/vendor
+
+  web:
+    image: caddy:2-alpine
+    depends_on:
+      - app
+    volumes:
+      - ./docker/caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./public:/var/www/html/public:ro
 
 volumes:
-###> doctrine/doctrine-bundle ###
+  ###> doctrine/doctrine-bundle ###
   database_data:
-###< doctrine/doctrine-bundle ###
+  ###< doctrine/doctrine-bundle ###
+  app_vendor:

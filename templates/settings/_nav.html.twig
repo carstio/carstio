@@ -1,0 +1,19 @@
+{% import '_macros/icon.html.twig' as icon %}
+
+{% set sections = [
+    { key: 'company',      route: 'app_settings_company',      icon: 'company'    },
+    { key: 'regional',     route: 'app_settings_regional',     icon: 'calendar'   },
+    { key: 'currency_tax', route: 'app_settings_currency_tax', icon: 'payment'    },
+    { key: 'documents',    route: 'app_settings_documents',    icon: 'work-order' },
+    { key: 'email',        route: 'app_settings_email',        icon: 'info'       }
+] %}
+
+<nav class="settings-nav" aria-label="{{ 'settings.heading'|trans }}">
+    {% for section in sections %}
+        <a href="{{ path(section.route) }}"
+           class="settings-nav-item {{ active_section == section.key ? 'is-active' }}">
+            <span class="settings-nav-icon">{{ icon.render(section.icon, {size: 16}) }}</span>
+            <span>{{ ('settings.section.' ~ section.key ~ '.title')|trans }}</span>
+        </a>
+    {% endfor %}
+</nav>

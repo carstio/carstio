@@ -1,0 +1,299 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ work_order.number }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_work_order_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'work_order.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_work_order_pdf', {id: work_order.id}) }}" class="btn btn-outline-secondary">
+                {{ icon.render('download') }}<span>{{ 'pdf.action.download'|trans }}</span>
+            </a>
+
+            {% set client_email = work_order.client.email %}
+            <form method="post" action="{{ path('app_work_order_send_email', {id: work_order.id}) }}"
+                  onsubmit="return confirm('{{ ('email.confirm.send_work_order'|trans({'%email%': client_email ?? ''})) }}');">
+                <input type="hidden" name="_token" value="{{ csrf_token('wo-email-' ~ work_order.id) }}">
+                <button type="submit" class="btn btn-outline-secondary"
+                        {% if not client_email %}disabled title="{{ 'email.error.client_missing_address'|trans }}"{% endif %}>
+                    {{ icon.render('mail') }}<span>{{ 'email.action.send'|trans }}</span>
+                </button>
+            </form>
+
+            <a href="{{ path('app_work_order_payment_new', {workOrder: work_order.id}) }}" class="btn btn-outline-primary">
+                {{ icon.render('cash') }}<span>{{ 'payment.action.new'|trans }}</span>
+            </a>
+
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary" data-bs-toggle="dropdown" aria-expanded="false">
+                    {{ icon.render('refresh') }}<span>{{ 'work_order.show.change_status'|trans }}</span>
+                    {{ icon.render('chevron-down', {size: 12}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    {% for status in statuses %}
+                        {% if status != work_order.status %}
+                            <li>
+                                <form method="post" action="{{ path('app_work_order_status', {id: work_order.id}) }}">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('wo-status-' ~ work_order.id) }}">
+                                    <button type="submit" name="status" value="{{ status.value }}" class="dropdown-item">
+                                        {{ ('work_order.status.' ~ status.value)|trans }}
+                                    </button>
+                                </form>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <a href="{{ path('app_work_order_edit', {id: work_order.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_work_order_delete', {id: work_order.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-wo-' ~ work_order.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {# ── Hero summary ── #}
+    <div class="hero-summary">
+        <div class="hero-summary-top">
+            <div class="hero-summary-eyebrow">{{ 'work_order.field.number'|trans }}</div>
+            <h1 class="hero-summary-title">{{ work_order.number }}</h1>
+            {% include 'work_order/_status_badge.html.twig' with {status: work_order.status} %}
+            {% include '_partials/payment_status_badge.html.twig' with {status: work_order.paymentStatus} %}
+        </div>
+        <div class="hero-summary-grid">
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'work_order.field.client'|trans }}</div>
+                <div class="hero-summary-field-value">
+                    <a href="{{ path('app_client_show', {id: work_order.client.id}) }}">{{ work_order.client.name }}</a>
+                </div>
+            </div>
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'work_order.field.car'|trans }}</div>
+                <div class="hero-summary-field-value">
+                    <a href="{{ path('app_car_show', {id: work_order.car.id}) }}">{{ work_order.car.displayName }}</a>
+                    {% if work_order.car.licensePlate %}<span class="text-muted d-block small">{{ work_order.car.licensePlate }}</span>{% endif %}
+                </div>
+            </div>
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'work_order.field.opened_at'|trans }}</div>
+                <div class="hero-summary-field-value font-monospace">{{ work_order.openedAt|app_datetime }}</div>
+            </div>
+            {% if work_order.scheduledAt %}
+                <div class="hero-summary-field">
+                    <div class="hero-summary-field-label">{{ 'work_order.field.scheduled_at'|trans }}</div>
+                    <div class="hero-summary-field-value font-monospace">{{ work_order.scheduledAt|app_datetime }}</div>
+                </div>
+            {% endif %}
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'work_order.field.total'|trans }}</div>
+                <div class="hero-summary-field-value hero-summary-field-value--strong">{{ work_order.totalAmount|money(work_order.currencyCode) }}</div>
+            </div>
+            <div class="hero-summary-field">
+                <div class="hero-summary-field-label">{{ 'work_order.field.paid'|trans }}</div>
+                <div class="hero-summary-field-value hero-summary-field-value--strong">{{ work_order.paidAmount|money(work_order.currencyCode) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-3">
+        {# ── Details ── #}
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'work_order.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'work_order.field.source'|trans }}</dt><dd>{{ work_order.source ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'work_order.field.created_by'|trans }}</dt><dd>{{ work_order.createdBy ? work_order.createdBy.fullName : '-' }}</dd></div>
+                        {% if work_order.odometerReading is not null %}
+                            <div class="kv-row"><dt>{{ 'work_order.field.mileage'|trans }}</dt><dd class="font-monospace">{{ work_order|app_mileage }}</dd></div>
+                        {% endif %}
+                        {% if work_order.startedAt %}
+                            <div class="kv-row"><dt>{{ 'work_order.field.started_at'|trans }}</dt><dd class="font-monospace">{{ work_order.startedAt|app_datetime }}</dd></div>
+                        {% endif %}
+                        {% if work_order.completedAt %}
+                            <div class="kv-row"><dt>{{ 'work_order.field.completed_at'|trans }}</dt><dd class="font-monospace">{{ work_order.completedAt|app_datetime }}</dd></div>
+                        {% endif %}
+                    </dl>
+                </div>
+            </div>
+        </div>
+
+        {# ── Complaint / Diagnosis / Notes ── #}
+        <div class="col-lg-6">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'work_order.field.complaint'|trans }}</h2>
+                </div>
+                <div class="section-card-body">{{ work_order.complaint|nl2br }}</div>
+            </div>
+            {% if work_order.diagnosis %}
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'work_order.field.diagnosis'|trans }}</h2>
+                    </div>
+                    <div class="section-card-body">{{ work_order.diagnosis|nl2br }}</div>
+                </div>
+            {% endif %}
+            {% if work_order.notes %}
+                <div class="section-card">
+                    <div class="section-card-header">
+                        <h2 class="section-card-title">{{ 'work_order.field.notes'|trans }}</h2>
+                    </div>
+                    <div class="section-card-body">{{ work_order.notes|nl2br }}</div>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    {# ── Items ── #}
+    <div class="section-card">
+        <div class="section-card-header">
+            <h2 class="section-card-title">{{ 'work_order.show.items'|trans }}</h2>
+            <a href="{{ path('app_work_order_edit', {id: work_order.id}) }}" class="btn btn-sm btn-outline-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+        </div>
+        {% if work_order.items is empty %}
+            <div class="section-card-body">
+                <p class="text-muted mb-0">{{ 'work_order.show.no_items'|trans }}</p>
+            </div>
+        {% else %}
+            {% set show_discount_col = has_discounts(work_order.items) %}
+            <div class="section-card-body section-card-body--flush">
+                <div class="table-responsive">
+                    <table class="data-table table mb-0">
+                        <thead>
+                            <tr>
+                                <th>{{ 'work_order_item.field.type'|trans }}</th>
+                                <th>{{ 'work_order_item.field.name'|trans }}</th>
+                                <th class="col-numeric">{{ 'work_order_item.field.quantity'|trans }}</th>
+                                <th class="col-numeric">{{ 'work_order_item.field.unit_price'|trans }}</th>
+                                {% if show_discount_col %}
+                                    <th class="col-numeric">{{ 'work_order_item.field.discount'|trans }}</th>
+                                {% endif %}
+                                <th class="col-numeric">{{ 'work_order_item.field.line_total'|trans }}</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in work_order.items %}
+                                {% set type_class = {
+                                    'labor': 'status-badge--open',
+                                    'part':  'status-badge--success',
+                                    'misc':  'status-badge--neutral'
+                                }[item.type.value] ?? 'status-badge--neutral' %}
+                                <tr>
+                                    <td>
+                                        <span class="status-badge {{ type_class }}">{{ ('work_order_item.type.' ~ item.type.value)|trans }}</span>
+                                    </td>
+                                    <td>{{ item.name }}</td>
+                                    <td class="col-numeric">{{ item.quantity }}</td>
+                                    <td class="col-numeric">{{ item.unitPrice|money(work_order.currencyCode) }}</td>
+                                    {% if show_discount_col %}
+                                        <td class="col-numeric">{{ item.discountAmount is discounted ? item.discountAmount|money(work_order.currencyCode) : '' }}</td>
+                                    {% endif %}
+                                    <td class="col-numeric fw-semibold">{{ item.lineTotal|money(work_order.currencyCode) }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="row g-3">
+        {# ── Payments ── #}
+        <div class="col-lg-7">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'work_order.show.payments'|trans }}</h2>
+                    <a href="{{ path('app_work_order_payment_new', {workOrder: work_order.id}) }}" class="btn btn-sm btn-outline-primary">
+                        {{ icon.render('plus') }}<span>{{ 'payment.action.new'|trans }}</span>
+                    </a>
+                </div>
+                {% if work_order.payments is empty %}
+                    <div class="section-card-body">
+                        <p class="text-muted mb-0">{{ 'work_order.show.no_payments'|trans }}</p>
+                    </div>
+                {% else %}
+                    <div class="section-card-body section-card-body--flush">
+                        <div class="table-responsive">
+                            <table class="data-table table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>{{ 'payment.field.paid_at'|trans }}</th>
+                                        <th class="col-numeric">{{ 'payment.field.amount'|trans }}</th>
+                                        <th>{{ 'payment.field.method'|trans }}</th>
+                                        <th>{{ 'payment.field.status'|trans }}</th>
+                                        <th class="col-actions"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for payment in work_order.payments %}
+                                        <tr>
+                                            <td class="col-mono">{{ payment.paidAt|app_date }}</td>
+                                            <td class="col-numeric fw-semibold">{{ payment.amount|money(work_order.currencyCode) }}</td>
+                                            <td>{{ ('payment.method.' ~ payment.method.value)|trans }}</td>
+                                            <td>{% include '_partials/payment_status_badge.html.twig' with {status: payment.status} %}</td>
+                                            <td class="col-actions">
+                                                <a href="{{ path('app_payment_show', {id: payment.id}) }}" class="btn btn-sm btn-outline-secondary btn-icon" aria-label="{{ 'action.view'|trans }}" title="{{ 'action.view'|trans }}">
+                                                    {{ icon.render('eye') }}
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        {# ── Totals ── #}
+        <div class="col-lg-5">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'work_order.show.totals'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <div class="totals-row"><span>{{ 'work_order.field.subtotal_labor'|trans }}</span><span class="totals-value">{{ work_order.subtotalLabor|money(work_order.currencyCode) }}</span></div>
+                    <div class="totals-row"><span>{{ 'work_order.field.subtotal_parts'|trans }}</span><span class="totals-value">{{ work_order.subtotalParts|money(work_order.currencyCode) }}</span></div>
+                    {% if work_order.discountAmount is discounted %}
+                        <div class="totals-row"><span>{{ 'work_order.field.discount'|trans }}</span><span class="totals-value">-{{ work_order.discountAmount|money(work_order.currencyCode) }}</span></div>
+                    {% endif %}
+                    <div class="totals-row"><span>{{ 'work_order.field.tax'|trans }}</span><span class="totals-value">{{ work_order.taxAmount|money(work_order.currencyCode) }}</span></div>
+                    <div class="totals-row totals-total"><span>{{ 'work_order.field.total'|trans }}</span><span class="totals-value">{{ work_order.totalAmount|money(work_order.currencyCode) }}</span></div>
+                </div>
+            </div>
+
+            {% include '_partials/parts_margin_card.html.twig' with {
+                parts_margin: parts_margin,
+                currency_code: work_order.currencyCode
+            } only %}
+        </div>
+    </div>
+
+    {# ── Attachments ── #}
+    {% include '_partials/attachments.html.twig' with {attachments: attachments, attachment_form: attachment_form} %}
+{% endblock %}

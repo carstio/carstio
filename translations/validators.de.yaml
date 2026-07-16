@@ -1,0 +1,48 @@
+# Validation messages (validators domain).
+#
+# Symfony's Validator translates constraint messages through the
+# "validators" domain, NOT "messages". Every custom `message:` key
+# used in a constraint must therefore live in this catalogue.
+# Keep the wording in sync with any matching keys in messages.*.yaml.
+attachment:
+    error:
+        description_too_long: Die Beschreibung ist zu lang.
+        file_required: Bitte eine Datei zum Hochladen auswählen.
+        mime_type: Dieser Dateityp ist nicht erlaubt. Erlaubt sind PDF, JPEG, PNG, WebP und MP4.
+        too_large: Die Datei ist zu groß. Maximalgröße ist 10 MB.
+mileage:
+    error:
+        negative: Kilometerstand darf nicht negativ sein.
+settings:
+    company:
+        error:
+            email_invalid: Bitte eine gültige E-Mail-Adresse eingeben.
+            logo_mime_type: Es sind nur PNG-, JPG-, WebP- und SVG-Dateien erlaubt.
+            logo_too_large: Das Logo ist zu groß. Maximalgröße ist 2 MB.
+            website_invalid: Bitte eine gültige URL eingeben.
+    documents:
+        error:
+            footer_too_long: Der Fußzeilentext ist zu lang.
+            prefix_invalid: Präfixe dürfen nur Buchstaben, Ziffern, Bindestriche und Unterstriche enthalten.
+            validity_positive: Die Angebotsgültigkeit muss eine positive Anzahl an Tagen sein.
+            validity_too_large: Die Angebotsgültigkeit ist zu groß.
+    email:
+        error:
+            from_email_invalid: Bitte eine gültige Absender-E-Mail-Adresse eingeben.
+            port_invalid: Der SMTP-Port muss zwischen 1 und 65535 liegen.
+    regional:
+        error:
+            mileage_unit_invalid: Bitte eine unterstützte Maßeinheit auswählen.
+            timezone_invalid: Bitte eine gültige IANA-Zeitzone eingeben.
+    tax:
+        error:
+            max: Der Standard-Steuersatz darf 100 % nicht überschreiten.
+            must_be_positive: Der Standard-Steuersatz darf nicht negativ sein.
+user:
+    error:
+        email_invalid: Bitte eine gültige E-Mail-Adresse eingeben.
+        email_required: Bitte eine E-Mail-Adresse eingeben.
+        email_taken: Diese E-Mail-Adresse wird bereits von einem anderen Benutzer verwendet.
+        full_name_required: Bitte einen Namen eingeben.
+        password_required: Bitte ein Passwort wählen.
+        password_too_short: Das Passwort muss mindestens {{ limit }} Zeichen lang sein.

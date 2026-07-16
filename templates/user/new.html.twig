@@ -1,0 +1,25 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ 'user.new.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'clients',
+        title: 'user.new.title'|trans
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="section-card">
+                {{ form_start(form) }}
+                    <div class="form-section">{{ form_widget(form) }}</div>
+                    <div class="form-footer">
+                        <a href="{{ path('app_user_index') }}" class="btn btn-outline-secondary">{{ 'action.cancel'|trans }}</a>
+                        <button type="submit" class="btn btn-primary">{{ icon.render('check') }}<span>{{ 'action.save'|trans }}</span></button>
+                    </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

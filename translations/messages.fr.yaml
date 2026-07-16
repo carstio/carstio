@@ -1,0 +1,851 @@
+# Application
+app:
+    name: Carstio
+
+# Navigation
+nav:
+    toggle_menu: Basculer le menu
+    dashboard: Tableau de bord
+    clients: Clients
+    cars: Véhicules
+    companies: Entreprises
+    offers: Devis
+    work_orders: Ordres de travail
+    parts: Pièces
+    payments: Paiements
+    statistics: Statistiques
+    settings: Paramètres
+    users: Utilisateurs
+    logout: Se déconnecter
+    section:
+        main: Principal
+        workshop: Atelier
+        system: Système
+
+# Login
+login:
+    title: Connexion
+    heading: Bon retour
+    subtitle: Connectez-vous pour accéder à votre atelier.
+    email: Adresse e-mail
+    email_placeholder: vous@exemple.fr
+    password: Mot de passe
+    password_placeholder: Votre mot de passe
+    submit: Se connecter
+
+# Locale / language switcher
+locale:
+    switcher:
+        label: Langue
+    code:
+        en: EN
+        bg: BG
+        de: DE
+        es: ES
+        fr: FR
+
+# Global header search
+search:
+    placeholder: Rechercher clients, voitures, entreprises…
+    loading: Recherche…
+    empty: Aucun résultat trouvé
+    error: La recherche a échoué. Veuillez réessayer.
+    group:
+        clients: Clients
+        cars: Voitures
+        companies: Entreprises
+
+# Dashboard
+dashboard:
+    title: Tableau de bord
+    heading: Tableau de bord
+    subtitle: Aperçu de l'activité de votre atelier.
+    stat:
+        open_work_orders: Ordres ouverts
+        completed_today: Terminés aujourd'hui
+        total_clients: Total clients
+        total_cars: Total véhicules
+    calendar:
+        title: Ordres planifiés
+        no_scheduled: Aucun ordre planifié pour le moment.
+
+# Common labels
+label:
+    actions: Actions
+    status: Statut
+    yes: "Oui"
+    no: "Non"
+
+# Common actions
+action:
+    close: Fermer
+    save: Enregistrer
+    cancel: Annuler
+    delete: Supprimer
+    edit: Modifier
+    search: Rechercher
+    apply: Appliquer
+    view: Voir
+    add: Ajouter
+    more: Plus
+    new: Nouveau
+
+# UI strings consumed by JavaScript / Stimulus controllers.
+js:
+    button:
+        now: Maintenant
+        today: Aujourd'hui
+    action:
+        remove: Supprimer
+
+# Confirmation
+confirm:
+    delete: Êtes-vous sûr de vouloir supprimer cet enregistrement ?
+
+# Flash messages
+flash:
+    delete:
+        restricted: Cet enregistrement ne peut pas être supprimé car il est encore utilisé par d'autres enregistrements.
+    client:
+        created: Client créé avec succès.
+        updated: Client mis à jour avec succès.
+        deleted: Client supprimé.
+    car:
+        created: Véhicule ajouté avec succès.
+        updated: Véhicule mis à jour avec succès.
+        deleted: Véhicule supprimé.
+    company:
+        created: Entreprise créée avec succès.
+        updated: Entreprise mise à jour avec succès.
+        deleted: Entreprise supprimée.
+    part:
+        created: Pièce créée avec succès.
+        updated: Pièce mise à jour avec succès.
+        deleted: Pièce supprimée.
+    work_order:
+        created: Ordre de travail créé avec succès.
+        updated: Ordre de travail mis à jour avec succès.
+        deleted: Ordre de travail supprimé.
+        status_updated: Statut de l'ordre mis à jour.
+        email_sent: Ordre de travail envoyé par e-mail.
+    offer:
+        created: Devis créé avec succès.
+        updated: Devis mis à jour avec succès.
+        deleted: Devis supprimé.
+        status_updated: Statut du devis mis à jour.
+        converted: Devis converti en ordre de travail.
+        convert_not_allowed: Seuls les devis approuvés peuvent être convertis.
+        locked: Les devis convertis ne peuvent pas être modifiés.
+        email_sent: Devis envoyé par e-mail.
+    email:
+        client_missing_address: Ce client n'a pas d'adresse e-mail.
+        smtp_incomplete: La configuration e-mail est incomplète. Veuillez d'abord configurer les paramètres SMTP.
+        send_failed: L'e-mail n'a pas pu être envoyé. Vérifiez les paramètres SMTP et réessayez.
+    payment:
+        created: Paiement enregistré avec succès.
+        deleted: Paiement supprimé.
+    user:
+        created: Utilisateur créé avec succès.
+        updated: Utilisateur mis à jour avec succès.
+        deactivated: Utilisateur désactivé.
+        activated: Utilisateur activé.
+    attachment:
+        uploaded: Pièce jointe téléversée avec succès.
+        deleted: Pièce jointe supprimée.
+        upload_failed: La pièce jointe n'a pas pu être téléversée.
+        not_found: La pièce jointe est introuvable.
+    settings:
+        company:
+            saved: Paramètres de l'entreprise enregistrés.
+            logo_removed: Logo de l'entreprise supprimé.
+        regional:
+            saved: Paramètres régionaux enregistrés.
+        currency_tax:
+            saved: Paramètres de devise et de taxe enregistrés.
+        documents:
+            saved: Paramètres des documents enregistrés.
+        email:
+            saved: Paramètres e-mail enregistrés.
+
+# Clients
+client:
+    index:
+        title: Clients
+        heading: Clients
+        empty: Aucun client pour le moment. Ajoutez votre premier client pour commencer.
+        empty_title: Aucun client pour le moment
+    new:
+        title: Nouveau client
+    edit:
+        title: Modifier le client
+    show:
+        details: Détails du client
+        cars: Véhicules
+        no_cars: Ce client n'a pas encore de véhicule.
+        companies: Entreprises
+        no_companies: Ce client n'a pas encore d'entreprise.
+        work_orders: Ordres de travail liés
+        work_orders_recent_note: Du plus récent au plus ancien, jusqu'à 10.
+        no_work_orders: Aucun ordre de travail pour ce client pour le moment.
+        offers: Devis liés
+        offers_recent_note: Du plus récent au plus ancien, jusqu'à 10.
+        no_offers: Aucun devis pour ce client pour le moment.
+        action:
+            view_work_order: Voir l'ordre de travail
+            view_offer: Voir le devis
+    action:
+        new: Nouveau client
+    field:
+        name: Nom
+        phone: Téléphone
+        email: E-mail
+        notes: Notes
+        cars: Véhicules
+
+# Cars
+car:
+    index:
+        title: Véhicules
+        heading: Véhicules
+        empty: Aucun véhicule pour le moment. Ajoutez votre premier véhicule pour commencer.
+        empty_title: Aucun véhicule pour le moment
+    new:
+        title: Nouveau véhicule
+    edit:
+        title: Modifier le véhicule
+    show:
+        details: Détails du véhicule
+        service_history: Historique d'entretien
+        no_service_history: Aucun ordre de réparation enregistré pour ce véhicule.
+        latest_mileage: Dernier kilométrage enregistré
+        mileage_not_recorded: Kilométrage non enregistré
+    action:
+        new: Nouveau véhicule
+    field:
+        model: Modèle
+        client: Client
+        client_placeholder: Sélectionner un client...
+        model_placeholder: Sélectionner un modèle...
+        vin: VIN
+        license_plate: Plaque d'immatriculation
+
+# Companies
+company:
+    index:
+        title: Entreprises
+        heading: Entreprises
+        empty: Aucune entreprise pour le moment.
+        empty_title: Aucune entreprise pour le moment
+    new:
+        title: Nouvelle entreprise
+    edit:
+        title: Modifier l'entreprise
+    show:
+        details: Détails de l'entreprise
+    action:
+        new: Nouvelle entreprise
+    field:
+        name: Nom
+        client: Client
+        client_placeholder: Sélectionner un client...
+        city: Ville
+        address: Adresse
+        identifier: SIRET
+        vat_identifier: Numéro de TVA
+        vat_registered: Assujettie à la TVA
+
+# Parts
+part:
+    index:
+        title: Pièces
+        heading: Pièces
+        empty: Aucune pièce pour le moment. Ajoutez votre première pièce pour commencer.
+        empty_title: Aucune pièce pour le moment
+    new:
+        title: Nouvelle pièce
+    edit:
+        title: Modifier la pièce
+    show:
+        details: Détails de la pièce
+        pricing: Tarifs
+    action:
+        new: Nouvelle pièce
+    status:
+        active: Active
+        inactive: Inactive
+    field:
+        name: Nom
+        sku: SKU
+        part_number: Référence
+        brand: Marque
+        cost_price: Prix d'achat
+        sell_price: Prix de vente
+        unit_profit: Marge unitaire
+        unit_margin: Taux de marge
+        notes: Notes
+        is_active: Active
+    help:
+        sku_optional: Optionnel. Laisser vide si l'atelier n'utilise pas de SKU.
+        part_number_optional: Optionnel. Référence du fabricant ou du catalogue, le cas échéant.
+
+# Work Orders
+work_order:
+    index:
+        title: Ordres de travail
+        heading: Ordres de travail
+        empty: Aucun ordre de travail pour le moment. Créez le premier pour commencer.
+        empty_title: Aucun ordre de travail pour le moment
+    new:
+        title: Nouvel ordre de travail
+    edit:
+        title: Modifier l'ordre de travail
+        tab:
+            details: Détails
+            labor: Main-d'œuvre
+            parts: Pièces et divers
+            payments: Paiements
+        add_labor: Ajouter une ligne de main-d'œuvre
+        add_part: Ajouter une ligne de pièce
+    show:
+        details: Détails
+        items: Lignes
+        no_items: Aucune ligne ajoutée à cet ordre pour le moment.
+        totals: Totaux
+        payments: Paiements
+        no_payments: Aucun paiement enregistré pour le moment.
+        change_status: Changer le statut
+    payments:
+        add: Ajouter un paiement
+        paid_amount: Montant payé
+        remaining: Solde restant
+        status: Statut du paiement
+        empty: Aucun paiement enregistré pour le moment.
+        view: Voir le paiement
+    filter:
+        all_statuses: Tous les statuts
+    action:
+        new: Nouvel ordre de travail
+    status:
+        draft: Brouillon
+        open: Ouvert
+        in_progress: En cours
+        waiting_parts: En attente de pièces
+        waiting_approval: En attente d'approbation
+        completed: Terminé
+        cancelled: Annulé
+        closed: Clôturé
+    field:
+        number: Numéro
+        client: Client
+        client_placeholder: Sélectionner un client...
+        car: Véhicule
+        car_placeholder: Sélectionner un véhicule...
+        status: Statut
+        source: Source
+        complaint: Réclamation
+        diagnosis: Diagnostic
+        notes: Notes
+        opened_at: Ouvert le
+        scheduled_at: Planifié le
+        started_at: Commencé le
+        completed_at: Terminé le
+        created_by: Créé par
+        total: Total
+        paid: Payé
+        subtotal_labor: Main-d'œuvre
+        subtotal_parts: Pièces
+        discount: Remise
+        tax: Taxe
+        payment_status: Statut du paiement
+        odometer_reading: Relevé du compteur
+        mileage: Kilométrage
+    help:
+        odometer_reading: Relevé du compteur du véhicule au moment de l'entretien.
+
+# Work Order Items
+work_order_item:
+    field:
+        type: Type
+        name: Désignation
+        quantity: Qté
+        unit_price: Prix unitaire
+        cost_price: Prix d'achat
+        discount: Remise
+        tax_rate: Taxe %
+        line_total: Total
+        part: Pièce
+        part_placeholder: Sélectionner une pièce...
+    help:
+        cost_price: Usage interne uniquement. Prix payé par l'atelier. N'apparaît pas dans le document client.
+    type:
+        labor: Main-d'œuvre
+        part: Pièce
+        misc: Divers
+
+# Offers
+offer:
+    index:
+        title: Devis
+        heading: Devis
+        empty: Aucun devis pour le moment. Créez le premier pour commencer.
+        empty_title: Aucun devis pour le moment
+    new:
+        title: Nouveau devis
+    edit:
+        title: Modifier le devis
+        tab:
+            details: Détails
+            labor: Main-d'œuvre
+            parts: Pièces et divers
+        add_labor: Ajouter une ligne de main-d'œuvre
+        add_part: Ajouter une ligne de pièce
+    show:
+        details: Détails
+        items: Lignes
+        no_items: Aucune ligne ajoutée à ce devis pour le moment.
+        totals: Totaux
+        change_status: Changer le statut
+    filter:
+        all_statuses: Tous les statuts
+    action:
+        new: Nouveau devis
+        convert: Convertir en ordre de travail
+    confirm:
+        convert: Convertir ce devis en ordre de travail ?
+    status:
+        draft: Brouillon
+        sent: Envoyé
+        approved: Approuvé
+        rejected: Refusé
+        expired: Expiré
+        converted: Converti
+    field:
+        number: Numéro
+        client: Client
+        client_placeholder: Sélectionner un client...
+        car: Véhicule
+        car_placeholder: Sélectionner un véhicule...
+        status: Statut
+        title: Titre
+        notes: Notes
+        valid_until: Valide jusqu'au
+        created_at: Créé
+        created_by: Créé par
+        converted_at: Converti le
+        work_order: Ordre de travail
+        total: Total
+        subtotal_labor: Main-d'œuvre
+        subtotal_parts: Pièces
+        discount: Remise
+        tax: Taxe
+
+# Offer Items
+offer_item:
+    field:
+        type: Type
+        name: Désignation
+        quantity: Qté
+        unit_price: Prix unitaire
+        cost_price: Prix d'achat
+        discount: Remise
+        tax_rate: Taxe %
+        line_total: Total
+        part: Pièce
+        part_placeholder: Sélectionner une pièce...
+    help:
+        cost_price: Usage interne uniquement. Coût attendu pour l'atelier. N'apparaît pas dans le devis client.
+    type:
+        labor: Main-d'œuvre
+        part: Pièce
+        misc: Divers
+
+# Internal "Parts margin" card shared by offer + work order admin views
+parts_margin:
+    title: Marge sur pièces
+    internal_only: Usage interne uniquement
+    field:
+        revenue: Chiffre d'affaires pièces
+        cost: Coût des pièces
+        profit: Marge
+        margin: Taux de marge
+
+# Payments
+payment:
+    index:
+        title: Paiements
+        heading: Paiements
+        empty: Aucun paiement enregistré pour le moment.
+        empty_title: Aucun paiement pour le moment
+    new:
+        title: Enregistrer un paiement
+    show:
+        title: Détails du paiement
+        details: Détails du paiement
+    action:
+        new: Enregistrer un paiement
+    field:
+        work_order: Ordre de travail
+        work_order_placeholder: Sélectionner un ordre...
+        amount: Montant
+        method: Méthode
+        method_placeholder: Sélectionner une méthode...
+        status: Statut
+        paid_at: Payé le
+        reference: Référence
+        note: Note
+    method:
+        cash: Espèces
+        card: Carte
+        bank_transfer: Virement
+    status:
+        pending: En attente
+        paid: Payé
+        partially_paid: Partiellement payé
+        refunded: Remboursé
+        void: Annulé
+
+# Settings
+settings:
+    heading: Paramètres
+    section:
+        company:
+            title: Entreprise
+            description: Raison sociale, identifiants fiscaux, contact et logo.
+        regional:
+            title: Régional
+            description: Langue, fuseau horaire et formats de date utilisés dans l'application.
+        currency_tax:
+            title: Devise et taxe
+            description: Devise et taux de taxe par défaut pour les nouveaux documents.
+        documents:
+            title: Documents
+            description: Préfixes de numérotation, validité des devis et pied de page.
+        email:
+            title: E-mail / SMTP
+            description: Identifiants du serveur de messagerie sortant. L'envoi sera ajouté plus tard.
+    company:
+        group:
+            identity: Identité
+            contact: Contact
+            branding: Identité visuelle
+        field:
+            name: Raison sociale
+            company_id: SIRET
+            vat_number: Numéro de TVA
+            address: Adresse
+            city: Ville
+            country: Pays
+            phone: Téléphone
+            email: E-mail
+            website: Site web
+            logo: Logo
+        help:
+            identity: Utilisé comme nom de l'atelier sur les devis, ordres de travail et PDF.
+            logo: PNG, JPG, WebP ou SVG, jusqu'à 2 Mo.
+        action:
+            remove_logo: Retirer le logo
+        confirm:
+            remove_logo: Retirer le logo actuel ?
+        error:
+            email_invalid: Veuillez saisir une adresse e-mail valide.
+            website_invalid: Veuillez saisir une URL valide.
+            logo_too_large: Le logo est trop volumineux. La taille maximale est de 2 Mo.
+            logo_mime_type: Seuls les fichiers PNG, JPG, WebP et SVG sont autorisés.
+    regional:
+        group:
+            locale: Langue et heure
+        field:
+            locale: Langue par défaut
+            timezone: Fuseau horaire
+            date_format: Format de date
+            time_format: Format d'heure
+            mileage_unit: Unité de kilométrage
+        help:
+            intro: Valeurs pratiques pour le quotidien. Adaptez-les au lieu de l'atelier.
+            locale: Langue par défaut de l'interface. De nouvelles traductions sont ajoutées progressivement.
+            timezone: Utilisé pour afficher les dates et heures dans l'application.
+            mileage_unit: Unité par défaut utilisée pour enregistrer le relevé du compteur sur les nouveaux ordres de réparation.
+            date_format: Format de date PHP utilisé dans les listes et en-têtes, par ex. Y-m-d ou d.m.Y.
+            time_format: Format d'heure PHP associé aux dates, par ex. H:i.
+        timezone_group:
+            generic: UTC & générique
+        error:
+            timezone_invalid: Veuillez saisir un fuseau horaire IANA valide.
+            mileage_unit_invalid: Veuillez choisir une unité de kilométrage prise en charge.
+    currency:
+        field:
+            code: Devise par défaut
+        help: Utilisée pour les nouveaux devis et ordres de travail. Les documents existants conservent leur devise.
+    currency_tax:
+        group:
+            defaults: Devise et taxe par défaut
+        help:
+            intro: Valeurs appliquées aux nouveaux devis et ordres de travail. Les documents existants ne sont pas affectés.
+    tax:
+        field:
+            default_rate: Taux de taxe par défaut (%)
+        help: Optionnel. Laissez vide si l'atelier n'est pas assujetti à la TVA.
+        error:
+            must_be_positive: Le taux de taxe par défaut ne peut pas être négatif.
+            max: Le taux de taxe par défaut ne peut pas dépasser 100 %.
+    documents:
+        group:
+            numbering: Préfixes de numérotation
+            defaults: Valeurs par défaut des documents
+        field:
+            offer_prefix: Préfixe de devis
+            work_order_prefix: Préfixe d'ordre de travail
+            invoice_prefix: Préfixe de facture
+            offer_validity: Validité par défaut du devis (jours)
+            footer: Pied de page de document
+        help:
+            numbering: Les préfixes apparaissent devant les numéros générés, par ex. OF-2026-0001.
+            offer_prefix: Utilisé pour les nouveaux devis, par ex. OF.
+            work_order_prefix: Utilisé pour les nouveaux ordres, par ex. WO.
+            invoice_prefix: Utilisé pour les factures lorsque la facturation sera activée.
+            offer_validity: Définit la date « valide jusqu'au » par défaut pour les nouveaux devis. Optionnel.
+            footer: Texte optionnel imprimé en bas des devis, ordres et factures.
+        error:
+            prefix_invalid: Les préfixes ne peuvent contenir que des lettres, chiffres, tirets et tirets bas.
+            validity_positive: La validité du devis doit être un nombre positif de jours.
+            validity_too_large: La validité du devis est trop grande.
+            footer_too_long: Le texte du pied de page est trop long.
+    email:
+        group:
+            smtp: Connexion SMTP
+            sender: Identité de l'expéditeur
+        field:
+            host: Serveur SMTP
+            port: Port
+            encryption: Chiffrement
+            username: Utilisateur
+            password: Mot de passe
+            from_email: E-mail de l'expéditeur
+            from_name: Nom de l'expéditeur
+        help:
+            intro: Identifiants SMTP pour les futurs e-mails clients. L'envoi n'est pas encore actif.
+            encryption: Choisissez le mode de chiffrement requis par votre fournisseur.
+            password: Laissez vide pour conserver le mot de passe actuel. Les nouvelles valeurs sont stockées chiffrées.
+        encryption:
+            none: Aucun
+            tls: TLS
+            ssl: SSL
+        password_stored: Mot de passe défini
+        error:
+            port_invalid: Le port SMTP doit être compris entre 1 et 65535.
+            from_email_invalid: Veuillez saisir une adresse e-mail d'expéditeur valide.
+
+# Statistics
+statistics:
+    title: Statistiques
+    heading: Statistiques
+    subtitle: Chiffre d'affaires, activité et santé de l'atelier en un coup d'œil.
+    value:
+        not_available: "Indisponible"
+    notice:
+        mixed_currencies: "Affichage en %currency% uniquement. La période contient aussi des documents en : %others%."
+    filter:
+        period_label: Période
+        from: Du
+        to: Au
+        preset:
+            today: Aujourd'hui
+            this_week: Cette semaine
+            this_month: Ce mois
+            last_month: Mois dernier
+            this_year: Cette année
+            custom: Période personnalisée
+    kpi:
+        total_revenue: Chiffre d'affaires total
+        paid_amount: Montant payé
+        unpaid_amount: Montant impayé
+        parts_revenue: Chiffre d'affaires pièces
+        parts_profit: Marge sur pièces
+        parts_profit.no_cost_hint: Aucun coût enregistré sur les pièces dans cette période.
+        completed_work_orders: Ordres terminés
+        open_work_orders: Ordres ouverts
+        open_work_orders.hint: Total global, pas seulement la période sélectionnée.
+        offer_conversion: Conversion des devis
+        offer_conversion.hint: Devis convertis divisés par tous les non-brouillons.
+    chart:
+        revenue_over_time: Chiffre d'affaires dans le temps
+        work_orders_by_status: Ordres par statut
+        offers_by_status: Devis par statut
+        payments_by_method: Paiements par méthode
+    table:
+        top_clients: Meilleurs clients
+        mechanic_workload: Charge des mécaniciens
+        mechanic_workload.note: Basé sur le créateur de l'ordre.
+        top_profitable_parts: Pièces les plus rentables
+        top_profitable_parts.note: Usage interne - marge sur pièces des ordres dans cette période.
+    column:
+        client: Client
+        work_orders: Ordres
+        total_revenue: Chiffre d'affaires
+        unpaid_amount: Impayé
+        mechanic: Mécanicien
+        active: Actifs
+        completed_in_period: Terminés
+        total_in_period: Total
+        part: Pièce
+        quantity: Qté
+        parts_revenue: CA
+        parts_cost: Coût
+        parts_profit: Marge
+    empty:
+        chart: Pas de données pour la période sélectionnée.
+        top_clients_title: Pas encore de chiffre d'affaires par client
+        top_clients: Aucun client n'a d'ordre dans la période sélectionnée.
+        mechanics_title: Pas d'ordres dans cette période
+        mechanics: La charge apparaît quand les mécaniciens ouvrent ou terminent des ordres.
+        top_parts_title: Aucune pièce vendue
+        top_parts: La marge sur pièces apparaît quand des lignes "Pièce" sont ajoutées aux ordres.
+
+# PDF documents
+pdf:
+    document: Document
+    action:
+        download: Télécharger le PDF
+    company:
+        unnamed: Entreprise
+        phone: Téléphone
+        email: E-mail
+        company_id: SIRET
+        vat_number: TVA
+    offer:
+        title: Devis
+        client: Client
+        vehicle: Véhicule
+        details: Détails
+    work_order:
+        title: Ordre de travail
+        client: Client
+        vehicle: Véhicule
+        details: Détails
+    items:
+        empty: Aucune ligne.
+    footer:
+        generated_by: Généré par Carstio - logiciel libre et open source pour les ateliers automobiles modernes.
+
+# Outgoing client emails
+email:
+    action:
+        send: Envoyer par e-mail
+    confirm:
+        send_offer: 'Envoyer ce devis par e-mail à %email% ?'
+        send_work_order: 'Envoyer cet ordre de travail par e-mail à %email% ?'
+    error:
+        client_missing_address: Ce client n'a pas d'adresse e-mail enregistrée.
+    greeting: 'Bonjour %name%,'
+    signoff: "Cordialement,\nl'équipe %company%"
+    label:
+        offer_number: Numéro de devis
+        work_order_number: Numéro d'ordre
+        client: Client
+        vehicle: Véhicule
+        scheduled_at: Planifié
+        valid_until: Valable jusqu'au
+        total: Total
+        mileage: Kilométrage
+    offer:
+        subject: 'Devis %number% de %company%'
+        heading: 'Devis %number%'
+        intro: 'Veuillez trouver ci-joint le devis préparé par %company%.'
+        attachment_note: Le devis est joint au format PDF.
+    work_order:
+        subject: 'Ordre de travail %number% de %company%'
+        heading: 'Ordre de travail %number%'
+        intro: 'Veuillez trouver ci-joint le résumé de l''ordre de travail de %company%.'
+        attachment_note: L'ordre de travail est joint au format PDF.
+    footer:
+        generated_by: Généré par Carstio - logiciel libre et open source pour les ateliers automobiles modernes.
+
+# Attachments
+attachment:
+    section:
+        title: Pièces jointes
+    action:
+        upload: Téléverser une pièce jointe
+        download: Télécharger
+        view: Voir
+    field:
+        file: Fichier
+        category: Catégorie
+        description: Description
+        size: Taille
+        uploaded_by: Téléversé par
+        uploaded_at: Téléversé le
+    category:
+        photo: Photo
+        document: Document
+        diagnostic: Diagnostic
+        before_repair: Avant réparation
+        after_repair: Après réparation
+        receipt: Reçu
+        other: Autre
+    empty: Aucune pièce jointe pour le moment.
+    error:
+        file_required: Veuillez sélectionner un fichier à téléverser.
+        too_large: Le fichier est trop volumineux. La taille maximale est de 10 Mo.
+        mime_type: "Ce type de fichier n'est pas autorisé. Types autorisés : PDF, JPEG, PNG, WebP et MP4."
+        description_too_long: La description est trop longue.
+
+
+# User Management
+user:
+    index:
+        title: Utilisateurs
+        heading: Utilisateurs
+        empty: Aucun utilisateur pour l'instant.
+        empty_title: Aucun utilisateur pour l'instant
+    new:
+        title: Ajouter un utilisateur
+    edit:
+        title: Modifier l'utilisateur
+    show:
+        details: Détails de l'utilisateur
+    action:
+        new: Ajouter un utilisateur
+        deactivate: Désactiver
+        activate: Activer
+    confirm:
+        deactivate: Désactiver cet utilisateur ? Il ne pourra plus se connecter.
+    field:
+        email: E-mail
+        full_name: Nom complet
+        password: Mot de passe
+        new_password: Nouveau mot de passe
+        role: Rôle
+        status: Statut
+        active: Actif
+        created_at: Créé le
+    help:
+        password_keep: Laissez vide pour conserver le mot de passe actuel.
+    role:
+        admin: Administrateur
+        mechanic: Mécanicien
+    status:
+        active: Actif
+        inactive: Inactif
+    error:
+        email_required: Veuillez saisir une adresse e-mail.
+        email_invalid: Veuillez saisir une adresse e-mail valide.
+        email_taken: Cette adresse e-mail est déjà utilisée par un autre utilisateur.
+        full_name_required: Veuillez saisir un nom.
+        password_required: Veuillez choisir un mot de passe.
+        password_too_short: Le mot de passe doit contenir au moins {{ limit }} caractères.
+        last_admin: Impossible de retirer le dernier administrateur actif.
+        cannot_deactivate_self: Vous ne pouvez pas désactiver votre propre compte.
+        account_inactive: Votre compte est inactif. Veuillez contacter un administrateur.
+
+# Mileage / odometer
+mileage:
+    label: Kilométrage
+    odometer_reading: Relevé du compteur
+    not_recorded: Kilométrage non enregistré
+    unit:
+        km: Kilomètres
+        mi: Miles
+    error:
+        invalid: Kilométrage invalide.
+        negative: Le kilométrage ne peut pas être négatif.

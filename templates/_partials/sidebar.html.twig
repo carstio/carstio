@@ -1,0 +1,82 @@
+{% import '_macros/icon.html.twig' as icon %}
+
+<aside class="app-sidebar" id="appSidebar">
+    <a href="{{ path('app_dashboard') }}" class="sidebar-brand">
+        <img src="{{ asset('logo.svg') }}" alt="{{ 'app.name'|trans }}">
+        <span>{{ 'app.name'|trans }}</span>
+    </a>
+
+    <nav class="sidebar-nav">
+        <div class="sidebar-section-label">{{ 'nav.section.main'|trans }}</div>
+
+        <a href="{{ path('app_dashboard') }}" class="nav-link {{ app.current_route == 'app_dashboard' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('dashboard', {size: 18}) }}</span>
+            {{ 'nav.dashboard'|trans }}
+        </a>
+
+        <a href="{{ path('app_client_index') }}" class="nav-link {{ app.current_route starts with 'app_client' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('clients', {size: 18}) }}</span>
+            {{ 'nav.clients'|trans }}
+        </a>
+
+        <a href="{{ path('app_car_index') }}" class="nav-link {{ app.current_route starts with 'app_car' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('car', {size: 18}) }}</span>
+            {{ 'nav.cars'|trans }}
+        </a>
+
+        <a href="{{ path('app_company_index') }}" class="nav-link {{ app.current_route starts with 'app_company' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('company', {size: 18}) }}</span>
+            {{ 'nav.companies'|trans }}
+        </a>
+
+        <div class="sidebar-section-label">{{ 'nav.section.workshop'|trans }}</div>
+
+        <a href="{{ path('app_offer_index') }}" class="nav-link {{ app.current_route starts with 'app_offer' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('tag', {size: 18}) }}</span>
+            {{ 'nav.offers'|trans }}
+        </a>
+
+        <a href="{{ path('app_work_order_index') }}" class="nav-link {{ app.current_route starts with 'app_work_order' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('work-order', {size: 18}) }}</span>
+            {{ 'nav.work_orders'|trans }}
+        </a>
+
+        <a href="{{ path('app_part_index') }}" class="nav-link {{ app.current_route starts with 'app_part' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('part', {size: 18}) }}</span>
+            {{ 'nav.parts'|trans }}
+        </a>
+
+        <a href="{{ path('app_payment_index') }}" class="nav-link {{ app.current_route starts with 'app_payment' ? 'active' }}">
+            <span class="nav-icon">{{ icon.render('payment', {size: 18}) }}</span>
+            {{ 'nav.payments'|trans }}
+        </a>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_statistics_index') }}" class="nav-link {{ app.current_route starts with 'app_statistics' ? 'active' }}">
+                <span class="nav-icon">{{ icon.render('chart', {size: 18}) }}</span>
+                {{ 'nav.statistics'|trans }}
+            </a>
+        {% endif %}
+
+        <div class="sidebar-section-label">{{ 'nav.section.system'|trans }}</div>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_user_index') }}" class="nav-link {{ app.current_route starts with 'app_user' ? 'active' }}">
+                <span class="nav-icon">{{ icon.render('clients', {size: 18}) }}</span>
+                {{ 'nav.users'|trans }}
+            </a>
+        {% endif %}
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <a href="{{ path('app_settings_index') }}" class="nav-link {{ app.current_route starts with 'app_settings' ? 'active' }}">
+                <span class="nav-icon">{{ icon.render('settings', {size: 18}) }}</span>
+                {{ 'nav.settings'|trans }}
+            </a>
+        {% endif %}
+    </nav>
+
+    <div class="sidebar-footer">
+        <div class="user-name">{{ app.user.fullName }}</div>
+        <div class="user-role">{{ app.user.roles|first|replace({'ROLE_': ''})|replace({'_': ' '})|lower }}</div>
+    </div>
+</aside>

@@ -1,0 +1,65 @@
+{% extends 'layout.html.twig' %}
+{% import '_macros/icon.html.twig' as icon %}
+
+{% block title %}{{ company.name }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block content %}
+    <div class="action-bar">
+        <div class="action-bar-back">
+            <a href="{{ path('app_company_index') }}">{{ icon.render('chevron-left', {size: 14}) }}<span>{{ 'company.index.heading'|trans }}</span></a>
+        </div>
+        <div class="action-bar-actions">
+            <a href="{{ path('app_company_edit', {id: company.id}) }}" class="btn btn-primary">
+                {{ icon.render('pencil') }}<span>{{ 'action.edit'|trans }}</span>
+            </a>
+            <div class="dropdown action-kebab">
+                <button class="btn" data-bs-toggle="dropdown" aria-expanded="false" aria-label="{{ 'action.more'|trans }}">
+                    {{ icon.render('kebab', {size: 18}) }}
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <form method="post" action="{{ path('app_company_delete', {id: company.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-company-' ~ company.id) }}">
+                            <button type="submit" class="dropdown-item text-danger">
+                                {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    {% include '_partials/page_head.html.twig' with {
+        head_icon: 'company',
+        title: company.name,
+        subtitle: company.city
+    } only %}
+
+    <div class="row g-3">
+        <div class="col-lg-8">
+            <div class="section-card">
+                <div class="section-card-header">
+                    <h2 class="section-card-title">{{ 'company.show.details'|trans }}</h2>
+                </div>
+                <div class="section-card-body">
+                    <dl class="kv-list">
+                        <div class="kv-row"><dt>{{ 'company.field.name'|trans }}</dt><dd>{{ company.name }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.client'|trans }}</dt><dd><a href="{{ path('app_client_show', {id: company.client.id}) }}">{{ company.client.name }}</a></dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.city'|trans }}</dt><dd>{{ company.city }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.address'|trans }}</dt><dd>{{ company.address }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.identifier'|trans }}</dt><dd class="font-monospace">{{ company.identifier }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.vat_identifier'|trans }}</dt><dd class="font-monospace">{{ company.vatIdentifier ?? '-' }}</dd></div>
+                        <div class="kv-row"><dt>{{ 'company.field.vat_registered'|trans }}</dt><dd>
+                            {% if company.vat %}
+                                <span class="status-badge status-badge--success">{{ 'label.yes'|trans }}</span>
+                            {% else %}
+                                <span class="status-badge status-badge--neutral">{{ 'label.no'|trans }}</span>
+                            {% endif %}
+                        </dd></div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
