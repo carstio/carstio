@@ -11,6 +11,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Client>
+ */
 class ClientType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -18,15 +21,16 @@ class ClientType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'client.field.name',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('phone', TextType::class, [
                 'label' => 'client.field.phone',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'client.field.email',
                 'required' => false,
+                'constraints' => [new Assert\Email(), new Assert\Length(max: 255)],
             ])
             ->add('notes', TextareaType::class, [
                 'label' => 'client.field.notes',

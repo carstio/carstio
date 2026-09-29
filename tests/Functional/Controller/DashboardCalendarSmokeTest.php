@@ -14,7 +14,6 @@ class DashboardCalendarSmokeTest extends WebTestCase
         $client->loginUser($user);
         $client->request('GET', '/');
         $html = $client->getResponse()->getContent();
-        file_put_contents('/tmp/dashboard.html', $html);
         $this->assertStringContainsString('data-controller="calendar"', $html);
     }
 
@@ -24,7 +23,6 @@ class DashboardCalendarSmokeTest extends WebTestCase
         $user = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@carstio.local']);
         $client->loginUser($user);
         $client->request('GET', '/dashboard/calendar/events');
-        file_put_contents('/tmp/events.json', $client->getResponse()->getContent());
         $this->assertResponseIsSuccessful();
         $this->assertJson($client->getResponse()->getContent());
     }

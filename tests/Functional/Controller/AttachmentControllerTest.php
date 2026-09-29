@@ -205,6 +205,51 @@ class AttachmentControllerTest extends WebTestCase
         $this->assertSelectorTextContains('body', $created->getOriginalFilename());
     }
 
+    public function testDeletingWorkOrderRemovesItsAttachments(): void
+    {
+        $client = $this->loginAdmin();
+        $workOrder = $this->createThrowawayWorkOrder();
+        $workOrderId = $workOrder->getId();
+
+        $attachment = $this->uploadFixturePdf($client, $workOrder);
+        $attachmentId = $attachment->getId();
+        $storage = static::getContainer()->get(AttachmentStorage::class);
+        $absolutePath = $storage->absolutePath($attachment);
+        self::assertFileExists($absolutePath);
+
+        $crawler = $client->request('GET', '/work-orders/' . $workOrderId);
+        $form = $crawler->filter('form[action="/work-orders/' . $workOrderId . '/delete"]')->form();
+        $client->submit($form);
+        $this->assertResponseRedirects('/work-orders');
+
+        static::getContainer()->get('doctrine')->getManager()->clear();
+        self::assertNull(static::getContainer()->get(WorkOrderRepository::class)->find($workOrderId));
+        self::assertNull(
+            static::getContainer()->get(AttachmentRepository::class)->find($attachmentId),
+            'Attachment rows must not outlive their work order.',
+        );
+        self::assertFileDoesNotExist($absolutePath, 'Attachment files must not outlive their work order.');
+    }
+
+    private function createThrowawayWorkOrder(): WorkOrder
+    {
+        $em = static::getContainer()->get('doctrine')->getManager();
+        $owner = $em->getRepository(\App\Entity\Client\Client::class)->findOneBy([]);
+        $car = $em->getRepository(\App\Entity\Car\Car::class)->findOneBy(['client' => $owner]);
+        self::assertNotNull($owner);
+        self::assertNotNull($car);
+
+        $workOrder = new WorkOrder();
+        $workOrder->setNumber('WO-ATT-DEL-' . substr(uniqid(), -4));
+        $workOrder->setClient($owner);
+        $workOrder->setCar($car);
+        $workOrder->setComplaint('Attachment cleanup test');
+        $em->persist($workOrder);
+        $em->flush();
+
+        return $workOrder;
+    }
+
     private function loginAdmin(): KernelBrowser
     {
         $client = static::createClient();

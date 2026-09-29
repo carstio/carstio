@@ -14,6 +14,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Constraints\File;
 
+/**
+ * @extends AbstractType<AttachmentUploadData>
+ */
 class AttachmentUploadType extends AbstractType
 {
     /**

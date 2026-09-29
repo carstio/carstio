@@ -22,6 +22,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<WorkOrder>
+ */
 class WorkOrderType extends AbstractType
 {
     public function __construct(
@@ -57,6 +60,7 @@ class WorkOrderType extends AbstractType
             ->add('source', TextType::class, [
                 'label' => 'work_order.field.source',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 100)],
             ])
             ->add('complaint', TextareaType::class, [
                 'label' => 'work_order.field.complaint',

@@ -60,12 +60,7 @@ class PdfRenderer
         $pdf->setPaper('A4', 'portrait');
         $pdf->render();
 
-        $output = $pdf->output();
-        if ($output === null) {
-            throw new \RuntimeException('Dompdf returned no output.');
-        }
-
-        return $output;
+        return $pdf->output();
     }
 
     private function createDompdf(): Dompdf

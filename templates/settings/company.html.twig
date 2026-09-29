@@ -58,7 +58,7 @@
                         {{ form_row(form.logoFile) }}
                         {% if logo_path %}
                             <button type="submit" form="company-logo-remove-form" class="btn btn-outline-danger btn-sm mt-2"
-                                    onclick="return confirm('{{ 'settings.company.confirm.remove_logo'|trans }}');">
+                                    onclick="return confirm('{{ 'settings.company.confirm.remove_logo'|trans|e('js') }}');">
                                 {{ icon.render('trash', {size: 14}) }}<span>{{ 'settings.company.action.remove_logo'|trans }}</span>
                             </button>
                         {% endif %}

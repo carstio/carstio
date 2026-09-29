@@ -9,6 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PaymentRepository::class)]
+#[ORM\Index(name: 'idx_payment_paid_at', columns: ['paid_at'])]
 class Payment
 {
     #[ORM\Id]

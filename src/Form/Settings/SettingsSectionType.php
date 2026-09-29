@@ -27,6 +27,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * File upload (logo) and the SMTP password use unmapped fields added
  * outside this form by the controller - they need bespoke handling and
  * shouldn't leak into the generic save path.
+ *
+ * @extends AbstractType<array<string, mixed>>
  */
 class SettingsSectionType extends AbstractType
 {

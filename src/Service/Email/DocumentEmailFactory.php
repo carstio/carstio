@@ -58,7 +58,7 @@ class DocumentEmailFactory
 
         $email = (new Email())
             ->from($from)
-            ->to(new Address($clientEmail, (string) $client?->getName()))
+            ->to(new Address($clientEmail, (string) $client->getName()))
             ->subject($subject)
             ->text($this->twig->render('emails/offer.txt.twig', $context))
             ->html($this->twig->render('emails/offer.html.twig', $context));
@@ -100,7 +100,7 @@ class DocumentEmailFactory
 
         $email = (new Email())
             ->from($from)
-            ->to(new Address($clientEmail, (string) $client?->getName()))
+            ->to(new Address($clientEmail, (string) $client->getName()))
             ->subject($subject)
             ->text($this->twig->render('emails/work_order.txt.twig', $context))
             ->html($this->twig->render('emails/work_order.html.twig', $context));

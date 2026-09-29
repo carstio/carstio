@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Company>
+ */
 class CompanyType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -27,23 +30,24 @@ class CompanyType extends AbstractType
             ])
             ->add('name', TextType::class, [
                 'label' => 'company.field.name',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('city', TextType::class, [
                 'label' => 'company.field.city',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('address', TextType::class, [
                 'label' => 'company.field.address',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('identifier', TextType::class, [
                 'label' => 'company.field.identifier',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('vatIdentifier', TextType::class, [
                 'label' => 'company.field.vat_identifier',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 255)],
             ])
             ->add('vat', CheckboxType::class, [
                 'label' => 'company.field.vat_registered',

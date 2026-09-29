@@ -27,7 +27,10 @@ class WorkOrderNumberGenerator
         $lastOrder = $this->repository->createQueryBuilder('w')
             ->where('w.number LIKE :prefix')
             ->setParameter('prefix', $prefix . '%')
-            ->orderBy('w.number', 'DESC')
+            // Longest number first, then lexicographic: "…-10000" must beat
+            // "…-9999" even though it sorts lower as a plain string.
+            ->orderBy('LENGTH(w.number)', 'DESC')
+            ->addOrderBy('w.number', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

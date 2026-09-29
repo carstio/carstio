@@ -50,7 +50,7 @@ class AttachmentStorage
         }
 
         $randomName = bin2hex(random_bytes(16));
-        $storedFilename = $extension !== '' ? sprintf('%s.%s', $randomName, $extension) : $randomName;
+        $storedFilename = sprintf('%s.%s', $randomName, $extension);
 
         $now = new \DateTimeImmutable();
         $relativeDir = sprintf(
@@ -75,7 +75,7 @@ class AttachmentStorage
         return [
             'storedFilename' => $storedFilename,
             'storagePath' => $relativeDir . '/' . $storedFilename,
-            'extension' => $extension !== '' ? $extension : null,
+            'extension' => $extension,
             'mimeType' => $mimeType,
             'size' => (int) $size,
             'originalFilename' => $originalFilename,

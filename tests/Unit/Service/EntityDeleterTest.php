@@ -19,7 +19,7 @@ class EntityDeleterTest extends TestCase
         $em->expects(self::once())->method('remove')->with($entity);
         $em->expects(self::once())->method('flush');
 
-        $deleter = new EntityDeleter($em, $this->createMock(LoggerInterface::class));
+        $deleter = new EntityDeleter($em, $this->createStub(LoggerInterface::class));
 
         self::assertTrue($deleter->delete($entity));
     }
@@ -28,12 +28,12 @@ class EntityDeleterTest extends TestCase
     {
         $entity = new \stdClass();
         $fkException = new ForeignKeyConstraintViolationException(
-            $this->createMock(DriverExceptionInterface::class),
+            $this->createStub(DriverExceptionInterface::class),
             null,
         );
 
         $em = $this->createMock(EntityManagerInterface::class);
-        $em->method('remove')->with($entity);
+        $em->expects(self::once())->method('remove')->with($entity);
         $em->method('flush')->willThrowException($fkException);
 
         $logger = $this->createMock(LoggerInterface::class);

@@ -2,6 +2,7 @@
 
 namespace App\Tests\Functional\Controller;
 
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class SecurityControllerTest extends WebTestCase
@@ -74,5 +75,41 @@ class SecurityControllerTest extends WebTestCase
         // Visit login page again
         $client->request('GET', '/login');
         $this->assertResponseRedirects('/');
+    }
+
+    public function testLogoutViaHeaderFormEndsTheSession(): void
+    {
+        $client = static::createClient();
+        $user = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@carstio.local']);
+        $client->loginUser($user);
+
+        $crawler = $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
+
+        $form = $crawler->filter('form[action="/logout"]')->form();
+        $client->submit($form);
+        $this->assertResponseRedirects('/login');
+
+        $client->request('GET', '/');
+        $this->assertResponseRedirects('/login', null, 'The session must be gone after logging out.');
+    }
+
+    public function testLogoutIsRefusedWithoutCsrfToken(): void
+    {
+        $client = static::createClient();
+        $user = static::getContainer()->get(UserRepository::class)->findOneBy(['email' => 'admin@carstio.local']);
+        $client->loginUser($user);
+
+        // A plain GET (e.g. a prefetched link or a cross-site image tag)
+        // must not log the user out: the route only accepts POST.
+        $client->request('GET', '/logout');
+        $this->assertSame(405, $client->getResponse()->getStatusCode());
+
+        // A POST without the CSRF token is refused by the logout listener.
+        $client->request('POST', '/logout');
+        $this->assertSame(403, $client->getResponse()->getStatusCode());
+
+        $client->request('GET', '/');
+        $this->assertResponseIsSuccessful();
     }
 }

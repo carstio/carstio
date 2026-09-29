@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {# Turbo 8 prefetches links on hover by default. Several GET links here
+       render PDFs or stream attachments, so keep the Turbo 7 behaviour and
+       only fetch on click. #}
+    <meta name="turbo-prefetch" content="false">
     <title>{% block title %}{{ 'app.name'|trans }}{% endblock %}</title>
     {% block stylesheets %}{% endblock %}
     {% block javascripts %}

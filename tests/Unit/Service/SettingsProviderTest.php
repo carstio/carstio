@@ -61,7 +61,7 @@ class SettingsProviderTest extends TestCase
     public function testGetBoolHandlesStringValues(): void
     {
         $registry = new SettingsRegistry();
-        $repo = $this->createMock(SettingRepository::class);
+        $repo = $this->createStub(SettingRepository::class);
         $repo->method('findAllSettings')->willReturn([]);
 
         $provider = new SettingsProvider($repo, $registry, new SmtpPasswordEncrypter('test-secret'));
@@ -98,7 +98,7 @@ class SettingsProviderTest extends TestCase
      */
     private function buildProvider(array $rows): SettingsProvider
     {
-        $repo = $this->createMock(SettingRepository::class);
+        $repo = $this->createStub(SettingRepository::class);
         $repo->method('findAllSettings')->willReturn($rows);
 
         return new SettingsProvider($repo, new SettingsRegistry(), new SmtpPasswordEncrypter('test-secret'));

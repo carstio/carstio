@@ -213,6 +213,8 @@ final class SettingsController extends AbstractController
 
     /**
      * @param array<string, mixed> $values
+     *
+     * @return \Symfony\Component\Form\FormInterface<array<string, mixed>>
      */
     private function createSectionForm(string $section, array $values): \Symfony\Component\Form\FormInterface
     {

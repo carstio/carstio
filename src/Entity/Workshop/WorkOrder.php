@@ -17,6 +17,10 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: WorkOrderRepository::class)]
+#[ORM\Index(name: 'idx_work_order_status', columns: ['status'])]
+#[ORM\Index(name: 'idx_work_order_opened_at', columns: ['opened_at'])]
+#[ORM\Index(name: 'idx_work_order_scheduled_at', columns: ['scheduled_at'])]
+#[ORM\Index(name: 'idx_work_order_completed_at', columns: ['completed_at'])]
 class WorkOrder
 {
     #[ORM\Id]

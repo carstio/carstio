@@ -27,7 +27,10 @@ class OfferNumberGenerator
         $lastOffer = $this->repository->createQueryBuilder('o')
             ->where('o.number LIKE :prefix')
             ->setParameter('prefix', $prefix . '%')
-            ->orderBy('o.number', 'DESC')
+            // Longest number first, then lexicographic: "…-10000" must beat
+            // "…-9999" even though it sorts lower as a plain string.
+            ->orderBy('LENGTH(o.number)', 'DESC')
+            ->addOrderBy('o.number', 'DESC')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();

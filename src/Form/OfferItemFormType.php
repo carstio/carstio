@@ -15,6 +15,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<OfferItem>
+ */
 class OfferItemFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -23,7 +26,7 @@ class OfferItemFormType extends AbstractType
             ->add('type', HiddenType::class)
             ->add('name', TextType::class, [
                 'label' => 'offer_item.field.name',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
                 'attr' => ['placeholder' => 'offer_item.field.name'],
             ])
             // Required numeric fields coerce an empty submission to '0' so
@@ -66,7 +69,7 @@ class OfferItemFormType extends AbstractType
             ->add('sortOrder', HiddenType::class);
 
         $builder->get('type')->addModelTransformer(new CallbackTransformer(
-            fn (?OfferItemType $value): string => $value?->value ?? '',
+            fn (?OfferItemType $value): string => $value->value ?? '',
             fn (?string $value): ?OfferItemType => $value ? OfferItemType::from($value) : null,
         ));
 

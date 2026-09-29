@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Car>
+ */
 class CarType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -41,10 +44,12 @@ class CarType extends AbstractType
             ->add('vin', TextType::class, [
                 'label' => 'car.field.vin',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 255)],
             ])
             ->add('licensePlate', TextType::class, [
                 'label' => 'car.field.license_plate',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 255)],
             ]);
     }
 

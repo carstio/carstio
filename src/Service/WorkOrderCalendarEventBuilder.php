@@ -47,7 +47,7 @@ class WorkOrderCalendarEventBuilder
 
     public static function colorFor(WorkOrderStatus $status): string
     {
-        return self::STATUS_COLORS[$status->value] ?? '#64748b';
+        return self::STATUS_COLORS[$status->value];
     }
 
     /**

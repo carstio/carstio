@@ -33,7 +33,7 @@ class StatisticsServiceTest extends TestCase
 
     public function testConversionRateNotAvailableForZeroDenominator(): void
     {
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnCallback(
             fn (string $id) => $id === 'statistics.value.not_available' ? 'N/A' : $id,
         );
@@ -45,7 +45,7 @@ class StatisticsServiceTest extends TestCase
 
     public function testConversionRateNotAvailableWhenAllOffersAreDrafts(): void
     {
-        $translator = $this->createMock(TranslatorInterface::class);
+        $translator = $this->createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnCallback(
             fn (string $id) => $id === 'statistics.value.not_available' ? 'N/A' : $id,
         );
@@ -58,15 +58,15 @@ class StatisticsServiceTest extends TestCase
 
     private function buildService(?TranslatorInterface $translator = null): StatisticsService
     {
-        $translator ??= $this->createMock(TranslatorInterface::class);
+        $translator ??= $this->createStub(TranslatorInterface::class);
         $translator->method('trans')->willReturnCallback(static fn (string $id) => $id);
 
         return new StatisticsService(
-            $this->createMock(WorkOrderRepository::class),
-            $this->createMock(OfferRepository::class),
-            $this->createMock(PaymentRepository::class),
-            $this->createMock(WorkOrderItemRepository::class),
-            $this->createMock(SettingsProvider::class),
+            $this->createStub(WorkOrderRepository::class),
+            $this->createStub(OfferRepository::class),
+            $this->createStub(PaymentRepository::class),
+            $this->createStub(WorkOrderItemRepository::class),
+            $this->createStub(SettingsProvider::class),
             new CurrencyFormatter(),
             $translator,
         );

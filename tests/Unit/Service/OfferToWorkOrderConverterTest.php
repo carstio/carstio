@@ -24,13 +24,13 @@ class OfferToWorkOrderConverterTest extends TestCase
 {
     private function makeConverter(EntityManagerInterface $em, string $settingsCurrency = 'EUR'): OfferToWorkOrderConverter
     {
-        $numberGenerator = $this->createMock(WorkOrderNumberGenerator::class);
+        $numberGenerator = $this->createStub(WorkOrderNumberGenerator::class);
         $numberGenerator->method('generate')->willReturn('WO-2026-9001');
 
-        $settings = $this->createMock(SettingsProvider::class);
-        $settings->method('getString')
-            ->with(SettingsRegistry::SECTION_CURRENCY, SettingsRegistry::KEY_DEFAULT_CURRENCY_CODE)
-            ->willReturn($settingsCurrency);
+        $settings = $this->createStub(SettingsProvider::class);
+        $settings->method('getString')->willReturnMap([
+            [SettingsRegistry::SECTION_CURRENCY, SettingsRegistry::KEY_DEFAULT_CURRENCY_CODE, $settingsCurrency],
+        ]);
 
         return new OfferToWorkOrderConverter(
             $em,
@@ -133,7 +133,7 @@ class OfferToWorkOrderConverterTest extends TestCase
 
     public function testCannotConvertTwice(): void
     {
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $converter = $this->makeConverter($em);
 
         $offer = $this->makeApprovedOffer();
@@ -147,7 +147,7 @@ class OfferToWorkOrderConverterTest extends TestCase
 
     public function testConvertCarriesCostPriceForwardForPartsMargin(): void
     {
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $converter = $this->makeConverter($em);
         $offer = $this->makeApprovedOffer();
 

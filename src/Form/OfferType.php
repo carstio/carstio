@@ -20,6 +20,9 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Offer>
+ */
 class OfferType extends AbstractType
 {
     public function __construct(
@@ -50,10 +53,14 @@ class OfferType extends AbstractType
                 'class' => OfferStatus::class,
                 'label' => 'offer.field.status',
                 'choice_label' => fn (OfferStatus $status): string => 'offer.status.' . $status->value,
+                // "Converted" is set by OfferToWorkOrderConverter only (see
+                // OfferStatusUpdater); it must not be selectable by hand.
+                'choice_filter' => static fn (?OfferStatus $status): bool => $status !== OfferStatus::Converted,
             ])
             ->add('title', TextType::class, [
                 'label' => 'offer.field.title',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 255)],
             ])
             ->add('notes', TextareaType::class, [
                 'label' => 'offer.field.notes',

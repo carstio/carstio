@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraint;
 final readonly class SettingDefinition
 {
     /**
-     * @param array<string, string>|null $choices Map of label key => stored value, used when type is Choice.
+     * @param array<string, string|array<string, string>>|null $choices Map of label key => stored value (or of group label => such a map), used when type is Choice.
      * @param list<Constraint>           $constraints Extra validators applied by the dynamic settings form.
      */
     public function __construct(

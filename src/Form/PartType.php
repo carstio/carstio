@@ -12,6 +12,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Part>
+ */
 class PartType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -19,21 +22,24 @@ class PartType extends AbstractType
         $builder
             ->add('name', TextType::class, [
                 'label' => 'part.field.name',
-                'constraints' => [new Assert\NotBlank()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Length(max: 255)],
             ])
             ->add('brand', TextType::class, [
                 'label' => 'part.field.brand',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 100)],
             ])
             ->add('sku', TextType::class, [
                 'label' => 'part.field.sku',
                 'required' => false,
                 'help' => 'part.help.sku_optional',
+                'constraints' => [new Assert\Length(max: 100)],
             ])
             ->add('partNumber', TextType::class, [
                 'label' => 'part.field.part_number',
                 'required' => false,
                 'help' => 'part.help.part_number_optional',
+                'constraints' => [new Assert\Length(max: 100)],
             ])
             ->add('costPrice', NumberType::class, [
                 'label' => 'part.field.cost_price',

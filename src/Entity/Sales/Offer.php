@@ -16,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OfferRepository::class)]
+#[ORM\Index(name: 'idx_offer_status', columns: ['status'])]
+#[ORM\Index(name: 'idx_offer_created_at', columns: ['created_at'])]
 class Offer
 {
     #[ORM\Id]

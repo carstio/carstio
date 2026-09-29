@@ -17,6 +17,9 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * @extends AbstractType<Payment>
+ */
 class PaymentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -66,6 +69,7 @@ class PaymentType extends AbstractType
             ->add('reference', TextType::class, [
                 'label' => 'payment.field.reference',
                 'required' => false,
+                'constraints' => [new Assert\Length(max: 255)],
             ])
             ->add('note', TextareaType::class, [
                 'label' => 'payment.field.note',

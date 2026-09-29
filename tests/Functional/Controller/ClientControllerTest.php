@@ -85,6 +85,22 @@ class ClientControllerTest extends WebTestCase
         $this->assertResponseIsUnprocessable();
     }
 
+    public function testCreateClientRejectsInvalidEmailAndOverlongName(): void
+    {
+        $client = $this->loginClient();
+        $client->request('GET', '/clients/new');
+
+        $client->submitForm('Save', [
+            'client[name]' => str_repeat('x', 256),
+            'client[phone]' => '+1 555-0000',
+            'client[email]' => "not-an-email'+alert(1)+'",
+        ]);
+
+        // Must be a validation error, never a database error / 500.
+        $this->assertResponseIsUnprocessable();
+        $this->assertSelectorExists('.invalid-feedback');
+    }
+
     public function testShowClient(): void
     {
         $client = $this->loginClient();

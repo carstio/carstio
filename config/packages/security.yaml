@@ -20,6 +20,11 @@ security:
             lazy: true
             provider: app_user_provider
             user_checker: App\Security\UserChecker
+            # Brute-force protection for the login form: 5 attempts per
+            # username+IP per minute (and 5x that per IP), reset on success.
+            login_throttling:
+                max_attempts: 5
+                interval: '1 minute'
             form_login:
                 login_path: app_login
                 check_path: app_login
@@ -28,6 +33,9 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+                # Logout only via POST + CSRF token (see templates/layout.html.twig),
+                # so a cross-site GET or a link prefetch can never end a session.
+                enable_csrf: true
 
     access_control:
         - { path: ^/login$, roles: PUBLIC_ACCESS }

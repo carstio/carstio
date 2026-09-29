@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Controller;
 
 use App\Entity\Workshop\WorkOrder;
+use App\Enum\WorkOrderStatus;
 use App\Repository\UserRepository;
 use App\Repository\Workshop\WorkOrderRepository;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -158,5 +159,30 @@ class WorkOrderControllerTest extends WebTestCase
             $this->assertSame('0.00', $item->getDiscountAmount());
             $this->assertSame('0.00', $item->getTaxRate());
         }
+    }
+
+    public function testChangingStatusThroughEditFormStampsLifecycleTimestamps(): void
+    {
+        $client = $this->loginClient();
+
+        $workOrderRepository = static::getContainer()->get(WorkOrderRepository::class);
+        $workOrder = $workOrderRepository->findOneBy(['number' => 'WO-2026-0001']);
+        $this->assertNotNull($workOrder);
+        $this->assertSame(WorkOrderStatus::InProgress, $workOrder->getStatus());
+        $this->assertNull($workOrder->getCompletedAt());
+        $startedAt = $workOrder->getStartedAt();
+
+        $crawler = $client->request('GET', '/work-orders/' . $workOrder->getId() . '/edit');
+        $form = $crawler->filter('form[name="work_order"]')->form();
+        $form['work_order[status]'] = 'completed';
+        $client->submit($form);
+
+        $this->assertResponseRedirects('/work-orders/' . $workOrder->getId());
+
+        static::getContainer()->get('doctrine')->getManager()->clear();
+        $workOrder = $workOrderRepository->findOneBy(['number' => 'WO-2026-0001']);
+        $this->assertSame(WorkOrderStatus::Completed, $workOrder->getStatus());
+        $this->assertNotNull($workOrder->getCompletedAt(), 'Completing through the form must stamp completedAt like the status action does.');
+        $this->assertEquals($startedAt, $workOrder->getStartedAt(), 'startedAt must be preserved.');
     }
 }

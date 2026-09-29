@@ -2,7 +2,7 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [master, dev]
   pull_request:
 
 jobs:
@@ -55,8 +55,17 @@ jobs:
       - name: Lint YAML
         run: php bin/console lint:yaml config translations
 
+      - name: Warm up the dev container for static analysis
+        run: php bin/console cache:warmup
+
+      - name: Static analysis (PHPStan)
+        run: vendor/bin/phpstan analyse --no-progress --memory-limit=1G
+
       - name: Install importmap assets
         run: php bin/console importmap:install
+
+      - name: Audit importmap packages
+        run: php bin/console importmap:audit
 
       - name: Create test database and run migrations
         run: |

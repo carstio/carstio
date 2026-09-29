@@ -16,7 +16,7 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 
 ### Implemented
 
-- **Authentication and roles** - login form, two roles (`ROLE_ADMIN`, `ROLE_MECHANIC`), self-service guard against deactivating yourself or removing the last admin.
+- **Authentication and roles** - login form with brute-force throttling (5 attempts per minute), POST + CSRF-protected logout, two roles (`ROLE_ADMIN`, `ROLE_MECHANIC`), self-service guard against deactivating yourself or removing the last admin.
 - **User management** (admin only) - create, edit, deactivate / reactivate accounts; per-user preferred locale.
 - **Clients** - name, phone, email, notes; deleting a client removes its cars and companies, but is soft-blocked while any work order or offer still references the client or one of its cars.
 - **Cars** - VIN, license plate, brand and model (catalog of brands/models seeded by fixtures), one client per car.
@@ -50,14 +50,14 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 
 ## Tech stack
 
-- **Backend:** PHP 8.4+, Symfony 8, Doctrine ORM 3
+- **Backend:** PHP 8.4+, Symfony 8.1, Doctrine ORM 3
 - **Templating:** Twig 3
-- **UI:** Bootstrap 5 (locally bundled), tom-select, flatpickr, FullCalendar, Chart.js
+- **UI:** Bootstrap 5 (locally bundled), tom-select, flatpickr, FullCalendar, Chart.js, Symfony UX 3 (Turbo, Stimulus, Autocomplete)
 - **Frontend pipeline:** Symfony AssetMapper + Stimulus + Turbo (no Webpack, no npm at runtime)
 - **PDF:** Dompdf
 - **Mailer:** Symfony Mailer with SMTP transport
 - **Database:** MariaDB 11 (default; MySQL 8 also works - set the matching `serverVersion` in `DATABASE_URL`)
-- **Tests:** PHPUnit 11
+- **Tests:** PHPUnit 13, PHPStan (level 6) for static analysis
 
 All third-party CSS and JavaScript ship from the local asset map - no CDN or remote font is required to run the app.
 
@@ -66,7 +66,7 @@ All third-party CSS and JavaScript ship from the local asset map - no CDN or rem
 The fastest path is **Docker** (everything is set up for you). For a native install you'll need:
 
 - **PHP 8.4 or newer**
-- PHP extensions: `ctype`, `iconv`, `intl`, `mbstring`, `zip`, `pdo_mysql`, `gd`
+- PHP extensions: `ctype`, `fileinfo`, `gd`, `iconv`, `intl`, `mbstring`, `pdo_mysql`, `sodium`, `zip` (Composer checks the ones the app relies on at install time)
 - **Composer 2**
 - **MariaDB 11** (or MySQL 8 - adjust `serverVersion` in `DATABASE_URL`)
 - *(Optional)* **Symfony CLI** for `symfony server:start` and `symfony console`
@@ -181,6 +181,13 @@ After a fresh install, sign in as an admin and visit **Settings**. Each section 
 
 The application currency on every offer and work order is **snapshotted at creation**, so a later change in Settings never rewrites old totals.
 
+### Production checklist
+
+- Set `APP_ENV=prod` and a strong, unique `APP_SECRET` (`php -r "echo bin2hex(random_bytes(16));"`) in `.env.local` or the real environment. `.env` ships with an empty secret on purpose and the app refuses to serve requests without one; only `APP_ENV=dev` gets a throwaway value from `.env.dev`.
+- Run `composer install --no-dev --optimize-autoloader`, `php bin/console asset-map:compile` and `php bin/console doctrine:migrations:migrate -n` on every deploy.
+- Serve over HTTPS behind a web server or reverse proxy and configure `framework.trusted_proxies` so login throttling sees real client IPs.
+- Keep `var/storage/attachments` and `public/uploads` on persistent storage and in your backups, together with the database.
+
 ## Architecture overview
 
 Carstio is a modular monolith organised by Symfony convention:
@@ -233,6 +240,17 @@ php bin/console --env=test doctrine:fixtures:load -n
 
 Run a single suite with `./bin/phpunit --testsuite Unit` or `./bin/phpunit --testsuite Functional`. Tests that send email use a recording in-memory transport, so no real SMTP server is contacted.
 
+## Static analysis
+
+PHPStan runs at level 6 over `src/` with the Symfony and Doctrine extensions (configuration in `phpstan.dist.neon`). The Symfony extension reads the compiled dev container, so warm it up first:
+
+```bash
+php bin/console cache:warmup
+vendor/bin/phpstan analyse
+```
+
+CI runs the same command, together with `composer audit`, the container/Twig/YAML linters and the test suite.
+
 ## Contributing
 
 Pull requests, bug reports and translations are welcome.
@@ -242,6 +260,8 @@ A few principles to keep in mind before opening a PR:
 - Keep changes focused. A bug fix doesn't need a surrounding cleanup PR; a new feature shouldn't sneak in a refactor of unrelated code.
 - Prefer Symfony / Twig / Bootstrap idioms over custom abstractions. This project deliberately stays close to the framework so contributors don't need to learn project-specific patterns.
 - Add or update tests for behaviour you change. Functional tests can boot the kernel; unit tests should not.
+- Keep `vendor/bin/phpstan analyse` green; fix the cause instead of adding ignores.
+- Never put untrusted values inside inline JavaScript (`onsubmit="confirm('…')"`) without the `|e('js')` escaper.
 - Don't introduce CDN or remote-hosted assets. Everything ships from `assets/` via AssetMapper.
 - Keep client-facing PDFs free of any internal cost / profit data.
 

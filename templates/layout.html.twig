@@ -20,10 +20,10 @@
             <div class="d-flex align-items-center gap-3">
                 <span class="topbar-user d-none d-md-inline">{{ app.user.fullName }}</span>
                 {% include '_partials/language_switcher.html.twig' with {variant: 'topbar'} %}
-                <a href="{{ path('app_logout') }}" class="btn btn-outline-secondary btn-sm">
+                <button type="submit" form="logout-form" class="btn btn-outline-secondary btn-sm">
                     {{ icon.render('logout', {size: 14}) }}
                     <span>{{ 'nav.logout'|trans }}</span>
-                </a>
+                </button>
             </div>
         </header>
 
@@ -32,4 +32,12 @@
             {% block content %}{% endblock %}
         </main>
     </div>
+
+    {# Detached logout form (POST + CSRF token) targeted by the topbar button
+       via the HTML5 `form` attribute. Kept after the page content so it never
+       nests in a business form and so the business form stays first in DOM
+       order (tests rely on that, see base.html.twig). #}
+    <form id="logout-form" method="post" action="{{ path('app_logout') }}" class="d-none">
+        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('logout') }}">
+    </form>
 {% endblock %}

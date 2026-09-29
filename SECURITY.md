@@ -29,6 +29,12 @@ you prefer to stay anonymous.
   are only as safe as the transport.
 - Keep `APP_ENV=prod` on any internet-facing install so debug pages and the
   profiler are never exposed.
+- The application sends `X-Content-Type-Options`, `X-Frame-Options` and
+  `Referrer-Policy` headers itself; add `Strict-Transport-Security` and a
+  `Content-Security-Policy` at the web server / reverse proxy level.
+- Logins are throttled (5 attempts per username and IP per minute) using the
+  `cache.app` pool; behind a reverse proxy configure `trusted_proxies` so the
+  real client IP is used.
 
 ## Supported versions
 

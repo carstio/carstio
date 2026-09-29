@@ -25,6 +25,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * The role is bound to the {@see UserRole} enum so a request can never
  * smuggle in an arbitrary role string.
+ *
+ * @extends AbstractType<User>
  */
 class UserType extends AbstractType
 {
@@ -42,9 +44,11 @@ class UserType extends AbstractType
         $builder
             ->add('email', EmailType::class, [
                 'label' => 'user.field.email',
+                'constraints' => [new Assert\Length(max: 180)],
             ])
             ->add('fullName', TextType::class, [
                 'label' => 'user.field.full_name',
+                'constraints' => [new Assert\Length(max: 255)],
             ])
             ->add('role', EnumType::class, [
                 'class' => UserRole::class,

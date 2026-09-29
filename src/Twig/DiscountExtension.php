@@ -34,7 +34,7 @@ class DiscountExtension extends AbstractExtension
     }
 
     /**
-     * @param iterable<object> $items items exposing getDiscountAmount(): string|float|int|null
+     * @param iterable<mixed> $items items exposing getDiscountAmount(): string|float|int|null; anything else is ignored
      */
     public function hasDiscounts(iterable $items): bool
     {

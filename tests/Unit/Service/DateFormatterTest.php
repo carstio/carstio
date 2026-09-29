@@ -86,7 +86,7 @@ class DateFormatterTest extends TestCase
      */
     private function settings(array $values): SettingsProvider
     {
-        $provider = $this->createMock(SettingsProvider::class);
+        $provider = $this->createStub(SettingsProvider::class);
         $provider->method('getString')->willReturnCallback(
             static fn (string $section, string $key): ?string => $values[$section . '.' . $key] ?? null,
         );

@@ -15,12 +15,12 @@ use App\Service\Email\ClientDocumentMailer;
 use App\Service\Email\Exception\DocumentEmailFailedException;
 use App\Service\Email\Exception\IncompleteSmtpSettingsException;
 use App\Service\Email\Exception\MissingClientEmailException;
-use App\Service\EntityDeleter;
 use App\Service\PartsMarginCalculator;
 use App\Service\Pdf\CompanyProfileProvider;
 use App\Service\Pdf\PdfRenderer;
 use App\Service\WorkOrderCalculator;
 use App\Service\WorkOrderFactory;
+use App\Service\Workshop\WorkOrderDeleter;
 use App\Service\Workshop\WorkOrderMileageManager;
 use App\Service\Workshop\WorkOrderPaymentSummarizer;
 use App\Service\Workshop\WorkOrderStatusUpdater;
@@ -107,13 +107,21 @@ final class WorkOrderController extends AbstractController
         WorkOrderCalculator $calculator,
         WorkOrderMileageManager $mileageManager,
         WorkOrderPaymentSummarizer $paymentSummarizer,
+        WorkOrderStatusUpdater $statusUpdater,
     ): Response {
+        $previousStatus = $workOrder->getStatus();
+
         $form = $this->createForm(WorkOrderType::class, $workOrder, [
             'include_items' => true,
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($workOrder->getStatus() !== $previousStatus) {
+                // A status picked in the form must stamp the same lifecycle
+                // timestamps as the "change status" action.
+                $statusUpdater->apply($workOrder, $workOrder->getStatus());
+            }
             $mileageManager->applySnapshot($workOrder);
             $calculator->recalculate($workOrder);
             $em->flush();
@@ -131,7 +139,7 @@ final class WorkOrderController extends AbstractController
     }
 
     #[Route('/{id}/delete', name: 'app_work_order_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function delete(Request $request, WorkOrder $workOrder, EntityDeleter $deleter): Response
+    public function delete(Request $request, WorkOrder $workOrder, WorkOrderDeleter $deleter): Response
     {
         if ($this->isCsrfTokenValid('delete-wo-' . $workOrder->getId(), $request->request->get('_token'))) {
             if ($deleter->delete($workOrder)) {

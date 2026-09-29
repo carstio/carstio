@@ -61,7 +61,7 @@ class OfferFactoryTest extends TestCase
 
     private function mockNumberGenerator(string $number): OfferNumberGenerator
     {
-        $generator = $this->createMock(OfferNumberGenerator::class);
+        $generator = $this->createStub(OfferNumberGenerator::class);
         $generator->method('generate')->willReturn($number);
 
         return $generator;
@@ -69,7 +69,7 @@ class OfferFactoryTest extends TestCase
 
     private function mockSettingsProvider(string $currency, ?int $validityDays, ?string $timezone = null): SettingsProvider
     {
-        $provider = $this->createMock(SettingsProvider::class);
+        $provider = $this->createStub(SettingsProvider::class);
         $provider->method('getString')->willReturnCallback(
             static function (string $section, string $key) use ($currency, $timezone): ?string {
                 return match ([$section, $key]) {

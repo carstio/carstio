@@ -62,10 +62,10 @@ class WorkOrderMileageManagerTest extends TestCase
 
     private function managerWithUnit(?string $stored): WorkOrderMileageManager
     {
-        $provider = $this->createMock(SettingsProvider::class);
-        $provider->method('getString')
-            ->with(SettingsRegistry::SECTION_REGIONAL, SettingsRegistry::KEY_MILEAGE_UNIT)
-            ->willReturn($stored);
+        $provider = $this->createStub(SettingsProvider::class);
+        $provider->method('getString')->willReturnMap([
+            [SettingsRegistry::SECTION_REGIONAL, SettingsRegistry::KEY_MILEAGE_UNIT, $stored],
+        ]);
 
         return new WorkOrderMileageManager($provider);
     }

@@ -40,7 +40,7 @@ class WorkOrderFactoryTest extends TestCase
 
     private function mockNumberGenerator(string $number): WorkOrderNumberGenerator
     {
-        $generator = $this->createMock(WorkOrderNumberGenerator::class);
+        $generator = $this->createStub(WorkOrderNumberGenerator::class);
         $generator->method('generate')->willReturn($number);
 
         return $generator;
@@ -48,10 +48,10 @@ class WorkOrderFactoryTest extends TestCase
 
     private function mockSettingsProvider(string $currency): SettingsProvider
     {
-        $provider = $this->createMock(SettingsProvider::class);
-        $provider->method('getString')
-            ->with(SettingsRegistry::SECTION_CURRENCY, SettingsRegistry::KEY_DEFAULT_CURRENCY_CODE)
-            ->willReturn($currency);
+        $provider = $this->createStub(SettingsProvider::class);
+        $provider->method('getString')->willReturnMap([
+            [SettingsRegistry::SECTION_CURRENCY, SettingsRegistry::KEY_DEFAULT_CURRENCY_CODE, $currency],
+        ]);
 
         return $provider;
     }

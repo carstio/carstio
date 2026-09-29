@@ -1,0 +1,18 @@
+# Static analysis for the application code. Run with: vendor/bin/phpstan
+# The Symfony extension reads the compiled dev container, so warm it up first
+# (php bin/console cache:warmup) - CI does this before the analysis step.
+parameters:
+    level: 6
+    paths:
+        - src
+    symfony:
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml
+    doctrine:
+        objectManagerLoader: tests/phpstan/object-manager.php
+    ignoreErrors:
+        # Entities follow the Symfony maker convention of nullable typed
+        # properties (objects are created empty and filled by forms) even for
+        # NOT NULL columns. Tightening every property type is a separate,
+        # deliberate refactor - see the audit notes.
+        - identifier: doctrine.columnType
+        - identifier: doctrine.associationType

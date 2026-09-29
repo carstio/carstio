@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Tests\Functional\Controller;
 
 use App\Repository\UserRepository;
+use App\Repository\Workshop\WorkOrderRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Crawler;
@@ -50,12 +51,12 @@ class StatisticsChartsRenderingTest extends WebTestCase
     public function testEachChartContainerCarriesStimulusBindings(): void
     {
         $client = $this->loginAdmin();
-        $crawler = $client->request('GET', '/statistics?range=this_month');
+        $crawler = $client->request('GET', '/statistics?' . $this->fixtureRangeQuery());
         $this->assertResponseIsSuccessful();
 
         $charts = $crawler->filter('.statistics-charts-grid [data-controller="statistics-chart"]');
 
-        // With current fixtures every chart has at least one data point.
+        // Within the fixture window every chart has at least one data point.
         $this->assertSame(4, $charts->count(), 'Expected all four charts to be rendered with statistics-chart Stimulus controller.');
 
         foreach ($charts as $node) {
@@ -112,5 +113,23 @@ class StatisticsChartsRenderingTest extends WebTestCase
         );
 
         $this->assertContains('No data for the selected period.', $emptyMessages);
+    }
+
+    /**
+     * The fixtures stamp their documents with the time they were loaded, so
+     * "this month" only has data right after a fresh fixture load. Anchor the
+     * period on the fixture work order instead.
+     */
+    private function fixtureRangeQuery(): string
+    {
+        $workOrder = static::getContainer()->get(WorkOrderRepository::class)->findOneBy(['number' => 'WO-2026-0001']);
+        self::assertNotNull($workOrder, 'Fixture work order WO-2026-0001 must exist.');
+        $anchor = $workOrder->getOpenedAt();
+
+        return sprintf(
+            'range=custom&from=%s&to=%s',
+            $anchor->modify('-7 days')->format('Y-m-d'),
+            $anchor->modify('+1 day')->format('Y-m-d'),
+        );
     }
 }

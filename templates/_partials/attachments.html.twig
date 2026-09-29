@@ -74,7 +74,7 @@
                                     </a>
                                     <form method="post" action="{{ path('app_attachment_delete', {id: attachment.id}) }}"
                                           class="d-inline"
-                                          onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                                          onsubmit="return confirm('{{ 'confirm.delete'|trans|e('js') }}');">
                                         <input type="hidden" name="_token" value="{{ csrf_token('delete-attachment-' ~ attachment.id) }}">
                                         <button type="submit"
                                                 class="btn btn-sm btn-outline-danger btn-icon"

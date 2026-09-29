@@ -19,7 +19,7 @@
             {% if not is_self %}
                 {% if user.active %}
                     <form method="post" action="{{ path('app_user_deactivate', {id: user.id}) }}"
-                          onsubmit="return confirm('{{ 'user.confirm.deactivate'|trans }}');">
+                          onsubmit="return confirm('{{ 'user.confirm.deactivate'|trans|e('js') }}');">
                         <input type="hidden" name="_token" value="{{ csrf_token('user-deactivate-' ~ user.id) }}">
                         <button type="submit" class="btn btn-outline-secondary">
                             {{ icon.render('x') }}<span>{{ 'user.action.deactivate'|trans }}</span>

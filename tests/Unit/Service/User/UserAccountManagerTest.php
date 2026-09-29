@@ -21,12 +21,12 @@ class UserAccountManagerTest extends TestCase
         $em->expects($this->once())->method('persist');
         $em->expects($this->once())->method('flush');
 
-        $hasher = $this->createMock(UserPasswordHasherInterface::class);
+        $hasher = $this->createStub(UserPasswordHasherInterface::class);
         $hasher->method('hashPassword')->willReturn('HASHED');
 
         $manager = new UserAccountManager(
             $em,
-            $this->createMock(UserRepository::class),
+            $this->createStub(UserRepository::class),
             $hasher,
         );
 
@@ -49,7 +49,7 @@ class UserAccountManagerTest extends TestCase
 
         $manager = new UserAccountManager(
             $em,
-            $this->createMock(UserRepository::class),
+            $this->createStub(UserRepository::class),
             $hasher,
         );
 
@@ -64,11 +64,11 @@ class UserAccountManagerTest extends TestCase
 
     public function testUpdateHashesNewPasswordWhenProvided(): void
     {
-        $em = $this->createMock(EntityManagerInterface::class);
+        $em = $this->createStub(EntityManagerInterface::class);
         $hasher = $this->createMock(UserPasswordHasherInterface::class);
         $hasher->expects($this->once())->method('hashPassword')->willReturn('NEWHASH');
 
-        $manager = new UserAccountManager($em, $this->createMock(UserRepository::class), $hasher);
+        $manager = new UserAccountManager($em, $this->createStub(UserRepository::class), $hasher);
 
         $user = (new User())->setEmail('foo@example.com')->setFullName('Foo')->setPassword('OLDHASH');
         $user->setRoles(['ROLE_MECHANIC']);
@@ -81,13 +81,13 @@ class UserAccountManagerTest extends TestCase
 
     public function testDeactivateBlocksLastActiveAdmin(): void
     {
-        $repo = $this->createMock(UserRepository::class);
+        $repo = $this->createStub(UserRepository::class);
         $repo->method('countActiveAdmins')->willReturn(0);
 
         $manager = new UserAccountManager(
-            $this->createMock(EntityManagerInterface::class),
+            $this->createStub(EntityManagerInterface::class),
             $repo,
-            $this->createMock(UserPasswordHasherInterface::class),
+            $this->createStub(UserPasswordHasherInterface::class),
         );
 
         $user = (new User())->setEmail('a@a')->setFullName('A')->setIsActive(true);
@@ -101,10 +101,10 @@ class UserAccountManagerTest extends TestCase
     {
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects($this->once())->method('flush');
-        $repo = $this->createMock(UserRepository::class);
+        $repo = $this->createStub(UserRepository::class);
         $repo->method('countActiveAdmins')->willReturn(1);
 
-        $manager = new UserAccountManager($em, $repo, $this->createMock(UserPasswordHasherInterface::class));
+        $manager = new UserAccountManager($em, $repo, $this->createStub(UserPasswordHasherInterface::class));
 
         $user = (new User())->setEmail('a@a')->setFullName('A')->setIsActive(true);
         $user->setRoles(['ROLE_ADMIN']);
@@ -115,13 +115,13 @@ class UserAccountManagerTest extends TestCase
 
     public function testUpdateBlocksDemotionOfLastActiveAdmin(): void
     {
-        $repo = $this->createMock(UserRepository::class);
+        $repo = $this->createStub(UserRepository::class);
         $repo->method('countActiveAdmins')->willReturn(0);
 
         $manager = new UserAccountManager(
-            $this->createMock(EntityManagerInterface::class),
+            $this->createStub(EntityManagerInterface::class),
             $repo,
-            $this->createMock(UserPasswordHasherInterface::class),
+            $this->createStub(UserPasswordHasherInterface::class),
         );
 
         $user = (new User())->setEmail('a@a')->setFullName('A')->setIsActive(true);
@@ -136,7 +136,7 @@ class UserAccountManagerTest extends TestCase
         $em = $this->createMock(EntityManagerInterface::class);
         $em->expects($this->once())->method('flush');
 
-        $manager = new UserAccountManager($em, $this->createMock(UserRepository::class), $this->createMock(UserPasswordHasherInterface::class));
+        $manager = new UserAccountManager($em, $this->createStub(UserRepository::class), $this->createStub(UserPasswordHasherInterface::class));
 
         $user = (new User())->setEmail('a@a')->setFullName('A')->setIsActive(false);
         $manager->activate($user);

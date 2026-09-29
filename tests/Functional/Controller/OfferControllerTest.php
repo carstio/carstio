@@ -180,4 +180,31 @@ class OfferControllerTest extends WebTestCase
             $this->assertSame('0.00', $item->getTaxRate());
         }
     }
+
+    public function testConvertedStatusCannotBeChosenInEditForm(): void
+    {
+        $client = $this->loginClient();
+
+        $offerRepository = static::getContainer()->get(OfferRepository::class);
+        $offer = $offerRepository->findOneBy(['number' => 'OF-2026-0001']);
+        $this->assertNotNull($offer);
+
+        $crawler = $client->request('GET', '/offers/' . $offer->getId() . '/edit');
+        $this->assertResponseIsSuccessful();
+
+        $options = $crawler->filter('select[name="offer[status]"] option')->each(fn ($node) => $node->attr('value'));
+        $this->assertContains('draft', $options);
+        $this->assertNotContains('converted', $options, '"Converted" is reserved for the conversion workflow.');
+
+        // Bypass the dropdown and post the value directly - the server must reject it.
+        $form = $crawler->filter('form[name="offer"]')->form();
+        $values = $form->getPhpValues();
+        $values['offer']['status'] = 'converted';
+        $client->request($form->getMethod(), $form->getUri(), $values);
+
+        $this->assertResponseStatusCodeSame(422);
+
+        static::getContainer()->get('doctrine')->getManager()->clear();
+        $this->assertSame(OfferStatus::Draft, $offerRepository->findOneBy(['number' => 'OF-2026-0001'])->getStatus());
+    }
 }

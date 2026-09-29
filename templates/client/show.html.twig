@@ -18,7 +18,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
-                        <form method="post" action="{{ path('app_client_delete', {id: client.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans }}');">
+                        <form method="post" action="{{ path('app_client_delete', {id: client.id}) }}" onsubmit="return confirm('{{ 'confirm.delete'|trans|e('js') }}');">
                             <input type="hidden" name="_token" value="{{ csrf_token('delete-client-' ~ client.id) }}">
                             <button type="submit" class="dropdown-item text-danger">
                                 {{ icon.render('trash') }}<span>{{ 'action.delete'|trans }}</span>
