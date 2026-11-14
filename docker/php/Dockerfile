@@ -39,18 +39,21 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
         libjpeg62-turbo-dev \
         libfreetype6-dev \
         libxml2-dev \
+        libpq-dev \
         zlib1g-dev \
     ; \
     rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions required by Symfony, Doctrine and Dompdf.
-# pdo_mysql is the database driver; intl/zip/opcache/mbstring/gd are needed
-# for the framework, asset mapper, and PDF rendering.
+# pdo_mysql (MariaDB/MySQL) and pdo_pgsql (PostgreSQL) are the
+# database drivers; intl/zip/opcache/mbstring/gd are needed for the
+# framework, asset mapper, and PDF rendering.
 RUN set -eux; \
     docker-php-ext-configure intl; \
     docker-php-ext-configure gd --with-freetype --with-jpeg; \
     docker-php-ext-install -j"$(nproc)" \
         pdo_mysql \
+        pdo_pgsql \
         intl \
         zip \
         opcache \

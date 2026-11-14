@@ -5,8 +5,11 @@ security:
     providers:
         app_user_provider:
             entity:
+                # No "property": App\Repository\UserRepository implements
+                # UserLoaderInterface so the lookup is case-insensitive on
+                # every database engine (PostgreSQL compares case-sensitively,
+                # MariaDB's default collation does not).
                 class: App\Entity\User
-                property: email
 
     role_hierarchy:
         ROLE_MECHANIC: ROLE_USER

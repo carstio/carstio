@@ -14,7 +14,7 @@
         "ext-iconv": "*",
         "ext-intl": "*",
         "ext-mbstring": "*",
-        "ext-pdo_mysql": "*",
+        "ext-pdo": "*",
         "ext-sodium": "*",
         "doctrine/dbal": "^4.5.0",
         "doctrine/doctrine-bundle": "^3.3.2",
@@ -120,5 +120,9 @@
         "symfony/maker-bundle": "^1.68",
         "symfony/stopwatch": "8.1.*",
         "symfony/web-profiler-bundle": "8.1.*"
+    },
+    "suggest": {
+        "ext-pdo_mysql": "Required when DATABASE_URL points at MariaDB or MySQL",
+        "ext-pdo_pgsql": "Required when DATABASE_URL points at PostgreSQL"
     }
 }

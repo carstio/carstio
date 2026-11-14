@@ -65,11 +65,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
+    /**
+     * Emails are normalised to lower case so uniqueness and login lookups
+     * behave the same on every database engine: PostgreSQL compares strings
+     * case-sensitively, MariaDB's default collation does not.
+     */
     public function setEmail(string $email): static
     {
-        $this->email = $email;
+        $this->email = self::normalizeEmail($email);
 
         return $this;
+    }
+
+    public static function normalizeEmail(string $email): string
+    {
+        return mb_strtolower(trim($email));
     }
 
     public function getFullName(): ?string

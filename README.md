@@ -7,7 +7,7 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 ## Why Carstio
 
 - **Free and open source.** No paywalls, no limited "free tier", no upsell - every feature is in the same MIT-licensed codebase.
-- **Self-hostable.** Run it on a small VPS, in your shop's office machine, or anywhere PHP and MariaDB/MySQL run. No SaaS account required.
+- **Self-hostable.** Run it on a small VPS, in your shop's office machine, or anywhere PHP and MariaDB/MySQL or PostgreSQL run. No SaaS account required.
 - **Your data stays yours.** No vendor lock-in. The database, the uploads, the PDFs - everything lives where you put it.
 - **Built for real workshop work.** Clients, cars, offers, work orders, parts, payments and PDFs out of the box; no abstract "modules" you have to wire together.
 - **Boring, predictable stack.** Symfony, Twig, Bootstrap, server-rendered HTML enhanced with Stimulus and Turbo. Easy to read, easy to extend, easy to deploy.
@@ -56,7 +56,7 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 - **Frontend pipeline:** Symfony AssetMapper + Stimulus + Turbo (no Webpack, no npm at runtime)
 - **PDF:** Dompdf
 - **Mailer:** Symfony Mailer with SMTP transport
-- **Database:** MariaDB 11 (default; MySQL 8 also works - set the matching `serverVersion` in `DATABASE_URL`)
+- **Database:** MariaDB 11 (default), MySQL 8 or PostgreSQL 15+ - chosen through `DATABASE_URL` alone (see [Choosing the database](#choosing-the-database))
 - **Tests:** PHPUnit 13, PHPStan (level 6) for static analysis
 
 All third-party CSS and JavaScript ship from the local asset map - no CDN or remote font is required to run the app.
@@ -66,9 +66,9 @@ All third-party CSS and JavaScript ship from the local asset map - no CDN or rem
 The fastest path is **Docker** (everything is set up for you). For a native install you'll need:
 
 - **PHP 8.4 or newer**
-- PHP extensions: `ctype`, `fileinfo`, `gd`, `iconv`, `intl`, `mbstring`, `pdo_mysql`, `sodium`, `zip` (Composer checks the ones the app relies on at install time)
+- PHP extensions: `ctype`, `fileinfo`, `gd`, `iconv`, `intl`, `mbstring`, `pdo`, `sodium`, `zip`, plus the PDO driver of your database: `pdo_mysql` for MariaDB/MySQL or `pdo_pgsql` for PostgreSQL (Composer checks everything except the driver at install time, because the driver depends on your `DATABASE_URL`)
 - **Composer 2**
-- **MariaDB 11** (or MySQL 8 - adjust `serverVersion` in `DATABASE_URL`)
+- **MariaDB 11**, **MySQL 8** or **PostgreSQL 15+** (see [Choosing the database](#choosing-the-database))
 - *(Optional)* **Symfony CLI** for `symfony server:start` and `symfony console`
 
 No Node.js or `npm install` is needed at runtime - frontend dependencies are resolved by Symfony AssetMapper / `importmap`.
@@ -148,7 +148,8 @@ composer install
 
 # 2. Local environment
 cp .env.example .env.local
-# Edit .env.local and set DATABASE_URL to your local MariaDB. The default
+# Edit .env.local and set DATABASE_URL to your local MariaDB, MySQL or
+# PostgreSQL server (see "Choosing the database" below). The default
 # .env value points at the Docker service "database"; overriding it is the
 # main reason .env.local exists.
 
@@ -218,9 +219,24 @@ Conventions worth knowing:
 - **PDFs and client emails never expose internal cost or profit.** The parts-margin card and the statistics dashboard are admin-only views.
 - **Attachments live outside the web root** (`var/storage/attachments`) and are streamed by `AttachmentController` after auth checks.
 
+## Choosing the database
+
+Carstio runs on MariaDB, MySQL or PostgreSQL. The engine is selected by `DATABASE_URL` and nothing else - there is no second switch to flip. The same migrations and fixtures are used on every engine, and CI runs the full test suite on MariaDB and on PostgreSQL:
+
+```dotenv
+# MariaDB (default, matches the bundled compose.yaml)
+DATABASE_URL="mysql://carstio:carstio@127.0.0.1:3306/carstio?serverVersion=mariadb-11.4.0&charset=utf8mb4"
+# MySQL
+DATABASE_URL="mysql://carstio:carstio@127.0.0.1:3306/carstio?serverVersion=8.0.36&charset=utf8mb4"
+# PostgreSQL
+DATABASE_URL="postgresql://carstio:carstio@127.0.0.1:5432/carstio?serverVersion=16&charset=utf8"
+```
+
+Set `serverVersion` to the version you actually run, and make sure the matching PDO driver is loaded (`pdo_mysql` or `pdo_pgsql`; the Docker image ships both). Pick the engine before the first `doctrine:migrations:migrate` - Carstio does not convert an existing database from one engine to another.
+
 ## Tests
 
-The test suite (390+ tests, 3k+ assertions) hits a real MariaDB database - there are no DB mocks. Each test runs inside a transaction that is rolled back afterwards (via `dama/doctrine-test-bundle`), so repeated runs are isolated and deterministic. You only need to rebuild the test database when fixtures or the schema change:
+The test suite (390+ tests, 3k+ assertions) hits a real database (MariaDB or PostgreSQL, whichever `DATABASE_URL` names) - there are no DB mocks. Each test runs inside a transaction that is rolled back afterwards (via `dama/doctrine-test-bundle`), so repeated runs are isolated and deterministic. You only need to rebuild the test database when fixtures or the schema change:
 
 ```bash
 # Inside Docker (recommended)

@@ -7,12 +7,24 @@ on:
 
 jobs:
   tests:
-    name: Lint & test (PHP 8.4, MariaDB 11.4)
+    name: Lint & test (PHP 8.4, ${{ matrix.database.name }})
     runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        database:
+          # Default engine, matches compose.yaml.
+          - name: MariaDB 11.4
+            key: mariadb
+            url: "mysql://root:root@127.0.0.1:3306/carstio?serverVersion=mariadb-11.4.0&charset=utf8mb4"
+          - name: PostgreSQL 16
+            key: postgresql
+            url: "postgresql://carstio:carstio@127.0.0.1:5432/carstio?serverVersion=16&charset=utf8"
 
     services:
       mariadb:
-        image: mariadb:11.4
+        image: ${{ matrix.database.key == 'mariadb' && 'mariadb:11.4' || '' }}
         env:
           MARIADB_ROOT_PASSWORD: root
           MARIADB_DATABASE: carstio
@@ -23,9 +35,22 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
+      postgresql:
+        image: ${{ matrix.database.key == 'postgresql' && 'postgres:16-alpine' || '' }}
+        env:
+          POSTGRES_USER: carstio
+          POSTGRES_PASSWORD: carstio
+          POSTGRES_DB: carstio
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U carstio"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
 
     env:
-      DATABASE_URL: "mysql://root:root@127.0.0.1:3306/carstio?serverVersion=mariadb-11.4.0&charset=utf8mb4"
+      DATABASE_URL: ${{ matrix.database.url }}
 
     steps:
       - uses: actions/checkout@v4
@@ -34,7 +59,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.4'
-          extensions: ctype, iconv, intl, mbstring, zip, pdo_mysql, gd
+          extensions: ctype, iconv, intl, mbstring, zip, pdo_mysql, pdo_pgsql, gd, sodium
           coverage: none
 
       - name: Validate composer files

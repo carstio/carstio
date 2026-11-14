@@ -46,4 +46,14 @@ class UserTest extends TestCase
 
         $this->assertSame(['ROLE_MECHANIC', 'ROLE_USER'], $roles);
     }
+
+    public function testEmailIsNormalisedToLowerCase(): void
+    {
+        $user = new User();
+        $user->setEmail('  Admin@Carstio.LOCAL ');
+
+        $this->assertSame('admin@carstio.local', $user->getEmail());
+        $this->assertSame('admin@carstio.local', $user->getUserIdentifier());
+        $this->assertSame('admin@carstio.local', User::normalizeEmail('ADMIN@carstio.local'));
+    }
 }
