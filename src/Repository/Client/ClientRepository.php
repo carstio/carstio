@@ -29,7 +29,7 @@ class ClientRepository extends ServiceEntityRepository
             ->where('LOWER(c.name) LIKE :q')
             ->orWhere('LOWER(c.phone) LIKE :q')
             ->orWhere('LOWER(c.email) LIKE :q')
-            ->setParameter('q', '%' . strtolower($search) . '%')
+            ->setParameter('q', '%' . mb_strtolower($search) . '%')
             ->orderBy('c.name', 'ASC')
             ->getQuery()
             ->getResult();
@@ -44,7 +44,7 @@ class ClientRepository extends ServiceEntityRepository
             ->where('LOWER(c.name) LIKE :q')
             ->orWhere('LOWER(c.phone) LIKE :q')
             ->orWhere('LOWER(c.email) LIKE :q')
-            ->setParameter('q', '%' . strtolower($query) . '%')
+            ->setParameter('q', '%' . mb_strtolower($query) . '%')
             ->orderBy('c.name', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()

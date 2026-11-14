@@ -25,7 +25,7 @@ class CompanyRepository extends ServiceEntityRepository
             ->where('LOWER(co.name) LIKE :q')
             ->orWhere('LOWER(co.identifier) LIKE :q')
             ->orWhere('LOWER(co.vatIdentifier) LIKE :q')
-            ->setParameter('q', '%' . strtolower($query) . '%')
+            ->setParameter('q', '%' . mb_strtolower($query) . '%')
             ->orderBy('co.name', 'ASC')
             ->setMaxResults($limit)
             ->getQuery()

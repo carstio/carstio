@@ -30,7 +30,7 @@ class PartRepository extends ServiceEntityRepository
             ->orWhere('LOWER(p.sku) LIKE :q')
             ->orWhere('LOWER(p.partNumber) LIKE :q')
             ->orWhere('LOWER(p.brand) LIKE :q')
-            ->setParameter('q', '%' . strtolower($search) . '%')
+            ->setParameter('q', '%' . mb_strtolower($search) . '%')
             ->orderBy('p.name', 'ASC')
             ->getQuery()
             ->getResult();

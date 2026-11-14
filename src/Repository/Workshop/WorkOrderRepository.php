@@ -30,7 +30,7 @@ class WorkOrderRepository extends ServiceEntityRepository
 
         if ($search !== '') {
             $qb->andWhere('LOWER(w.number) LIKE :q OR LOWER(c.name) LIKE :q')
-                ->setParameter('q', '%' . strtolower($search) . '%');
+                ->setParameter('q', '%' . mb_strtolower($search) . '%');
         }
 
         if ($status !== null && $status !== '' && WorkOrderStatus::tryFrom($status) !== null) {

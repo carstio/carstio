@@ -39,7 +39,7 @@ class CarRepository extends ServiceEntityRepository
                 . ' OR LOWER(c.vin) LIKE :q'
                 . ' OR LOWER(c.licensePlate) LIKE :q'
             )
-            ->setParameter('q', '%' . strtolower($search) . '%')
+            ->setParameter('q', '%' . mb_strtolower($search) . '%')
             ->getQuery()
             ->getResult();
     }
@@ -58,7 +58,7 @@ class CarRepository extends ServiceEntityRepository
             ->orWhere('LOWER(b.name) LIKE :q')
             ->orWhere('LOWER(c.vin) LIKE :q')
             ->orWhere('LOWER(c.licensePlate) LIKE :q')
-            ->setParameter('q', '%' . strtolower($query) . '%')
+            ->setParameter('q', '%' . mb_strtolower($query) . '%')
             ->orderBy('c.id', 'DESC')
             ->setMaxResults($limit)
             ->getQuery()

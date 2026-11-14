@@ -30,7 +30,7 @@ class OfferRepository extends ServiceEntityRepository
 
         if ($search !== '') {
             $qb->andWhere('LOWER(o.number) LIKE :q OR LOWER(c.name) LIKE :q')
-                ->setParameter('q', '%' . strtolower($search) . '%');
+                ->setParameter('q', '%' . mb_strtolower($search) . '%');
         }
 
         if ($status !== null && $status !== '' && OfferStatus::tryFrom($status) !== null) {
