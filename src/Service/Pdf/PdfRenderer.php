@@ -15,9 +15,14 @@ use Twig\Environment;
  */
 class PdfRenderer
 {
+    /**
+     * @param string|null $uploadsDir where uploaded images (the company logo)
+     *                                are stored, normally public/uploads
+     */
     public function __construct(
         private readonly Environment $twig,
         private readonly string $projectDir,
+        private readonly ?string $uploadsDir = null,
     ) {
     }
 
@@ -69,10 +74,32 @@ class PdfRenderer
         $options->set('defaultFont', 'DejaVu Sans');
         $options->set('isRemoteEnabled', false);
         $options->set('isHtml5ParserEnabled', true);
-        // Allow reading local files for the logo (restricted to the project public dir).
-        $options->set('chroot', [rtrim($this->projectDir, '/') . '/public']);
+        $options->set('chroot', $this->readableDirectories());
 
         return new Dompdf($options);
+    }
+
+    /**
+     * The directories Dompdf may read local files (the logo) from: the
+     * public directory and the uploads directory.
+     *
+     * Dompdf compares real paths. On servers that deploy into release
+     * directories public/uploads is usually a symlink to a shared location
+     * outside of public/, so that location has to be allowed by its real
+     * path or every uploaded logo is refused and missing from the PDF.
+     *
+     * @return list<string>
+     */
+    private function readableDirectories(): array
+    {
+        $directories = [rtrim($this->projectDir, '/') . '/public'];
+
+        $uploads = $this->uploadsDir !== null ? realpath($this->uploadsDir) : false;
+        if ($uploads !== false) {
+            $directories[] = $uploads;
+        }
+
+        return $directories;
     }
 
     private function sanitizeFilename(string $filename): string

@@ -37,6 +37,7 @@ services:
     App\Service\Pdf\PdfRenderer:
         arguments:
             $projectDir: '%kernel.project_dir%'
+            $uploadsDir: '%app.uploads_dir%'
 
     App\Service\Pdf\CompanyProfileProvider:
         arguments:
