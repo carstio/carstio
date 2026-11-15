@@ -13,6 +13,8 @@
             <h1 class="login-title">{{ 'login.heading'|trans }}</h1>
             <p class="login-subtitle">{{ 'login.subtitle'|trans }}</p>
 
+            {% include '_partials/flash_messages.html.twig' %}
+
             {% if error %}
                 <div class="alert alert-danger mb-3">
                     {{ error.messageKey|trans(error.messageData, 'security') }}
@@ -44,6 +46,10 @@
                     {{ 'login.submit'|trans }}
                 </button>
             </form>
+
+            <p class="text-center mt-3 mb-0">
+                <a href="{{ path('app_password_reset_request') }}">{{ 'password_reset.link'|trans }}</a>
+            </p>
         </div>
     </div>
 {% endblock %}

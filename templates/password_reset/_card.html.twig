@@ -1,0 +1,31 @@
+{#
+  The centred card of the pages people see before they are logged in
+  (same look as the login page).
+
+  Blocks: card_title, card_subtitle (optional), card_body.
+#}
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'password_reset.request.title'|trans }} | {{ 'app.name'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-brand">
+                <img src="{{ asset('logo.svg') }}" alt="{{ 'app.name'|trans }}">
+                <span>{{ 'app.name'|trans }}</span>
+            </div>
+
+            <h1 class="login-title">{% block card_title %}{% endblock %}</h1>
+            <p class="login-subtitle">{% block card_subtitle %}{% endblock %}</p>
+
+            {% include '_partials/flash_messages.html.twig' %}
+
+            {% block card_body %}{% endblock %}
+
+            <p class="text-center mt-3 mb-0">
+                <a href="{{ path('app_login') }}">{{ 'password_reset.request.back_to_login'|trans }}</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

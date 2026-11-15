@@ -187,6 +187,8 @@ The application currency on every offer and work order is **snapshotted at creat
 - Set `APP_ENV=prod` and a strong, unique `APP_SECRET` (`php -r "echo bin2hex(random_bytes(16));"`) in `.env.local` or the real environment. `.env` ships with an empty secret on purpose and the app refuses to serve requests without one; only `APP_ENV=dev` gets a throwaway value from `.env.dev`.
 - Run `composer install --no-dev --optimize-autoloader`, `php bin/console asset-map:compile` and `php bin/console doctrine:migrations:migrate -n` on every deploy.
 - Serve over HTTPS behind a web server or reverse proxy and configure `framework.trusted_proxies` so login throttling sees real client IPs.
+- Set `TRUSTED_HOSTS` to your host name (a regular expression, for example `'^workshop\.example\.com$'`) unless the web server already refuses other host names. The link in a password reset email is built from the host name of the request.
+- Configure Settings → Email. Without it the "Forgot your password?" page explains that resetting by email is not available, and only an administrator can set a new password for a user.
 - Keep `var/storage/attachments` and `public/uploads` on persistent storage and in your backups, together with the database.
 
 ## Architecture overview

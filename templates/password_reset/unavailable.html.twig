@@ -1,0 +1,9 @@
+{% extends 'password_reset/_card.html.twig' %}
+
+{% block card_title %}{{ 'password_reset.request.heading'|trans }}{% endblock %}
+
+{% block card_body %}
+    <div class="alert alert-info mb-0" data-password-reset-unavailable>
+        {{ 'password_reset.request.unavailable'|trans }}
+    </div>
+{% endblock %}

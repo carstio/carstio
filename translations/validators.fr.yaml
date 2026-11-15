@@ -50,5 +50,6 @@ user:
         email_required: Veuillez saisir une adresse e-mail.
         email_taken: Cette adresse e-mail est déjà utilisée par un autre utilisateur.
         full_name_required: Veuillez saisir un nom.
+        password_mismatch: "Les deux mots de passe ne correspondent pas."
         password_required: Veuillez choisir un mot de passe.
         password_too_short: Le mot de passe doit contenir au moins {{ limit }} caractères.

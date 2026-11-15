@@ -33,6 +33,28 @@ login:
     password_placeholder: Ihr Passwort
     submit: Anmelden
 
+# Forgotten password (pages before login)
+password_reset:
+    link: "Passwort vergessen?"
+    request:
+        title: "Passwort zurücksetzen"
+        heading: "Passwort vergessen?"
+        subtitle: "Geben Sie die E-Mail-Adresse Ihres Kontos ein, und wir senden Ihnen einen Link, über den Sie ein neues Passwort wählen können."
+        email: "E-Mail-Adresse"
+        submit: "Link senden"
+        back_to_login: "Zurück zur Anmeldung"
+        unavailable: "Das Zurücksetzen des Passworts per E-Mail ist hier nicht eingerichtet. Bitten Sie einen Administrator, Ihnen ein neues Passwort zu vergeben."
+        too_many: "Zu viele Versuche. Bitte versuchen Sie es später erneut."
+    sent:
+        heading: "Prüfen Sie Ihr Postfach"
+        text: "Wenn es für diese Adresse ein aktives Konto gibt, haben wir einen Link zum Wählen eines neuen Passworts dorthin gesendet. Der Link ist %minutes% Minuten gültig."
+        hint: "Nichts angekommen? Sehen Sie im Spam-Ordner nach oder bitten Sie einen Administrator, Ihnen ein neues Passwort zu vergeben."
+    confirm:
+        heading: "Neues Passwort wählen"
+        password: "Neues Passwort"
+        password_repeat: "Neues Passwort wiederholen"
+        submit: "Neues Passwort speichern"
+
 # Locale / language switcher
 locale:
     switcher:
@@ -104,6 +126,9 @@ confirm:
 
 # Flash messages
 flash:
+    password_reset:
+        done: "Ihr Passwort wurde geändert. Sie können sich jetzt damit anmelden."
+        invalid_link: "Dieser Link kann nicht mehr verwendet werden - Links laufen nach einer Stunde ab und funktionieren nur einmal. Hier können Sie einen neuen anfordern."
     delete:
         restricted: Dieser Datensatz kann nicht gelöscht werden, da er noch von anderen Datensätzen verwendet wird.
     client:
@@ -729,6 +754,14 @@ pdf:
 
 # Outgoing client emails
 email:
+    password_reset:
+        subject: "Neues Passwort für %company% wählen"
+        heading: "Neues Passwort wählen"
+        intro: "Jemand hat angefordert, das Passwort Ihres Kontos bei %company% zurückzusetzen. Wenn Sie das waren, verwenden Sie den Link unten."
+        action: "Neues Passwort wählen"
+        expiry: "Der Link ist %minutes% Minuten gültig und kann einmal verwendet werden."
+        ignore: "Wenn Sie das nicht angefordert haben, ignorieren Sie diese Nachricht - Ihr Passwort bleibt unverändert."
+        link_fallback: "Falls die Schaltfläche nicht funktioniert, kopieren Sie diese Adresse in Ihren Browser:"
     action:
         send: Per E-Mail senden
     confirm:

@@ -1,0 +1,8 @@
+{% extends 'password_reset/_card.html.twig' %}
+
+{% block card_title %}{{ 'password_reset.sent.heading'|trans }}{% endblock %}
+
+{% block card_body %}
+    <p data-password-reset-sent>{{ 'password_reset.sent.text'|trans({'%minutes%': minutes}) }}</p>
+    <p class="text-muted small mb-0">{{ 'password_reset.sent.hint'|trans }}</p>
+{% endblock %}

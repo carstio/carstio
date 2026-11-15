@@ -50,5 +50,6 @@ user:
         email_required: Моля, въведете имейл адрес.
         email_taken: Този имейл вече се използва от друг потребител.
         full_name_required: Моля, въведете име.
+        password_mismatch: "Двете пароли не съвпадат."
         password_required: Моля, изберете парола.
         password_too_short: Паролата трябва да е поне {{ limit }} символа.

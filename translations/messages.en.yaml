@@ -33,6 +33,28 @@ login:
     password_placeholder: Your password
     submit: Log in
 
+# Forgotten password (pages before login)
+password_reset:
+    link: "Forgot your password?"
+    request:
+        title: "Reset password"
+        heading: "Forgot your password?"
+        subtitle: "Enter the email address of your account and we will send you a link to choose a new password."
+        email: "Email address"
+        submit: "Send the link"
+        back_to_login: "Back to log in"
+        unavailable: "Password reset by email is not set up here. Please ask an administrator to set a new password for you."
+        too_many: "Too many attempts. Please try again later."
+    sent:
+        heading: "Check your email"
+        text: "If there is an active account for that address, we have sent it a link to choose a new password. The link is valid for %minutes% minutes."
+        hint: "Nothing arrived? Look in the spam folder, or ask an administrator to set a new password for you."
+    confirm:
+        heading: "Choose a new password"
+        password: "New password"
+        password_repeat: "Repeat the new password"
+        submit: "Save the new password"
+
 # Locale / language switcher
 locale:
     switcher:
@@ -105,6 +127,9 @@ confirm:
 
 # Flash messages
 flash:
+    password_reset:
+        done: "Your password has been changed. You can log in with it now."
+        invalid_link: "This link cannot be used any more - links expire after an hour and work only once. You can ask for a new one here."
     delete:
         restricted: This record cannot be deleted because it is still used by other records.
     client:
@@ -730,6 +755,14 @@ pdf:
 
 # Outgoing client emails
 email:
+    password_reset:
+        subject: "Choose a new password for %company%"
+        heading: "Choose a new password"
+        intro: "Someone asked to reset the password of your account at %company%. If it was you, use the link below."
+        action: "Choose a new password"
+        expiry: "The link is valid for %minutes% minutes and can be used once."
+        ignore: "If you did not ask for this, ignore this message - your password stays as it is."
+        link_fallback: "If the button does not work, copy this address into your browser:"
     action:
         send: Send by email
     confirm:

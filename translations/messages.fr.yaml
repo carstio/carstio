@@ -33,6 +33,28 @@ login:
     password_placeholder: Votre mot de passe
     submit: Se connecter
 
+# Forgotten password (pages before login)
+password_reset:
+    link: "Mot de passe oublié ?"
+    request:
+        title: "Réinitialiser le mot de passe"
+        heading: "Mot de passe oublié ?"
+        subtitle: "Saisissez l'adresse e-mail de votre compte et nous vous enverrons un lien pour choisir un nouveau mot de passe."
+        email: "Adresse e-mail"
+        submit: "Envoyer le lien"
+        back_to_login: "Retour à la connexion"
+        unavailable: "La réinitialisation du mot de passe par e-mail n'est pas configurée ici. Demandez à un administrateur de vous attribuer un nouveau mot de passe."
+        too_many: "Trop de tentatives. Veuillez réessayer plus tard."
+    sent:
+        heading: "Consultez votre messagerie"
+        text: "Si un compte actif existe pour cette adresse, nous lui avons envoyé un lien pour choisir un nouveau mot de passe. Le lien est valable %minutes% minutes."
+        hint: "Rien reçu ? Vérifiez le dossier des courriers indésirables ou demandez à un administrateur de vous attribuer un nouveau mot de passe."
+    confirm:
+        heading: "Choisissez un nouveau mot de passe"
+        password: "Nouveau mot de passe"
+        password_repeat: "Répétez le nouveau mot de passe"
+        submit: "Enregistrer le nouveau mot de passe"
+
 # Locale / language switcher
 locale:
     switcher:
@@ -104,6 +126,9 @@ confirm:
 
 # Flash messages
 flash:
+    password_reset:
+        done: "Votre mot de passe a été modifié. Vous pouvez maintenant vous connecter avec celui-ci."
+        invalid_link: "Ce lien n'est plus utilisable - les liens expirent au bout d'une heure et ne fonctionnent qu'une fois. Vous pouvez en demander un nouveau ici."
     delete:
         restricted: Cet enregistrement ne peut pas être supprimé car il est encore utilisé par d'autres enregistrements.
     client:
@@ -729,6 +754,14 @@ pdf:
 
 # Outgoing client emails
 email:
+    password_reset:
+        subject: "Choisissez un nouveau mot de passe pour %company%"
+        heading: "Choisissez un nouveau mot de passe"
+        intro: "Quelqu'un a demandé la réinitialisation du mot de passe de votre compte chez %company%. Si c'était vous, utilisez le lien ci-dessous."
+        action: "Choisir un nouveau mot de passe"
+        expiry: "Le lien est valable %minutes% minutes et ne peut être utilisé qu'une fois."
+        ignore: "Si vous n'êtes pas à l'origine de cette demande, ignorez ce message - votre mot de passe reste inchangé."
+        link_fallback: "Si le bouton ne fonctionne pas, copiez cette adresse dans votre navigateur :"
     action:
         send: Envoyer par e-mail
     confirm:

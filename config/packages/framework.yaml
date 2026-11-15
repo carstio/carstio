@@ -2,6 +2,13 @@
 framework:
     secret: '%env(APP_SECRET)%'
 
+    # Host names this installation answers to (a regular expression, or
+    # several separated by commas). Empty = any. Links in emails, such as
+    # the password reset link, are built from the host name of the request:
+    # set this in production unless the web server already refuses requests
+    # for other host names.
+    trusted_hosts: '%env(default::TRUSTED_HOSTS)%'
+
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 

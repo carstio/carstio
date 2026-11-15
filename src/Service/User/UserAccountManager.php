@@ -62,6 +62,16 @@ final class UserAccountManager
     }
 
     /**
+     * Replaces the password and nothing else. Every session that is open
+     * for the account ends with it (see User::isEqualTo()).
+     */
+    public function changePassword(User $user, string $plainPassword): void
+    {
+        $user->setPassword($this->passwordHasher->hashPassword($user, $plainPassword));
+        $this->entityManager->flush();
+    }
+
+    /**
      * @throws LastAdminException
      */
     public function deactivate(User $user): void

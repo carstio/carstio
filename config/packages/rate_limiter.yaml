@@ -1,0 +1,15 @@
+# Limits on asking for a password reset link
+# (App\Security\PasswordReset\PasswordResetThrottle). The login form has its
+# own limit: see login_throttling in security.yaml.
+framework:
+    rate_limiter:
+        # Per visitor (IP address).
+        password_reset_ip:
+            policy: sliding_window
+            limit: 10
+            interval: '15 minutes'
+        # Per address the link is asked for, wherever the requests come from.
+        password_reset_email:
+            policy: sliding_window
+            limit: 3
+            interval: '1 hour'

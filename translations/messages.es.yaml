@@ -33,6 +33,28 @@ login:
     password_placeholder: Su contraseña
     submit: Iniciar sesión
 
+# Forgotten password (pages before login)
+password_reset:
+    link: "¿Ha olvidado su contraseña?"
+    request:
+        title: "Restablecer contraseña"
+        heading: "¿Ha olvidado su contraseña?"
+        subtitle: "Introduzca la dirección de correo de su cuenta y le enviaremos un enlace para elegir una contraseña nueva."
+        email: "Correo electrónico"
+        submit: "Enviar el enlace"
+        back_to_login: "Volver al inicio de sesión"
+        unavailable: "El restablecimiento de contraseña por correo no está configurado aquí. Pida a un administrador que le asigne una contraseña nueva."
+        too_many: "Demasiados intentos. Inténtelo de nuevo más tarde."
+    sent:
+        heading: "Revise su correo"
+        text: "Si existe una cuenta activa con esa dirección, le hemos enviado un enlace para elegir una contraseña nueva. El enlace es válido durante %minutes% minutos."
+        hint: "¿No ha llegado nada? Mire en la carpeta de correo no deseado o pida a un administrador que le asigne una contraseña nueva."
+    confirm:
+        heading: "Elija una contraseña nueva"
+        password: "Contraseña nueva"
+        password_repeat: "Repita la contraseña nueva"
+        submit: "Guardar la contraseña nueva"
+
 # Locale / language switcher
 locale:
     switcher:
@@ -104,6 +126,9 @@ confirm:
 
 # Flash messages
 flash:
+    password_reset:
+        done: "Su contraseña se ha cambiado. Ya puede iniciar sesión con ella."
+        invalid_link: "Este enlace ya no se puede usar: los enlaces caducan al cabo de una hora y solo funcionan una vez. Aquí puede solicitar uno nuevo."
     delete:
         restricted: Este registro no se puede eliminar porque otros registros aún lo utilizan.
     client:
@@ -729,6 +754,14 @@ pdf:
 
 # Outgoing client emails
 email:
+    password_reset:
+        subject: "Elija una contraseña nueva para %company%"
+        heading: "Elija una contraseña nueva"
+        intro: "Alguien ha solicitado restablecer la contraseña de su cuenta en %company%. Si ha sido usted, utilice el enlace de abajo."
+        action: "Elegir una contraseña nueva"
+        expiry: "El enlace es válido durante %minutes% minutos y solo se puede usar una vez."
+        ignore: "Si no lo ha solicitado, ignore este mensaje: su contraseña seguirá siendo la misma."
+        link_fallback: "Si el botón no funciona, copie esta dirección en su navegador:"
     action:
         send: Enviar por correo
     confirm:
