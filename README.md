@@ -16,7 +16,7 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 
 ### Implemented
 
-- **Authentication and roles** - login form with brute-force throttling (5 attempts per minute), POST + CSRF-protected logout, two roles (`ROLE_ADMIN`, `ROLE_MECHANIC`), self-service guard against deactivating yourself or removing the last admin.
+- **Authentication and roles** - login form with brute-force throttling (5 attempts per minute), password reset by email (a single-use link valid for an hour), POST + CSRF-protected logout, two roles (`ROLE_ADMIN`, `ROLE_MECHANIC`), self-service guard against deactivating yourself or removing the last admin; deactivating a user ends their open sessions.
 - **User management** (admin only) - create, edit, deactivate / reactivate accounts; per-user preferred locale.
 - **Clients** - name, phone, email, notes; deleting a client removes its cars and companies, but is soft-blocked while any work order or offer still references the client or one of its cars.
 - **Cars** - VIN, license plate, brand and model (catalog of brands/models seeded by fixtures), one client per car.
@@ -25,7 +25,7 @@ Carstio is a server-rendered Symfony application built for the day-to-day operat
 - **Convert offers to work orders** - one-click conversion that copies items and parts cost, snapshots the currency and links the offer to the new work order.
 - **Work orders** - complaint, diagnosis, source, status (draft, open, in progress, waiting parts, waiting approval, completed, cancelled, closed), labor / parts / misc line items, scheduling.
 - **Payments** - partial payments, payment methods (cash, card, bank transfer), payment status (pending, paid, partially paid, refunded, void), automatic recalculation of paid amount and remaining balance.
-- **Parts catalog (resale model)** - name, optional brand / SKU / part number, optional cost and sell price, free-form line items on documents, per-line cost capture, **internal-only** parts margin/profit summary on offers, work orders and the dashboard.
+- **Parts catalog (resale model)** - name, optional brand / SKU / part number, optional cost and sell price, free-form line items on documents, per-line cost capture, **internal-only** parts margin/profit summary on offers and work orders and in the statistics. Cost, profit and margin are shown to administrators only.
 - **PDF generation** - server-rendered offer and work order PDFs (Dompdf) using the company profile (name, address, IDs, optional logo) and an optional document footer.
 - **Email sending** - SMTP-backed sender for offer and work order PDFs to the client's email; uses the SMTP credentials configured in Settings, with a recording transport in tests.
 - **Settings** (admin only) -
@@ -238,7 +238,7 @@ Set `serverVersion` to the version you actually run, and make sure the matching 
 
 ## Tests
 
-The test suite (390+ tests, 3k+ assertions) hits a real database (MariaDB or PostgreSQL, whichever `DATABASE_URL` names) - there are no DB mocks. Each test runs inside a transaction that is rolled back afterwards (via `dama/doctrine-test-bundle`), so repeated runs are isolated and deterministic. You only need to rebuild the test database when fixtures or the schema change:
+The test suite (490+ tests, 4k+ assertions) hits a real database (MariaDB or PostgreSQL, whichever `DATABASE_URL` names) - there are no DB mocks. Each test runs inside a transaction that is rolled back afterwards (via `dama/doctrine-test-bundle`), so repeated runs are isolated and deterministic. You only need to rebuild the test database when fixtures or the schema change:
 
 ```bash
 # Inside Docker (recommended)
@@ -268,6 +268,10 @@ vendor/bin/phpstan analyse
 ```
 
 CI runs the same command, together with `composer audit`, the container/Twig/YAML linters and the test suite.
+
+## Changelog
+
+What changed in each version, and what to do when upgrading, is in [CHANGELOG.md](CHANGELOG.md).
 
 ## Contributing
 
