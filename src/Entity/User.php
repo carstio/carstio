@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -12,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'app_user')]
 #[UniqueEntity(fields: ['email'], message: 'user.error.email_taken')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -118,6 +119,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Decides whether an open session may go on. Symfony calls this on
+     * every request: $this is the account as it was when the session last
+     * saw it, $user is the account as it is in the database now. Returning
+     * false logs the session out.
+     *
+     * Without this method Symfony compares the password, the roles and the
+     * email, but knows nothing about isActive - a deactivated employee
+     * would keep working until their session expired. Those three checks
+     * are repeated here because implementing the interface replaces them.
+     */
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self || !$user->isActive()) {
+            return false;
+        }
+
+        $roles = $this->getRoles();
+        $currentRoles = $user->getRoles();
+        sort($roles);
+        sort($currentRoles);
+
+        return $this->getUserIdentifier() === $user->getUserIdentifier()
+            && $this->password === $user->getPassword()
+            && $roles === $currentRoles;
     }
 
     public function getPassword(): ?string
