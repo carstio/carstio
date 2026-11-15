@@ -71,10 +71,16 @@
                 </div>
                 <div class="section-card-body">
                     <dl class="kv-list">
-                        <div class="kv-row"><dt>{{ 'part.field.cost_price'|trans }}</dt><dd class="tabular-nums">{{ part.costPrice is not null ? part.costPrice : '-' }}</dd></div>
+                        {# Purchase cost, profit and margin: see App\Security\Voter\CostVoter. #}
+                        {% set show_costs = is_granted('VIEW_COSTS') %}
+                        {% if show_costs %}
+                            <div class="kv-row"><dt>{{ 'part.field.cost_price'|trans }}</dt><dd class="tabular-nums">{{ part.costPrice is not null ? part.costPrice : '-' }}</dd></div>
+                        {% endif %}
                         <div class="kv-row"><dt>{{ 'part.field.sell_price'|trans }}</dt><dd class="tabular-nums fw-semibold">{{ part.sellPrice is not null ? part.sellPrice : '-' }}</dd></div>
-                        <div class="kv-row"><dt>{{ 'part.field.unit_profit'|trans }}</dt><dd class="tabular-nums">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</dd></div>
-                        <div class="kv-row"><dt>{{ 'part.field.unit_margin'|trans }}</dt><dd class="tabular-nums">{{ unit_margin is not null ? unit_margin|number_format(1, '.', '') ~ '%' : '-' }}</dd></div>
+                        {% if show_costs %}
+                            <div class="kv-row"><dt>{{ 'part.field.unit_profit'|trans }}</dt><dd class="tabular-nums">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</dd></div>
+                            <div class="kv-row"><dt>{{ 'part.field.unit_margin'|trans }}</dt><dd class="tabular-nums">{{ unit_margin is not null ? unit_margin|number_format(1, '.', '') ~ '%' : '-' }}</dd></div>
+                        {% endif %}
                     </dl>
                 </div>
             </div>

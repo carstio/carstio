@@ -15,6 +15,7 @@ use App\Service\Email\ClientDocumentMailer;
 use App\Service\Email\Exception\DocumentEmailFailedException;
 use App\Service\Email\Exception\IncompleteSmtpSettingsException;
 use App\Service\Email\Exception\MissingClientEmailException;
+use App\Security\Voter\CostVoter;
 use App\Service\PartsMarginCalculator;
 use App\Service\Pdf\CompanyProfileProvider;
 use App\Service\Pdf\PdfRenderer;
@@ -92,7 +93,7 @@ final class WorkOrderController extends AbstractController
 
         return $this->render('work_order/show.html.twig', [
             'work_order' => $workOrder,
-            'parts_margin' => $partsMarginCalculator->forWorkOrder($workOrder),
+            'parts_margin' => $this->isGranted(CostVoter::VIEW_COSTS) ? $partsMarginCalculator->forWorkOrder($workOrder) : null,
             'statuses' => WorkOrderStatus::cases(),
             'attachments' => $attachmentRepository->findForOwner(AttachmentOwnerType::WorkOrder, $workOrder->getId()),
             'attachment_form' => $attachmentForm,

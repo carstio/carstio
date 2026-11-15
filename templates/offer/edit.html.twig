@@ -142,9 +142,11 @@
             <div class="col-12 col-md-6">
                 {{ form_row(item.part) }}
             </div>
-            <div class="col-6 col-md-3">
-                {{ form_row(item.costPrice) }}
-            </div>
+            {% if item.costPrice is defined %}
+                <div class="col-6 col-md-3">
+                    {{ form_row(item.costPrice) }}
+                </div>
+            {% endif %}
         </div>
     {% endif %}
     {{ form_widget(item.type) }}

@@ -5,9 +5,11 @@
     - currency_code: ISO currency string
   This partial is rendered on admin pages only - never include it from a
   client-facing PDF template, since it exposes the workshop's purchase cost.
+  For the same reason the pages that include it do so only for users who
+  may see costs (App\Security\Voter\CostVoter).
 #}
 {% if parts_margin.sellTotal|number_format > 0 or parts_margin.hasCostData %}
-    <div class="section-card">
+    <div class="section-card" data-parts-margin>
         <div class="section-card-header">
             <h2 class="section-card-title">{{ 'parts_margin.title'|trans }}</h2>
             <span class="text-muted small">{{ 'parts_margin.internal_only'|trans }}</span>

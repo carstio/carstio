@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Part\Part;
 use App\Entity\Workshop\WorkOrderItem;
 use App\Enum\WorkOrderItemType as ItemType;
+use App\Security\Voter\CostVoter;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -20,6 +22,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class WorkOrderItemType extends AbstractType
 {
+    public function __construct(
+        private readonly Security $security,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -82,8 +89,12 @@ class WorkOrderItemType extends AbstractType
                     'required' => false,
                     'placeholder' => 'work_order_item.field.part_placeholder',
                     'autocomplete' => true,
-                ])
-                ->add('costPrice', NumberType::class, [
+                ]);
+
+            // Without the field an item keeps the cost it has (or goes on
+            // using the catalog cost of its part).
+            if ($this->security->isGranted(CostVoter::VIEW_COSTS)) {
+                $builder->add('costPrice', NumberType::class, [
                     'label' => 'work_order_item.field.cost_price',
                     'scale' => 2,
                     'html5' => true,
@@ -92,6 +103,7 @@ class WorkOrderItemType extends AbstractType
                     'constraints' => [new Assert\PositiveOrZero()],
                     'help' => 'work_order_item.help.cost_price',
                 ]);
+            }
         }
     }
 

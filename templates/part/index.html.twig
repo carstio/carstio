@@ -28,14 +28,16 @@
         {% else %}
             <div class="table-responsive">
                 <table class="data-table table mb-0">
+                    {# Purchase cost and profit: see App\Security\Voter\CostVoter. #}
+                    {% set show_costs = is_granted('VIEW_COSTS') %}
                     <thead>
                         <tr>
                             <th>{{ 'part.field.name'|trans }}</th>
                             <th>{{ 'part.field.brand'|trans }}</th>
                             <th>{{ 'part.field.sku'|trans }}</th>
-                            <th class="col-numeric">{{ 'part.field.cost_price'|trans }}</th>
+                            {% if show_costs %}<th class="col-numeric">{{ 'part.field.cost_price'|trans }}</th>{% endif %}
                             <th class="col-numeric">{{ 'part.field.sell_price'|trans }}</th>
-                            <th class="col-numeric">{{ 'part.field.unit_profit'|trans }}</th>
+                            {% if show_costs %}<th class="col-numeric">{{ 'part.field.unit_profit'|trans }}</th>{% endif %}
                             <th class="text-center">{{ 'label.status'|trans }}</th>
                             <th class="col-actions">{{ 'label.actions'|trans }}</th>
                         </tr>
@@ -50,9 +52,9 @@
                                 </td>
                                 <td>{{ part.brand ?? '-' }}</td>
                                 <td class="col-mono">{{ part.sku ?? '-' }}</td>
-                                <td class="col-numeric">{{ part.costPrice is not null ? part.costPrice : '-' }}</td>
+                                {% if show_costs %}<td class="col-numeric">{{ part.costPrice is not null ? part.costPrice : '-' }}</td>{% endif %}
                                 <td class="col-numeric fw-medium">{{ part.sellPrice is not null ? part.sellPrice : '-' }}</td>
-                                <td class="col-numeric">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</td>
+                                {% if show_costs %}<td class="col-numeric">{{ unit_profit is not null ? unit_profit|number_format(2, '.', '') : '-' }}</td>{% endif %}
                                 <td class="text-center">
                                     {% if part.active %}
                                         <span class="status-badge status-badge--success">{{ 'part.status.active'|trans }}</span>

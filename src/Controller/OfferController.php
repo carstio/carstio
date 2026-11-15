@@ -15,6 +15,7 @@ use App\Service\EntityDeleter;
 use App\Service\OfferCalculator;
 use App\Service\OfferFactory;
 use App\Service\OfferToWorkOrderConverter;
+use App\Security\Voter\CostVoter;
 use App\Service\PartsMarginCalculator;
 use App\Service\Pdf\CompanyProfileProvider;
 use App\Service\Pdf\PdfRenderer;
@@ -74,7 +75,7 @@ final class OfferController extends AbstractController
 
         return $this->render('offer/show.html.twig', [
             'offer' => $offer,
-            'parts_margin' => $partsMarginCalculator->forOffer($offer),
+            'parts_margin' => $this->isGranted(CostVoter::VIEW_COSTS) ? $partsMarginCalculator->forOffer($offer) : null,
             'statuses' => OfferStatus::cases(),
         ]);
     }

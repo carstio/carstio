@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Part\Part;
+use App\Security\Voter\CostVoter;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -17,6 +19,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class PartType extends AbstractType
 {
+    public function __construct(
+        private readonly Security $security,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -40,15 +47,22 @@ class PartType extends AbstractType
                 'required' => false,
                 'help' => 'part.help.part_number_optional',
                 'constraints' => [new Assert\Length(max: 100)],
-            ])
-            ->add('costPrice', NumberType::class, [
+            ]);
+
+        // Without the field the stored cost is left as it is, and a request
+        // that sends one anyway is rejected as a whole.
+        if ($this->security->isGranted(CostVoter::VIEW_COSTS)) {
+            $builder->add('costPrice', NumberType::class, [
                 'label' => 'part.field.cost_price',
                 'scale' => 2,
                 'html5' => true,
                 'required' => false,
                 'attr' => ['step' => '0.01', 'min' => '0'],
                 'constraints' => [new Assert\PositiveOrZero()],
-            ])
+            ]);
+        }
+
+        $builder
             ->add('sellPrice', NumberType::class, [
                 'label' => 'part.field.sell_price',
                 'scale' => 2,

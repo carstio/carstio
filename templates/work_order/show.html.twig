@@ -287,10 +287,12 @@
                 </div>
             </div>
 
-            {% include '_partials/parts_margin_card.html.twig' with {
-                parts_margin: parts_margin,
-                currency_code: work_order.currencyCode
-            } only %}
+            {% if parts_margin is not null %}
+                {% include '_partials/parts_margin_card.html.twig' with {
+                    parts_margin: parts_margin,
+                    currency_code: work_order.currencyCode
+                } only %}
+            {% endif %}
         </div>
     </div>
 
