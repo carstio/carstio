@@ -211,7 +211,7 @@ templates/                Twig templates grouped by feature
 translations/             messages.{en,bg,de,es,fr}.yaml
 migrations/               Doctrine migrations
 tests/                    PHPUnit (Unit + Functional)
-assets/                   AssetMapper sources (controllers, vendor, styles)
+assets/                   AssetMapper sources (controllers, styles; vendor/ is downloaded, lib/ is committed)
 ```
 
 Conventions worth knowing:
