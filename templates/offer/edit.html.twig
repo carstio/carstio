@@ -11,6 +11,7 @@
     } only %}
 
     {{ form_start(form, {attr: {novalidate: 'novalidate'}}) }}
+    {{ form_errors(form) }}
 
     <div data-controller="collection"
          data-collection-prototype-value="{{ form_widget(form.items.vars.prototype)|e('html_attr') }}"

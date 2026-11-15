@@ -10,6 +10,12 @@ attachment:
         file_required: Please select a file to upload.
         mime_type: This file type is not allowed. Allowed types are PDF, JPEG, PNG, WebP and MP4.
         too_large: The file is too large. Maximum size is 10 MB.
+document:
+    error:
+        total_too_large: The total of this document is too large to be saved.
+item:
+    error:
+        discount_exceeds_line: The discount cannot be more than the line amount (quantity × unit price).
 mileage:
     error:
         negative: Mileage cannot be negative.

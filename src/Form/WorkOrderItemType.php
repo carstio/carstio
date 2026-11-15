@@ -6,6 +6,8 @@ use App\Entity\Part\Part;
 use App\Entity\Workshop\WorkOrderItem;
 use App\Enum\WorkOrderItemType as ItemType;
 use App\Security\Voter\CostVoter;
+use App\Validator\DiscountWithinLine;
+use App\Validator\StorableAmount;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
@@ -47,7 +49,7 @@ class WorkOrderItemType extends AbstractType
                 'html5' => true,
                 'empty_data' => '0',
                 'attr' => ['step' => '0.01', 'min' => '0.01'],
-                'constraints' => [new Assert\NotBlank(), new Assert\Positive()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Positive(), new StorableAmount()],
             ])
             ->add('unitPrice', NumberType::class, [
                 'label' => 'work_order_item.field.unit_price',
@@ -55,7 +57,7 @@ class WorkOrderItemType extends AbstractType
                 'html5' => true,
                 'empty_data' => '0',
                 'attr' => ['step' => '0.01', 'min' => '0'],
-                'constraints' => [new Assert\NotBlank(), new Assert\PositiveOrZero()],
+                'constraints' => [new Assert\NotBlank(), new StorableAmount()],
             ])
             ->add('discountAmount', NumberType::class, [
                 'label' => 'work_order_item.field.discount',
@@ -64,6 +66,8 @@ class WorkOrderItemType extends AbstractType
                 'required' => false,
                 'empty_data' => '0',
                 'attr' => ['step' => '0.01', 'min' => '0'],
+                // Not more than the line is worth: see DiscountWithinLine below.
+                'constraints' => [new StorableAmount()],
             ])
             ->add('taxRate', NumberType::class, [
                 'label' => 'work_order_item.field.tax_rate',
@@ -72,6 +76,7 @@ class WorkOrderItemType extends AbstractType
                 'required' => false,
                 'empty_data' => '0',
                 'attr' => ['step' => '0.01', 'min' => '0', 'max' => '100'],
+                'constraints' => [new Assert\Range(min: 0, max: 100)],
             ])
             ->add('sortOrder', HiddenType::class);
 
@@ -100,7 +105,7 @@ class WorkOrderItemType extends AbstractType
                     'html5' => true,
                     'required' => false,
                     'attr' => ['step' => '0.01', 'min' => '0'],
-                    'constraints' => [new Assert\PositiveOrZero()],
+                    'constraints' => [new StorableAmount()],
                     'help' => 'work_order_item.help.cost_price',
                 ]);
             }
@@ -112,6 +117,7 @@ class WorkOrderItemType extends AbstractType
         $resolver->setDefaults([
             'data_class' => WorkOrderItem::class,
             'show_part_field' => false,
+            'constraints' => [new DiscountWithinLine()],
         ]);
     }
 }

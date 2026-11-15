@@ -8,6 +8,7 @@ use App\Entity\Workshop\WorkOrder;
 use App\Enum\WorkOrderStatus;
 use App\Service\Formatting\CarLabelFormatter;
 use App\Service\Workshop\WorkOrderMileageManager;
+use App\Validator\StorableTotals;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -166,6 +167,7 @@ class WorkOrderType extends AbstractType
         $resolver->setDefaults([
             'data_class' => WorkOrder::class,
             'include_items' => false,
+            'constraints' => [new StorableTotals()],
         ]);
     }
 }

@@ -10,6 +10,12 @@ attachment:
         file_required: Veuillez sélectionner un fichier à téléverser.
         mime_type: 'Ce type de fichier n''est pas autorisé. Types autorisés : PDF, JPEG, PNG, WebP et MP4.'
         too_large: Le fichier est trop volumineux. La taille maximale est de 10 Mo.
+document:
+    error:
+        total_too_large: Le total de ce document est trop élevé pour être enregistré.
+item:
+    error:
+        discount_exceeds_line: La remise ne peut pas dépasser le montant de la ligne (quantité × prix unitaire).
 mileage:
     error:
         negative: Le kilométrage ne peut pas être négatif.

@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Part\Part;
 use App\Security\Voter\CostVoter;
+use App\Validator\StorableAmount;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -58,7 +59,7 @@ class PartType extends AbstractType
                 'html5' => true,
                 'required' => false,
                 'attr' => ['step' => '0.01', 'min' => '0'],
-                'constraints' => [new Assert\PositiveOrZero()],
+                'constraints' => [new StorableAmount()],
             ]);
         }
 
@@ -69,7 +70,7 @@ class PartType extends AbstractType
                 'html5' => true,
                 'required' => false,
                 'attr' => ['step' => '0.01', 'min' => '0'],
-                'constraints' => [new Assert\PositiveOrZero()],
+                'constraints' => [new StorableAmount()],
             ])
             ->add('notes', TextareaType::class, [
                 'label' => 'part.field.notes',

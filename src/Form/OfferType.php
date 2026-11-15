@@ -7,6 +7,7 @@ use App\Entity\Client\Client;
 use App\Entity\Sales\Offer;
 use App\Enum\OfferStatus;
 use App\Service\Formatting\CarLabelFormatter;
+use App\Validator\StorableTotals;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -133,6 +134,7 @@ class OfferType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Offer::class,
             'include_items' => false,
+            'constraints' => [new StorableTotals()],
         ]);
     }
 }

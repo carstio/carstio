@@ -10,6 +10,12 @@ attachment:
         file_required: Моля, изберете файл за качване.
         mime_type: Този тип файл не е разрешен. Разрешени са PDF, JPEG, PNG, WebP и MP4.
         too_large: Файлът е твърде голям. Максималният размер е 10 MB.
+document:
+    error:
+        total_too_large: Общата сума на документа е твърде голяма, за да бъде записана.
+item:
+    error:
+        discount_exceeds_line: Отстъпката не може да е по-голяма от сумата на реда (количество × единична цена).
 mileage:
     error:
         negative: Пробегът не може да бъде отрицателен.

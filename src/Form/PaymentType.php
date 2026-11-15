@@ -6,6 +6,7 @@ use App\Entity\Workshop\Payment;
 use App\Entity\Workshop\WorkOrder;
 use App\Enum\PaymentMethod;
 use App\Enum\PaymentStatus;
+use App\Validator\StorableAmount;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -39,7 +40,7 @@ class PaymentType extends AbstractType
                 'scale' => 2,
                 'html5' => true,
                 'attr' => ['step' => '0.01', 'min' => '0.01'],
-                'constraints' => [new Assert\NotBlank(), new Assert\Positive()],
+                'constraints' => [new Assert\NotBlank(), new Assert\Positive(), new StorableAmount()],
             ])
             ->add('method', EnumType::class, [
                 'class' => PaymentMethod::class,
