@@ -20,9 +20,10 @@
             <div class="d-flex align-items-center gap-3">
                 <span class="topbar-user d-none d-md-inline">{{ app.user.fullName }}</span>
                 {% include '_partials/language_switcher.html.twig' with {variant: 'topbar'} %}
-                <button type="submit" form="logout-form" class="btn btn-outline-secondary btn-sm">
+                {# Icon only on a phone, where the bar has no room for the word. #}
+                <button type="submit" form="logout-form" class="btn btn-outline-secondary btn-sm" title="{{ 'nav.logout'|trans }}" aria-label="{{ 'nav.logout'|trans }}">
                     {{ icon.render('logout', {size: 14}) }}
-                    <span>{{ 'nav.logout'|trans }}</span>
+                    <span class="d-none d-sm-inline">{{ 'nav.logout'|trans }}</span>
                 </button>
             </div>
         </header>

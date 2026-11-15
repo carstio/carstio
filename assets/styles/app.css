@@ -186,6 +186,7 @@ hr { border-color: var(--cs-border); opacity: 1; }
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 0.75rem;
     position: sticky;
     top: 0;
     z-index: 1020;
@@ -1180,7 +1181,14 @@ textarea.form-control { min-height: 88px; }
 }
 
 @media (max-width: 575.98px) {
-    .global-search { max-width: none; }
+    /* On a phone the bar holds the menu button, the search, the language
+       and the log out button in well under 400px: the search gives way
+       (its 200px minimum pushed the page wider than the screen) and the
+       side padding is halved. The log out button shows its icon only
+       (see layout.html.twig). */
+    .app-topbar { padding: 0 0.75rem; gap: 0.5rem; }
+    .app-topbar > .d-flex { gap: 0.5rem !important; }
+    .global-search { max-width: none; min-width: 0; }
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -1405,7 +1413,9 @@ textarea.form-control { min-height: 88px; }
    ────────────────────────────────────────────────────────── */
 .statistics-charts-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    /* min(): on a screen narrower than a chart's 320px the column shrinks
+       with it instead of making the page scroll sideways. */
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
     gap: 1.25rem;
     margin-bottom: 1.25rem;
 }
