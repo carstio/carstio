@@ -9,6 +9,7 @@ use App\Enum\PaymentMethod;
 use App\Enum\PaymentStatus;
 use App\Enum\WorkOrderItemType;
 use App\Service\WorkOrderCalculator;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class WorkOrderCalculatorTest extends TestCase
@@ -350,5 +351,71 @@ class WorkOrderCalculatorTest extends TestCase
         $this->assertSame('5.00', $wo->getTaxAmount());
         $this->assertSame('55.00', $wo->getTotalAmount());
         $this->assertSame('55.00', $item->getLineTotal());
+    }
+
+    /**
+     * Whoever pays exactly the total shown on the document has paid in full,
+     * even when the unrounded sums differ by a fraction of a cent.
+     */
+    #[DataProvider('exactPayments')]
+    public function testPayingTheDisplayedTotalIsPaidInFull(string $quantity, string $unitPrice, string $taxRate, array $payments): void
+    {
+        $wo = new WorkOrder();
+
+        $item = new WorkOrderItem();
+        $item->setType(WorkOrderItemType::Part);
+        $item->setName('Part');
+        $item->setQuantity($quantity);
+        $item->setUnitPrice($unitPrice);
+        $item->setTaxRate($taxRate);
+        $wo->addItem($item);
+
+        foreach ($payments as $amount) {
+            $payment = new Payment();
+            $payment->setAmount($amount);
+            $payment->setMethod(PaymentMethod::Cash);
+            $payment->setStatus(PaymentStatus::Paid);
+            $wo->addPayment($payment);
+        }
+
+        $this->calculator->recalculate($wo);
+
+        $this->assertSame($wo->getTotalAmount(), $wo->getPaidAmount());
+        $this->assertSame(PaymentStatus::Paid, $wo->getPaymentStatus());
+    }
+
+    /**
+     * @return iterable<string, array{string, string, string, list<string>}>
+     */
+    public static function exactPayments(): iterable
+    {
+        yield 'total 12.024 is shown as 12.02' => ['1.00', '10.02', '20.00', ['12.02']];
+        yield 'three times 0.10 is not 0.30 in binary' => ['3.00', '0.10', '0.00', ['0.30']];
+        yield 'paid in three instalments of 0.10' => ['1.00', '0.30', '0.00', ['0.10', '0.10', '0.10']];
+        yield 'total 59.988 is shown as 59.99' => ['1.00', '49.99', '20.00', ['59.99']];
+    }
+
+    public function testOneCentShortIsStillPartiallyPaid(): void
+    {
+        $wo = new WorkOrder();
+
+        $item = new WorkOrderItem();
+        $item->setType(WorkOrderItemType::Part);
+        $item->setName('Part');
+        $item->setQuantity('1.00');
+        $item->setUnitPrice('10.02');
+        $item->setTaxRate('20.00');
+        $wo->addItem($item);
+
+        $payment = new Payment();
+        $payment->setAmount('12.01');
+        $payment->setMethod(PaymentMethod::Cash);
+        $payment->setStatus(PaymentStatus::Paid);
+        $wo->addPayment($payment);
+
+        $this->calculator->recalculate($wo);
+
+        $this->assertSame('12.02', $wo->getTotalAmount());
+        $this->assertSame(PaymentStatus::PartiallyPaid, $wo->getPaymentStatus());
     }
 }

@@ -6,9 +6,7 @@ use App\Entity\Workshop\Payment;
 use App\Entity\Workshop\WorkOrder;
 use App\Form\PaymentType;
 use App\Repository\Workshop\PaymentRepository;
-use App\Service\EntityDeleter;
-use App\Service\WorkOrderCalculator;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\Payment\PaymentManager;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,9 +24,9 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/payments/new', name: 'app_payment_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $em, WorkOrderCalculator $calculator): Response
+    public function new(Request $request, PaymentManager $payments): Response
     {
-        return $this->handleNew($request, null, $em, $calculator);
+        return $this->handleNew($request, null, $payments);
     }
 
     #[Route(
@@ -40,10 +38,9 @@ final class PaymentController extends AbstractController
     public function newForWorkOrder(
         Request $request,
         #[MapEntity(id: 'workOrder')] WorkOrder $workOrder,
-        EntityManagerInterface $em,
-        WorkOrderCalculator $calculator,
+        PaymentManager $payments,
     ): Response {
-        return $this->handleNew($request, $workOrder, $em, $calculator);
+        return $this->handleNew($request, $workOrder, $payments);
     }
 
     #[Route('/payments/{id}', name: 'app_payment_show', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -55,32 +52,25 @@ final class PaymentController extends AbstractController
     }
 
     #[Route('/payments/{id}/delete', name: 'app_payment_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
-    public function delete(Request $request, Payment $payment, EntityManagerInterface $em, EntityDeleter $deleter, WorkOrderCalculator $calculator): Response
+    public function delete(Request $request, Payment $payment, PaymentManager $payments): Response
     {
         if ($this->isCsrfTokenValid('delete-payment-' . $payment->getId(), $request->request->get('_token'))) {
-            $workOrder = $payment->getWorkOrder();
+            $paymentId = $payment->getId();
 
-            if ($deleter->delete($payment)) {
-                $calculator->recalculate($workOrder);
-                $em->flush();
-
+            if ($payments->delete($payment)) {
                 $this->addFlash('success', 'flash.payment.deleted');
             } else {
                 $this->addFlash('error', 'flash.delete.restricted');
 
-                return $this->redirectToRoute('app_payment_show', ['id' => $payment->getId()]);
+                return $this->redirectToRoute('app_payment_show', ['id' => $paymentId]);
             }
         }
 
         return $this->redirectToRoute('app_payment_index');
     }
 
-    private function handleNew(
-        Request $request,
-        ?WorkOrder $workOrder,
-        EntityManagerInterface $em,
-        WorkOrderCalculator $calculator,
-    ): Response {
+    private function handleNew(Request $request, ?WorkOrder $workOrder, PaymentManager $payments): Response
+    {
         $payment = new Payment();
         if ($workOrder !== null) {
             $payment->setWorkOrder($workOrder);
@@ -92,9 +82,7 @@ final class PaymentController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($payment);
-            $calculator->recalculate($payment->getWorkOrder());
-            $em->flush();
+            $payments->record($payment);
 
             $this->addFlash('success', 'flash.payment.created');
 

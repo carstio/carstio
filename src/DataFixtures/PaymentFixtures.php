@@ -24,7 +24,7 @@ class PaymentFixtures extends Fixture implements DependentFixtureInterface
         $wo2 = $this->getReference(WorkOrderFixtures::WO_ALICE_X5, WorkOrder::class);
 
         $payment = new Payment();
-        $payment->setWorkOrder($wo2);
+        $wo2->addPayment($payment);
         $payment->setAmount($wo2->getTotalAmount());
         $payment->setMethod(PaymentMethod::Card);
         $payment->setStatus(PaymentStatus::Paid);
@@ -36,7 +36,7 @@ class PaymentFixtures extends Fixture implements DependentFixtureInterface
         // statistics dashboard can render multiple payment methods.
         $wo1 = $this->getReference(WorkOrderFixtures::WO_JOHN_COROLLA, WorkOrder::class);
         $deposit = new Payment();
-        $deposit->setWorkOrder($wo1);
+        $wo1->addPayment($deposit);
         $deposit->setAmount('50.00');
         $deposit->setMethod(PaymentMethod::Cash);
         $deposit->setStatus(PaymentStatus::Paid);

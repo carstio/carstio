@@ -57,9 +57,17 @@ class WorkOrderCalculator
 
         $workOrder->setPaidAmount($this->money($paidAmount));
 
-        if ($paidAmount <= 0.0) {
+        // Compared in whole cents, the way both amounts are stored and shown.
+        // The raw sums carry fractions of a cent (10.02 + 20% tax is 12.024)
+        // and binary rounding noise (0.1 + 0.1 + 0.1 is not 0.3): compared as
+        // they are, someone who paid exactly the amount on the invoice would
+        // remain "partially paid" for ever.
+        $paidCents = (int) round($paidAmount * 100);
+        $totalCents = (int) round($totalAmount * 100);
+
+        if ($paidCents <= 0) {
             $workOrder->setPaymentStatus(PaymentStatus::Pending);
-        } elseif ($paidAmount >= $totalAmount) {
+        } elseif ($paidCents >= $totalCents) {
             $workOrder->setPaymentStatus(PaymentStatus::Paid);
         } else {
             $workOrder->setPaymentStatus(PaymentStatus::PartiallyPaid);
